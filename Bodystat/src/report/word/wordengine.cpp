@@ -71,14 +71,14 @@ int WordEngine::open(
         // 获取当前激活文档
         _curDoc=_word->querySubObject("ActiveDocument");
         if(0==_curDoc){
-            // 删除文件集
-            delete _docSet;
-            _docSet=0;
             // 关闭word
             _word->dynamicCall("Quit()");
             // 删除word
             delete _word;
             _word=0;
+            // 删除文件集
+            delete _docSet;
+            _docSet=0;
             // 返回错误
             return(-3);
         }
@@ -86,5 +86,34 @@ int WordEngine::open(
         _isOpen=true;
         // 成功返回
         return(0);
+    }
+}
+
+// 关闭word
+void WordEngine::close(){
+    // 上锁
+    QMutexLocker locker(&_lock);
+    // 已经打开
+    if(_isOpen){
+        // 设置word属性
+        _word->setProperty("DisplayAlerts",true);
+        // 关闭当前文档
+        _curDoc->dynamicCall("Close(bool)",true);
+        // 退出word
+        _word->dynamicCall("Quit()");
+        // 删除当前文档
+        delete _curDoc;
+        _curDoc=0;
+        // 删除文档集
+        delete _docSet;
+        _docSet=0;
+        // 删除word
+        delete _word;
+        _word=0;
+        // 重置标记变量
+        _isOpen=false;
+    }
+    // 尚未打开
+    else{
     }
 }

@@ -27,6 +27,7 @@ private:
     int open(
         const QString &tmplFile,
         const bool isVisible);
+    void close();
 private:
     QMutex _lock; // 锁
     bool _isOpen; // 打开标志
