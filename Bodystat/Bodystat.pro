@@ -25,3 +25,5 @@ HEADERS += \
     src/comm/singleton.h
 
 DESTDIR += ../bin
+
+PRECOMPILED_HEADER += ./precompile.h
