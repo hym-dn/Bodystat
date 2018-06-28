@@ -155,6 +155,7 @@ int WordEngine::saveAs(const QString &file){
     return(0);
 }
 
+/*
 int WordEngine::print(){
     QMutexLocker locker(&_lock);
     if(!_isOpen){
@@ -163,6 +164,7 @@ int WordEngine::print(){
     _curDoc->dynamicCall("PrintOut()");
     return(0);
 }
+*/
 
 // 构造
 WordEngine::WordEngine()

@@ -26,7 +26,6 @@ public:
         const QString &bm,
         const QString &txt);
     int saveAs(const QString &file);
-    int print();
 private:
     friend class Singleton<WordEngine>;
 private:
