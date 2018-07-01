@@ -21,6 +21,8 @@ public:
         const Mode mode=MODE_NEW,
         QWidget *parent=0);
     virtual ~SubjWidget();
+private slots:
+    void onSavePushButtonClicked(bool);
 private:
     void initUi();
     void toUi();

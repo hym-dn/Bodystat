@@ -19,6 +19,9 @@ SubjWidget::~SubjWidget(){
     delete _ui;
 }
 
+void SubjWidget::onSavePushButtonClicked(bool){
+}
+
 void SubjWidget::initUi(){
     // ID
     _ui->_idLineEdit->setMaxLength(46);
@@ -47,6 +50,9 @@ void SubjWidget::initUi(){
     _ui->_weightLineEdit->setValidator(
         new QRegExpValidator(QRegExp(
         "^\\d{1,3}(?:\\.\\d{1,3})?$")));
+    // Save
+    connect(_ui->_savePushButton,SIGNAL(clicked(bool)),
+        this,SLOT(onSavePushButtonClicked(bool)));
 }
 
 void SubjWidget::toUi(){

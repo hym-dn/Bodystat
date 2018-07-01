@@ -3,6 +3,8 @@
 #include<QMutexLocker>
 #include<QCoreApplication>
 #include<Windows.h>
+#include<QSqlError>
+#include<QDebug>
 
 DBManager::~DBManager(){
     close();
@@ -24,11 +26,13 @@ int DBManager::open(){
     const DWORD thrId=GetCurrentThreadId();
     QSqlDatabase conn=QSqlDatabase::addDatabase(
         "QODBC",QString("%1").arg(thrId));
-    conn.setDatabaseName(QString("DRIVER={Microsoft "
-        "Access Driver (*.mdb)};FIL={MS Access};DBQ=%1")
-        .arg(QCoreApplication::applicationDirPath()+
-        "Bodystat.accdb"));
+    const QString connText=QString("DRIVER={Microsoft "
+        "Access Driver (*.mdb, *.accdb)};FIL={MS Access};"
+        "DBQ=%1").arg(QCoreApplication::applicationDirPath()+
+        "/Bodystat.accdb");
+    conn.setDatabaseName(connText);
     if(!conn.open()){
+        qDebug()<<conn.lastError().text();
         return(-1);
     }
     QMutexLocker locker(&_lock);
