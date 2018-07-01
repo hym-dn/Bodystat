@@ -1,0 +1,25 @@
+﻿QToolButton{
+    qproperty-iconSize: 32px;
+    qproperty-icon: url(:rc/person.png);
+    /*border-image: url(:Main/ToolButton1.png) 5px;*/
+    border-width: 5px;
+    color: #FF000000;
+}
+
+/*
+QToolButton::hover{
+    border-image: url(:Main/ToolButton2.png) 5px;
+}
+
+QToolButton::pressed{
+    border-image: url(:Main/ToolButton3.png) 5px;
+}
+
+QToolButton::checked{
+    border-image: url(:Main/ToolButton3.png) 5px;
+}
+
+QToolButton::disabled{
+    border-image: url(:Main/ToolButton3.png) 5px;
+}
+*/

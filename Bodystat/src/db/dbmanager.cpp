@@ -2,6 +2,7 @@
 #include"../comm/singleton.h"
 #include<QMutexLocker>
 #include<QCoreApplication>
+#include<Windows.h>
 
 DBManager::~DBManager(){
     close();
@@ -11,7 +12,7 @@ DBManager *DBManager::instance(){
     return(Singleton<DBManager>::instance());
 }
 
-void DBManager::close(QSqlDatabase &conn) const{
+void DBManager::close(QSqlDatabase &conn){
     if(conn.isOpen()){
         QSqlDatabase::removeDatabase(
             conn.connectionName());
@@ -36,7 +37,7 @@ int DBManager::open(){
     return(0);
 }
 
-int DBManager::close(){
+void DBManager::close(){
     QMutexLocker locker(&_lock);
     close(_conn);
 }
@@ -46,14 +47,18 @@ QSqlDatabase DBManager::clone(){
     if(!_conn.isOpen()){
         return(QSqlDatabase());
     }
-    const DWORD thrId=GetCurrentThreadId();
-    QSqlDatabase conn=QSqlDatabase::
-        cloneDatabase(_conn,QString("%1").
-        arg(thrId));
-    if(!conn.open()){
-        return(QSqlDatabase());
+    const QString connNam=QString("%1").
+        arg(GetCurrentThreadId());
+    if(QSqlDatabase::contains(connNam)){
+       return(QSqlDatabase::database(connNam));
+    }else{
+       QSqlDatabase conn=QSqlDatabase::
+        cloneDatabase(_conn,connNam);
+       if(!conn.open()){
+           return(QSqlDatabase());
+       }
+       return(conn);
     }
-    return(conn);
 }
 
 DBManager::DBManager()

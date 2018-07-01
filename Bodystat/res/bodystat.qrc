@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>rc/toolbutton.qss</file>
+        <file>rc/person.png</file>
+    </qresource>
+</RCC>
