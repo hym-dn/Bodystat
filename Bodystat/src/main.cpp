@@ -6,6 +6,7 @@
 
 int main(int argc,char *argv[]){
     QApplication a(argc,argv);
+    /*
     if(DBManager::instance()->open()<0){
         QMessageBox msgBox(QMessageBox::Warning,
             QApplication::tr("警报"),
@@ -16,7 +17,9 @@ int main(int argc,char *argv[]){
         msgBox.exec();
         return(-1);
     }
+    */
     MainDlg w;
     w.show();
+    //DBManager::instance()->close();
     return(a.exec());
 }

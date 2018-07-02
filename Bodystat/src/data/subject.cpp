@@ -1,5 +1,6 @@
 ﻿#include"subject.h"
 #include<QObject>
+#include<QSqlQuery>
 
 Subject::Subject()
     :_id()
@@ -24,6 +25,68 @@ Subject::Subject(const Subject &src)
 }
 
 Subject::~Subject(){
+}
+
+int Subject::push(QSqlDatabase &db,const bool isAdd){
+    // 数据库无效
+    if(!db.isValid()||!db.isOpen()){
+        return(-1);
+    }
+    // 当前项目有效
+    Q_ASSERT(0==isValid());
+    // 添加
+    if(isAdd){
+        // 检测ID是否冲突
+        QString sql=QString(
+            "SELECT ID FROM Subject WHERE ID='%1';")
+            .arg(_id);
+        QSqlQuery query(db);
+        if(!query.exec(sql)){
+            return(-2);
+        }
+        // ID冲突
+        if(query.size()>0){
+            return(1);
+        }
+        // 添加
+        sql=QString("INSERT INTO Subject (ID,Name,Age,Sex,Height,"
+            "Weight,EntryTime,ModifyTime) VALUES ('%1','%2',%3,%4,"
+            "%5,%6,'%7','%8');").arg(_id).arg(_name).arg(getAgeText())
+            .arg(_sex).arg(getHeightText()).arg(getWeightText()).arg(
+            getEntryDateTimeText()).arg(getModifyDateTimeText());
+        if(!query.exec(sql)){
+            return(-4);
+        }
+        // 返回
+        return(0);
+    }
+    // 更新
+    else{
+        // 检测ID是否存在
+        QString sql=QString(
+            "SELECT ID FROM Subject WHERE ID='%1';")
+            .arg(_id);
+        QSqlQuery query(db);
+        if(!query.exec(sql)){
+            return(-5);
+        }
+        // ID异常
+        if(1!=query.size()){
+            return(2);
+        }
+        // 更新
+        sql=QString("UPDATE Subject SET Name='%1',Age=%2,Sex=%3,"
+            "Height=%4,Weight=%5,EntryTime='%6',ModifyTime='%7' "
+            "WHERE ID='%8';").arg(_name).arg(getAgeText()).arg(_sex)
+            .arg(getHeightText()).arg(getWeightText()).arg(
+            getEntryDateTimeText()).arg(getModifyDateTimeText())
+            .arg(_id);
+        if(!query.exec(sql)){
+            return(-6);
+        }
+        // 返回
+        return(0);
+    }
 }
 
 int Subject::isValid(QString *msg/*=0*/) const{
