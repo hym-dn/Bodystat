@@ -16,29 +16,29 @@ DBManager *DBManager::instance(){
 
 void DBManager::close(QSqlDatabase &conn){
     if(conn.isOpen()){
+        conn.close();
         QSqlDatabase::removeDatabase(
             conn.connectionName());
-        conn.close();
     }
 }
 
 int DBManager::open(){
+    QMutexLocker locker(&_lock);
+    close(_conn);
     const DWORD thrId=GetCurrentThreadId();
-    QSqlDatabase conn=QSqlDatabase::addDatabase(
+    _conn=QSqlDatabase::addDatabase(
         "QODBC",QString("%1").arg(thrId));
     const QString connText=QString("DRIVER={Microsoft "
         "Access Driver (*.mdb, *.accdb)};FIL={MS Access};"
         "DBQ=%1").arg(QCoreApplication::applicationDirPath()+
         "/Bodystat.accdb");
-    conn.setDatabaseName(connText);
-    if(!conn.open()){
-        qDebug()<<conn.lastError().text();
+    _conn.setDatabaseName(connText);
+    if(!_conn.open()){
+        qDebug()<<_conn.lastError().text();
         return(-1);
+    }else{
+        return(0);
     }
-    QMutexLocker locker(&_lock);
-    close(_conn);
-    _conn=conn;
-    return(0);
 }
 
 void DBManager::close(){
@@ -46,7 +46,7 @@ void DBManager::close(){
     close(_conn);
 }
 
-QSqlDatabase DBManager::clone(){
+QSqlDatabase DBManager::getDB(){
     QMutexLocker locker(&_lock);
     if(!_conn.isOpen()){
         return(QSqlDatabase());

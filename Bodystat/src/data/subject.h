@@ -41,6 +41,9 @@ public:
     void setModifyDateTime(const QDateTime &time);
     const QDateTime &getModifyDateTime() const;
     QString getModifyDateTimeText() const;
+    void setAccessDateTime(const QDateTime &time);
+    const QDateTime &getAccessDateTime() const;
+    QString getAccessDateTimeText() const;
 public:
     Subject &operator=(const Subject &src);
 private:
@@ -52,6 +55,7 @@ private:
     float _weight;
     QDateTime _entryDateTime;
     QDateTime _modifyDateTime;
+    QDateTime _accessDateTime;
 };
 
 #endif // SUBJECT_H

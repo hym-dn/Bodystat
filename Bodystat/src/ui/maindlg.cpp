@@ -20,6 +20,7 @@ void MainDlg::onSubWidgetClose(){
     if(0!=_subWidget){
         _ui->_mainMdiArea->closeAllSubWindows();
         _ui->_mainMdiArea->removeSubWindow(_subWidget);
+        //delete _subWidget;
         _subWidget=0;
     }
 }

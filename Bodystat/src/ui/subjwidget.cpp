@@ -1,6 +1,7 @@
 ﻿#include"subjwidget.h"
 #include"ui_subjwidget.h"
 #include"../data/subject.h"
+#include"../db/dbmanager.h"
 #include<QMessageBox>
 
 SubjWidget::SubjWidget(
@@ -20,6 +21,81 @@ SubjWidget::~SubjWidget(){
 }
 
 void SubjWidget::onSavePushButtonClicked(bool){
+    // 询问
+    QMessageBox msgBox(QMessageBox::Question,
+        tr("询问"),tr("继续将保存当前主题，是否继续？"));
+    msgBox.setFont(font());
+    msgBox.setStandardButtons(QMessageBox::Yes);
+    msgBox.addButton(QMessageBox::No);
+    msgBox.setButtonText(QMessageBox::Yes,tr("是"));
+    msgBox.setButtonText(QMessageBox::No,tr("否"));
+    int result=msgBox.exec();
+    if(QMessageBox::No==result){ // 否
+        return;
+    }
+    // 将界面输入存储到主题中
+    if(toSubject(*_subject)<0){
+        return;
+    }
+    // 将主题推送到数据库中
+    result=_subject->push(
+        DBManager::instance()->getDB(),
+        MODE_NEW==_mode);
+    if(result<0){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("警报"),tr("对不起，保存失败，请重试！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }else if(result>0){
+        if(1==result){
+            QMessageBox msgBox(QMessageBox::Warning,
+                tr("警报"),tr("对不起，【ID】已存在，保存失败！"));
+            msgBox.setFont(font());
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+            msgBox.exec();
+            return;
+        }else{
+            QMessageBox msgBox(QMessageBox::Warning,
+                tr("警报"),tr("对不起，检测到【ID】异常，保存失败！"));
+            msgBox.setFont(font());
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+            msgBox.exec();
+            return;
+        }
+    }else{
+        QMessageBox msgBox(QMessageBox::Information,
+            tr("提示"),tr("保存完成！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        close();
+        return;
+    }
+}
+
+void SubjWidget::onCancelPushButtonClicked(bool){
+    /*
+    // 询问
+    QMessageBox msgBox(QMessageBox::Question,
+        tr("询问"),tr("继续将退出当前对话框，是否继续？"));
+    msgBox.setFont(font());
+    msgBox.setStandardButtons(QMessageBox::Yes);
+    msgBox.addButton(QMessageBox::No);
+    msgBox.setButtonText(QMessageBox::Yes,tr("是"));
+    msgBox.setButtonText(QMessageBox::No,tr("否"));
+    int result=msgBox.exec();
+    if(QMessageBox::No==result){ // 否
+        return;
+    }
+    */
+    // 关闭
+    close();
 }
 
 void SubjWidget::initUi(){
@@ -27,7 +103,7 @@ void SubjWidget::initUi(){
     _ui->_idLineEdit->setMaxLength(46);
     _ui->_idLineEdit->setValidator(
         new QRegExpValidator(QRegExp(
-        "[a-zA-Z0-9]+$")));
+        "[a-zA-Z0-9]+$"),this));
     _ui->_idLineEdit->setDisabled(MODE_EDIT==_mode);
     // Name
     _ui->_nameLineEdit->setMaxLength(46);
@@ -35,7 +111,7 @@ void SubjWidget::initUi(){
     _ui->_ageLineEdit->setMaxLength(3);
     _ui->_ageLineEdit->setValidator(
         new QRegExpValidator(QRegExp(
-        "[0-9]+$")));
+        "[0-9]+$"),this));
     // Sex
     _ui->_sexComboBox->addItem(tr("男"),Subject::SEX_MALE);
     _ui->_sexComboBox->addItem(tr("女"),Subject::SEX_FEMALE);
@@ -44,15 +120,18 @@ void SubjWidget::initUi(){
     _ui->_heightLineEdit->setMaxLength(7);
     _ui->_heightLineEdit->setValidator(
         new QRegExpValidator(QRegExp(
-        "^\\d{1,3}(?:\\.\\d{1,3})?$")));
+        "^\\d{1,3}(?:\\.\\d{1,3})?$"),this));
     // Weight
     _ui->_weightLineEdit->setMaxLength(7);
     _ui->_weightLineEdit->setValidator(
         new QRegExpValidator(QRegExp(
-        "^\\d{1,3}(?:\\.\\d{1,3})?$")));
+        "^\\d{1,3}(?:\\.\\d{1,3})?$"),this));
     // Save
     connect(_ui->_savePushButton,SIGNAL(clicked(bool)),
         this,SLOT(onSavePushButtonClicked(bool)));
+    // Cancel
+    connect(_ui->_cancelPushButton,SIGNAL(clicked(bool)),
+        this,SLOT(onCancelPushButtonClicked(bool)));
 }
 
 void SubjWidget::toUi(){
@@ -164,9 +243,11 @@ int SubjWidget::toSubject(Subject &subj) const{
         const QDateTime curDateTime=QDateTime::currentDateTime();
         subj.setEntryDateTime(curDateTime);
         subj.setModifyDateTime(curDateTime);
+        subj.setAccessDateTime(curDateTime);
     }else{
         const QDateTime curDateTime=QDateTime::currentDateTime();
         subj.setModifyDateTime(curDateTime);
+        subj.setAccessDateTime(curDateTime);
     }
     // Subject
     QString errMsg;

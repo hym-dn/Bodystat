@@ -16,7 +16,7 @@ public:
 public:
     int open();
     void close();
-    QSqlDatabase clone();
+    QSqlDatabase getDB();
 private:
     friend class Singleton<DBManager>;
 private:

@@ -1,6 +1,7 @@
 ﻿#include"subject.h"
 #include<QObject>
 #include<QSqlQuery>
+#include<QVariant>
 
 Subject::Subject()
     :_id()
@@ -10,7 +11,8 @@ Subject::Subject()
     ,_height(0.0f)
     ,_weight(0.0f)
     ,_entryDateTime()
-    ,_modifyDateTime(){
+    ,_modifyDateTime()
+    ,_accessDateTime(){
 }
 
 Subject::Subject(const Subject &src)
@@ -21,7 +23,8 @@ Subject::Subject(const Subject &src)
     ,_height(src._height)
     ,_weight(src._weight)
     ,_entryDateTime(src._entryDateTime)
-    ,_modifyDateTime(src._modifyDateTime){
+    ,_modifyDateTime(src._modifyDateTime)
+    ,_accessDateTime(src._accessDateTime){
 }
 
 Subject::~Subject(){
@@ -38,24 +41,25 @@ int Subject::push(QSqlDatabase &db,const bool isAdd){
     if(isAdd){
         // 检测ID是否冲突
         QString sql=QString(
-            "SELECT ID FROM Subject WHERE ID='%1';")
+            "SELECT COUNT(*) FROM Subject WHERE ID='%1';")
             .arg(_id);
         QSqlQuery query(db);
         if(!query.exec(sql)){
             return(-2);
         }
         // ID冲突
-        if(query.size()>0){
+        if(query.next()&&query.value(0).toInt()>0){
             return(1);
         }
         // 添加
         sql=QString("INSERT INTO Subject (ID,Name,Age,Sex,Height,"
-            "Weight,EntryTime,ModifyTime) VALUES ('%1','%2',%3,%4,"
-            "%5,%6,'%7','%8');").arg(_id).arg(_name).arg(getAgeText())
-            .arg(_sex).arg(getHeightText()).arg(getWeightText()).arg(
-            getEntryDateTimeText()).arg(getModifyDateTimeText());
+            "Weight,EntryDateTime,ModifyDateTime,AccessDateTime) "
+            "VALUES ('%1','%2',%3,%4,%5,%6,'%7','%8','%9')").arg(_id)
+            .arg(_name).arg(getAgeText()).arg(_sex).arg(getHeightText())
+            .arg(getWeightText()).arg(getEntryDateTimeText()).arg(
+            getModifyDateTimeText()).arg(getAccessDateTimeText());
         if(!query.exec(sql)){
-            return(-4);
+            return(-3);
         }
         // 返回
         return(0);
@@ -64,25 +68,26 @@ int Subject::push(QSqlDatabase &db,const bool isAdd){
     else{
         // 检测ID是否存在
         QString sql=QString(
-            "SELECT ID FROM Subject WHERE ID='%1';")
+            "SELECT COUNT(*) FROM Subject WHERE ID='%1';")
             .arg(_id);
         QSqlQuery query(db);
         if(!query.exec(sql)){
-            return(-5);
+            return(-4);
         }
         // ID异常
-        if(1!=query.size()){
+        if(!query.next()||1!=query.value(0).toInt()){
             return(2);
         }
         // 更新
         sql=QString("UPDATE Subject SET Name='%1',Age=%2,Sex=%3,"
-            "Height=%4,Weight=%5,EntryTime='%6',ModifyTime='%7' "
-            "WHERE ID='%8';").arg(_name).arg(getAgeText()).arg(_sex)
-            .arg(getHeightText()).arg(getWeightText()).arg(
-            getEntryDateTimeText()).arg(getModifyDateTimeText())
+            "Height=%4,Weight=%5,EntryDateTime='%6',ModifyDateTime='%7',"
+            "AccessDateTime='%8' WHERE ID='%8';").arg(_name).arg(
+            getAgeText()).arg(_sex).arg(getHeightText()).arg(
+            getWeightText()).arg(getEntryDateTimeText()).arg(
+            getModifyDateTimeText()).arg(getAccessDateTimeText())
             .arg(_id);
         if(!query.exec(sql)){
-            return(-6);
+            return(-5);
         }
         // 返回
         return(0);
@@ -137,7 +142,14 @@ int Subject::isValid(QString *msg/*=0*/) const{
             *msg=QObject::tr("【修改时间】应是有效的日期时间！");
         }
         return(-8);
-    }else{
+    }
+    else if(!_accessDateTime.isValid()){
+        if(0!=msg){
+            *msg=QObject::tr("【访问时间】应是有效的日期时间！");
+        }
+        return(-9);
+    }
+    else{
         return(0);
     }
 }
@@ -234,6 +246,22 @@ QString Subject::getModifyDateTimeText() const{
     }
 }
 
+void Subject::setAccessDateTime(const QDateTime &time){
+    _accessDateTime=time;
+}
+
+const QDateTime &Subject::getAccessDateTime() const{
+    return(_accessDateTime);
+}
+
+QString Subject::getAccessDateTimeText() const{
+    if(_accessDateTime.isValid()){
+        return(_accessDateTime.toString("yyyy-MM-dd hh:mm:ss"));
+    }else{
+        return(QString());
+    }
+}
+
 Subject &Subject::operator=(const Subject &src){
     _id=src._id;
     _name=src._name;
@@ -243,5 +271,6 @@ Subject &Subject::operator=(const Subject &src){
     _weight=src._weight;
     _entryDateTime=src._entryDateTime;
     _modifyDateTime=src._modifyDateTime;
+    _accessDateTime=src._accessDateTime;
     return(*this);
 }

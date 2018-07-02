@@ -23,6 +23,7 @@ public:
     virtual ~SubjWidget();
 private slots:
     void onSavePushButtonClicked(bool);
+    void onCancelPushButtonClicked(bool);
 private:
     void initUi();
     void toUi();
