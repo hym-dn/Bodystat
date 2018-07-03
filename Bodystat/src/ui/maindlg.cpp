@@ -2,6 +2,7 @@
 #include"ui_maindlg.h"
 #include"../theme/thememanager.h"
 #include"subjwidget.h"
+#include"cursubjwidget.h"
 
 MainDlg::MainDlg(QWidget *parent/*=0*/)
     :QDialog(parent)
@@ -55,6 +56,8 @@ void MainDlg::initUi(){
     setWindowState(Qt::WindowMaximized);
     connect(_ui->_newSubjToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onNewSubjToolButtonClicked(bool)));
+    _ui->_subjDockWidget->setWidget(
+        new CurSubjWidget(_ui->_subjDockWidget));
 }
 
 void MainDlg::creat(const SubWidgetID widgetId){

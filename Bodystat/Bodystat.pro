@@ -13,7 +13,8 @@ TEMPLATE = app
 
 FORMS    += \
     ui/maindlg.ui \
-    ui/subjwidget.ui
+    ui/subjwidget.ui \
+    ui/cursubjwidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -23,7 +24,9 @@ SOURCES += \
     src/theme/thememanager.cpp \
     src/ui/subjwidget.cpp \
     src/ui/mdisubwidget.cpp \
-    src/data/subject.cpp
+    src/data/subject.cpp \
+    src/data/cursubjtest.cpp \
+    src/ui/cursubjwidget.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -33,7 +36,9 @@ HEADERS += \
     src/theme/thememanager.h \
     src/ui/subjwidget.h \
     src/ui/mdisubwidget.h \
-    src/data/subject.h
+    src/data/subject.h \
+    src/data/cursubjtest.h \
+    src/ui/cursubjwidget.h
 
 DESTDIR += ../bin
 
