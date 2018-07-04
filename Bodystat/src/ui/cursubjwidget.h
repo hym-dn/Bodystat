@@ -11,8 +11,14 @@ class CurSubjWidget
     :public QWidget{
     Q_OBJECT
 public:
-    explicit CurSubjWidget(QWidget *parent=0);
+    explicit CurSubjWidget(
+        QWidget *parent=0);
     ~CurSubjWidget();
+private slots:
+    void onCurSubjChanged();
+private:
+    void initUi();
+    void updateUi();
 private:
     Ui::CurSubjWidget *_ui;
 };

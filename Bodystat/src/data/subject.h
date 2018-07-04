@@ -29,6 +29,7 @@ public:
     QString getAgeText() const;
     void setSex(const Sex sex);
     Sex getSex() const;
+    QString getSexText() const;
     void setHeight(const float height);
     float getHeight() const;
     QString getHeightText() const;

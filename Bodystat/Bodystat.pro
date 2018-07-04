@@ -14,7 +14,8 @@ TEMPLATE = app
 FORMS    += \
     ui/maindlg.ui \
     ui/subjwidget.ui \
-    ui/cursubjwidget.ui
+    ui/cursubjwidget.ui \
+    ui/selsubjwidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -25,7 +26,8 @@ SOURCES += \
     src/ui/subjwidget.cpp \
     src/ui/mdisubwidget.cpp \
     src/data/subject.cpp \
-    src/data/cursubjtest.cpp \
+    src/ui/selsubjwidget.cpp \
+    src/data/subjpool.cpp \
     src/ui/cursubjwidget.cpp
 
 HEADERS += \
@@ -37,8 +39,9 @@ HEADERS += \
     src/ui/subjwidget.h \
     src/ui/mdisubwidget.h \
     src/data/subject.h \
-    src/data/cursubjtest.h \
-    src/ui/cursubjwidget.h
+    src/ui/cursubjwidget.h \
+    src/ui/selsubjwidget.h \
+    src/data/subjpool.h
 
 DESTDIR += ../bin
 

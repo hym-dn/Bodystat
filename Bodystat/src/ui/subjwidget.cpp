@@ -2,6 +2,7 @@
 #include"ui_subjwidget.h"
 #include"../data/subject.h"
 #include"../db/dbmanager.h"
+#include"../data/subjpool.h"
 #include<QMessageBox>
 
 SubjWidget::SubjWidget(
@@ -68,6 +69,9 @@ void SubjWidget::onSavePushButtonClicked(bool){
             return;
         }
     }else{
+        if(MODE_NEW==_mode){
+            SubjPool::instance()->setCurSubj(*_subject);
+        }
         QMessageBox msgBox(QMessageBox::Information,
             tr("提示"),tr("保存完成！"));
         msgBox.setFont(font());

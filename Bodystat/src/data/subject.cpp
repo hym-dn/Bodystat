@@ -179,7 +179,11 @@ unsigned int Subject::getAge() const{
 }
 
 QString Subject::getAgeText() const{
-    return(QString("%1").arg(_age));
+    if(0==_age){
+        return(QString());
+    }else{
+        return(QString("%1").arg(_age));
+    }
 }
 
 void Subject::setSex(const Sex sex){
@@ -188,6 +192,18 @@ void Subject::setSex(const Sex sex){
 
 Subject::Sex Subject::getSex() const{
     return(_sex);
+}
+
+QString Subject::getSexText() const{
+    if(SEX_UNKNOWN==_sex){
+        return(QString());
+    }else if(SEX_MALE==_sex){
+        return(QObject::tr("男"));
+    }else if(SEX_FEMALE==_sex){
+        return(QObject::tr("女"));
+    }else{
+        return(QObject::tr("其他"));
+    }
 }
 
 void Subject::setHeight(const float height){
@@ -199,7 +215,11 @@ float Subject::getHeight() const{
 }
 
 QString Subject::getHeightText() const{
-    return(QString("%1").arg(_height,0,'f',3));
+    if(_height<=0.0f){
+        return(QString());
+    }else{
+        return(QString("%1").arg(_height,0,'f',3));
+    }
 }
 
 void Subject::setWeight(const float weight){
@@ -211,7 +231,11 @@ float Subject::getWeight() const{
 }
 
 QString Subject::getWeightText() const{
-    return(QString("%1").arg(_weight,0,'f',3));
+    if(_weight<=0.0f){
+        return(QString());
+    }else{
+        return(QString("%1").arg(_weight,0,'f',3));
+    }
 }
 
 void Subject::setEntryDateTime(const QDateTime &time){
