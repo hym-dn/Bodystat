@@ -28,7 +28,10 @@ SOURCES += \
     src/data/subject.cpp \
     src/ui/selsubjwidget.cpp \
     src/data/subjpool.cpp \
-    src/ui/cursubjwidget.cpp
+    src/ui/cursubjwidget.cpp \
+    src/task/taskproc.cpp \
+    src/task/task.cpp \
+    src/task/taskstream.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -41,7 +44,10 @@ HEADERS += \
     src/data/subject.h \
     src/ui/cursubjwidget.h \
     src/ui/selsubjwidget.h \
-    src/data/subjpool.h
+    src/data/subjpool.h \
+    src/task/taskproc.h \
+    src/task/task.h \
+    src/task/taskstream.h
 
 DESTDIR += ../bin
 
