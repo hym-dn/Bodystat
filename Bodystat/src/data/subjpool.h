@@ -3,6 +3,9 @@
 
 #include<QObject>
 #include<QMutex>
+#include<QVector>
+#include<QSharedPointer>
+#include<QSqlDatabase>
 
 template<typename T>
 class Singleton;
@@ -12,6 +15,9 @@ class SubjPool
     :public QObject{
     Q_OBJECT
 public:
+    typedef QSharedPointer<Subject> PtrSubj;
+    typedef QVector<PtrSubj> SubjV;
+public:
     ~SubjPool();
 public:
     static SubjPool *instance();
@@ -20,6 +26,7 @@ signals:
 public:
     void setCurSubj(const Subject &subj);
     const Subject &getCurSubj() const;
+    int pullSubjV(QSqlDatabase &db);
 private:
     friend class Singleton<SubjPool>;
 private:
@@ -30,6 +37,7 @@ private:
 private:
     mutable QMutex _lock;
     Subject *_curSubj;
+    SubjV _subjV;
 };
 
 #endif // SUBJ_POOL_H

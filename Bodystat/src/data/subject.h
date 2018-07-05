@@ -4,6 +4,7 @@
 #include<QString>
 #include<QDateTime>
 #include<QSqlDatabase>
+#include<QSqlQuery>
 
 class Subject{
 public:
@@ -18,6 +19,7 @@ public:
     Subject(const Subject &src);
     ~Subject();
 public:
+    int pull(QSqlQuery &query);
     int push(QSqlDatabase &db,const bool isAdd);
     int isValid(QString *msg=0) const;
     void setId(const QString &id);

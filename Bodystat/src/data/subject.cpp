@@ -30,6 +30,56 @@ Subject::Subject(const Subject &src)
 Subject::~Subject(){
 }
 
+int Subject::pull(QSqlQuery &query){
+    // 当前查询非法
+    if(!query.isActive()||!query.isValid()){
+        return(-1);
+    }
+    // ID
+    _id=query.value(0).toString();
+    // 姓名
+    _name=query.value(1).toString();
+    // 年龄
+    bool ok=false;
+    _age=query.value(2).toUInt(&ok);
+    if(!ok){
+        return(-2);
+    }
+    // 性别
+    const unsigned int sex=
+        query.value(3).toUInt(&ok);
+    if(!ok){
+        return(-3);
+    }
+    if(SEX_UNKNOWN!=sex&&SEX_MALE!=sex&&
+        SEX_FEMALE!=sex&&SEX_OTHER!=sex){
+        return(-4);
+    }
+    _sex=static_cast<Sex>(sex);
+    // 身高
+    _height=query.value(4).toFloat(&ok);
+    if(!ok){
+        return(-5);
+    }
+    // 体重
+    _weight=query.value(5).toFloat(&ok);
+    if(!ok){
+        return(-6);
+    }
+    // 录入日期时间
+    _entryDateTime=query.value(6).toDateTime();
+    // 修改日期时间
+    _modifyDateTime=query.value(7).toDateTime();
+    // 访问日期时间
+    _accessDateTime=query.value(8).toDateTime();
+    // 当前主题非法
+    if(isValid()<0){
+        return(-7);
+    }
+    // 返回
+    return(0);
+}
+
 int Subject::push(QSqlDatabase &db,const bool isAdd){
     // 数据库无效
     if(!db.isValid()||!db.isOpen()){
