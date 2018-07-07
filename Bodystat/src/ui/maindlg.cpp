@@ -37,7 +37,7 @@ void MainDlg::onNewSubjToolButtonClicked(bool){
 
 void MainDlg::onSelSubjToolButtonClicked(bool){
     WaitDialog::PtrTask task(new PullSubjVTask(
-        TaskStream::PROC_ROUTINE));
+        TaskStream::PROC_ROUTINE,true));
     if(task.isNull()){
         QMessageBox msgBox(QMessageBox::Critical,
             tr("异常"),tr("内存异常，请重试！"));

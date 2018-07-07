@@ -4,8 +4,10 @@
 #include<QThread>
 
 PullSubjVTask::PullSubjVTask(
-    const unsigned int proc)
-    :Task(proc){
+    const unsigned int proc,
+    const bool isDelay/*=false*/)
+    :Task(proc)
+    ,_isDelay(isDelay){
 }
 
 PullSubjVTask::~PullSubjVTask(){
@@ -23,13 +25,17 @@ int PullSubjVTask::exec(QSqlDatabase &db){
         return(-2);
     }
     QTime tm;
-    tm.start();
+    if(_isDelay){
+        tm.start();
+    }
     if(SubjPool::instance()->pullSubjV(db)<0){
         return(-3);
     }
-    const int ms=tm.elapsed();
-    if(ms<2000){
-        QThread::msleep(2000-ms);
+    if(_isDelay){
+        const int ms=tm.elapsed();
+        if(ms<2000){
+            QThread::msleep(2000-ms);
+        }
     }
     return(0);
 }

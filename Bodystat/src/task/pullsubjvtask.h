@@ -8,11 +8,15 @@ class PullSubjVTask
 public:
     enum{ID=1001,};
 public:
-    PullSubjVTask(const unsigned int proc);
+    PullSubjVTask(
+        const unsigned int proc,
+        const bool isDelay=false);
     virtual ~PullSubjVTask();
 public:
     virtual unsigned int getId() const;
     virtual int exec(QSqlDatabase &db);
+private:
+    bool _isDelay;
 };
 
 #endif // PULL_SUBJ_V_TASK_H
