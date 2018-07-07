@@ -9,17 +9,20 @@ TaskStream *TaskStream::instance(){
     return(Singleton<TaskStream>::instance());
 }
 
-int TaskStream::addTask(
-    const PtrTask &task,const ProcTp tp){
-    switch(tp){
-    case PROC_TP_ROUTINE:
-        //return(_taskProcQ[])
-        break;
-    }
+int TaskStream::addTask(PtrTask &task,const ProcTp tp){
+    return(_taskProcV[tp]->addTask(task));
 }
 
-TaskStream::TaskStream()
-    :_taskProcQ(){
-    _taskProcQ.push_back(
-        PtrTaskProc(new TaskProc));
+TaskStream::TaskStream(QObject *parent/*=0*/)
+    :QObject(parent)
+    ,_taskProcV(){
+    _taskProcV.push_back(PtrTaskProc(new TaskProc));
+    connect(_taskProcV[0].data(),
+        SIGNAL(taskFinished(unsigned int,int)),
+        this,SLOT(onTaskFinished(unsigned int,int)));
+}
+
+void TaskStream::onTaskFinished(
+    const unsigned int id,const int res){
+    emit taskFinished(id,res);
 }

@@ -21,7 +21,7 @@ signals:
     void taskArrived();
     void taskFinished(
         const unsigned int id,
-        const int exeRes);
+        const int res);
 public:
     int addTask(PtrTask &task);
 private:

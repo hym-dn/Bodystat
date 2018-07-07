@@ -31,7 +31,8 @@ SOURCES += \
     src/ui/cursubjwidget.cpp \
     src/task/taskproc.cpp \
     src/task/task.cpp \
-    src/task/taskstream.cpp
+    src/task/taskstream.cpp \
+    src/task/pullsubjvtask.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -47,7 +48,8 @@ HEADERS += \
     src/data/subjpool.h \
     src/task/taskproc.h \
     src/task/task.h \
-    src/task/taskstream.h
+    src/task/taskstream.h \
+    src/task/pullsubjvtask.h
 
 DESTDIR += ../bin
 
