@@ -18,16 +18,14 @@ TaskProc::~TaskProc(){
     _thr.wait();
 }
 
-int TaskProc::addTask(PtrTask &task){
-    if(task.isNull()||task->isValid()<0){
-        return(-1);
-    }
+void TaskProc::addTask(PtrTask &task){
+    Q_ASSERT(!task.isNull()&&
+        task->isValid()>=0);
     {
         QMutexLocker locker(&_lock);
         _taskQ.push_back(task);
     }
     emit taskArrived();
-    return(0);
 }
 
 void TaskProc::onTaskArrived(){

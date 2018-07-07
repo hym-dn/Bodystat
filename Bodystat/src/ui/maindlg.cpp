@@ -3,6 +3,11 @@
 #include"../theme/thememanager.h"
 #include"subjwidget.h"
 #include"cursubjwidget.h"
+#include"waitdialog.h"
+#include"../task/pullsubjvtask.h"
+#include"../task/taskstream.h"
+#include<QSharedPointer>
+#include<QMessageBox>
 
 MainDlg::MainDlg(QWidget *parent/*=0*/)
     :QDialog(parent)
@@ -28,6 +33,30 @@ void MainDlg::onSubWidgetClose(){
 
 void MainDlg::onNewSubjToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_SUBJ);
+}
+
+void MainDlg::onSelSubjToolButtonClicked(bool){
+    WaitDialog::PtrTask task(new PullSubjVTask(
+        TaskStream::PROC_ROUTINE));
+    if(task.isNull()){
+        QMessageBox msgBox(QMessageBox::Critical,
+            tr("异常"),tr("内存异常，请重试！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
+    WaitDialog dlg(task);
+    if(0==dlg.exec()){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("报警"),tr("主题信息查询失败，请重试！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
 }
 
 void MainDlg::customUi(){
@@ -56,6 +85,8 @@ void MainDlg::initUi(){
     setWindowState(Qt::WindowMaximized);
     connect(_ui->_newSubjToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onNewSubjToolButtonClicked(bool)));
+    connect(_ui->_selSubjToolButton,SIGNAL(clicked(bool)),
+        this,SLOT(onSelSubjToolButtonClicked(bool)));
     _ui->_subjDockWidget->setWidget(
         new CurSubjWidget(_ui->_subjDockWidget));
 }

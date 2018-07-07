@@ -23,7 +23,9 @@ signals:
         const unsigned int id,
         const int res);
 public:
-    int addTask(PtrTask &task);
+    void setId(const unsigned int id);
+    unsigned int getId() const;
+    void addTask(PtrTask &task);
 private:
     typedef QQueue<PtrTask> TaskQ;
 private:
@@ -35,7 +37,7 @@ private:
     PtrTask popTask();
 private:
     QThread _thr;
-    QMutex _lock;
+    mutable QMutex _lock;
     TaskQ _taskQ;
 };
 

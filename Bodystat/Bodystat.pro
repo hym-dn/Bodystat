@@ -15,7 +15,8 @@ FORMS    += \
     ui/maindlg.ui \
     ui/subjwidget.ui \
     ui/cursubjwidget.ui \
-    ui/selsubjwidget.ui
+    ui/selsubjwidget.ui \
+    ui/waitdialog.ui
 
 SOURCES += \
     src/main.cpp \
@@ -32,7 +33,8 @@ SOURCES += \
     src/task/taskproc.cpp \
     src/task/task.cpp \
     src/task/taskstream.cpp \
-    src/task/pullsubjvtask.cpp
+    src/task/pullsubjvtask.cpp \
+    src/ui/waitdialog.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -49,7 +51,8 @@ HEADERS += \
     src/task/taskproc.h \
     src/task/task.h \
     src/task/taskstream.h \
-    src/task/pullsubjvtask.h
+    src/task/pullsubjvtask.h \
+    src/ui/waitdialog.h
 
 DESTDIR += ../bin
 

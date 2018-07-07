@@ -14,9 +14,7 @@ class TaskStream
     :public QObject{
     Q_OBJECT
 public:
-    typedef enum{
-        PROC_TP_ROUTINE=0,
-    }ProcTp;
+    enum{PROC_ROUTINE=0,};
     typedef QSharedPointer<Task> PtrTask;
 public:
     ~TaskStream();
@@ -27,7 +25,7 @@ signals:
 public:
     static TaskStream *instance();
 public:
-    int addTask(PtrTask &task,const ProcTp tp);
+    int addTask(PtrTask &task);
 private:
     friend class Singleton<TaskStream>;
     typedef QSharedPointer<TaskProc> PtrTaskProc;

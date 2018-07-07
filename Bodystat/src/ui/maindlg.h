@@ -21,6 +21,7 @@ private:
 private slots:
     void onSubWidgetClose();
     void onNewSubjToolButtonClicked(bool);
+    void onSelSubjToolButtonClicked(bool);
 private:
     void customUi();
     void initUi();

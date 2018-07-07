@@ -8,7 +8,7 @@ class PullSubjVTask
 public:
     enum{ID=1001,};
 public:
-    PullSubjVTask();
+    PullSubjVTask(const unsigned int proc);
     virtual ~PullSubjVTask();
 public:
     virtual unsigned int getId() const;
