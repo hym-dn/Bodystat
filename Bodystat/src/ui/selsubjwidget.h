@@ -27,6 +27,7 @@ private:
     void initUi();
     void clearSubj();
     void showSubj(const Subject &subj);
+    void updateCurSubj(const Subject &subj);
 private:
     Ui::SelSubjWidget *_ui;
 };

@@ -4,7 +4,9 @@
 #include"subjsortfilterproxymodel.h"
 #include"../data/subjpool.h"
 #include"../data/subject.h"
+#include"../db/dbmanager.h"
 #include<QMessageBox>
+#include<QDateTime>
 
 SelSubjWidget::SelSubjWidget(QWidget *parent/*=0*/)
     :MdiSubWidget(parent)
@@ -46,8 +48,7 @@ void SelSubjWidget::onSubjListViewDoubleClicked(
     const QModelIndex &index){
     QModelIndex subjIndex=((SubjSortFilterProxyModel*)((
         _ui->_subjListView)->model()))->mapToSource(index);
-    SubjPool::instance()->setCurSubj(SubjPool::instance()
-        ->getSubj(subjIndex.row()));
+    updateCurSubj(SubjPool::instance()->getSubj(subjIndex.row()));
     close();
 }
 
@@ -67,8 +68,7 @@ void SelSubjWidget::onSelSubjPushButtonClicked(bool){
     QModelIndex subjIndex=((SubjSortFilterProxyModel*)((
         _ui->_subjListView)->model()))->mapToSource(
         indexList.at(0));
-    SubjPool::instance()->setCurSubj(SubjPool::instance()
-        ->getSubj(subjIndex.row()));
+    updateCurSubj(SubjPool::instance()->getSubj(subjIndex.row()));
     close();
 }
 
@@ -116,4 +116,16 @@ void SelSubjWidget::showSubj(const Subject &subj){
     _ui->_sexLineEdit->setText(subj.getSexText());
     _ui->_heightLineEdit->setText(subj.getHeightText());
     _ui->_weightLineEdit->setText(subj.getWeightText());
+}
+
+void SelSubjWidget::updateCurSubj(const Subject &subj){
+    QSqlDatabase db=DBManager::instance()->getDB();
+    if(db.isValid()&&db.isOpen()){
+        QString sql=QString("UPDATE Subject SET AccessDateTime='%1' "
+            "WHERE ID='%2';").arg(QDateTime::currentDateTime().toString(
+            "yyyy-MM-dd hh:mm:ss")).arg(subj.getId());
+        QSqlQuery query(db);
+        query.exec(sql);
+    }
+    SubjPool::instance()->setCurSubj(subj);
 }
