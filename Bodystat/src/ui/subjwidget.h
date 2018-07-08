@@ -15,14 +15,17 @@ public:
     typedef enum{
         MODE_NEW=1,
         MODE_EDIT=2,
+        MODE_DELETE=3,
     }Mode;
 public:
     explicit SubjWidget(
-        const Mode mode=MODE_NEW,
-        QWidget *parent=0);
+        const Mode mode=MODE_NEW,QWidget *parent=0);
+    explicit SubjWidget(const Mode mode,
+        const Subject &subj,QWidget *parent=0);
     virtual ~SubjWidget();
 private slots:
     void onSavePushButtonClicked(bool);
+    void onDeletePushButtonClicked(bool);
     void onCancelPushButtonClicked(bool);
 private:
     void initUi();

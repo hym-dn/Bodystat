@@ -26,7 +26,12 @@ signals:
 public:
     void setCurSubj(const Subject &subj);
     const Subject &getCurSubj() const;
+    void clearCurSubj();
     int pullSubjV(QSqlDatabase &db);
+    int getSubjVCount() const;
+    const Subject &getSubj(const int index) const;
+    QString getSubjBrief(const int index) const;
+    void clearSubjV();
 private:
     friend class Singleton<SubjPool>;
 private:

@@ -16,12 +16,17 @@ public:
     ~MainDlg();
 private:
     typedef enum{
-        SUB_WIDGET_ID_SUBJ=1,
+        SUB_WIDGET_ID_NEW_SUBJ=1,
+        SUB_WIDGET_ID_SEL_SUBJ=2,
+        SUB_WIDGET_ID_DEL_SUBJ=3,
+        SUB_WIDGET_ID_EDT_SUBJ=4,
     }SubWidgetID;
 private slots:
     void onSubWidgetClose();
     void onNewSubjToolButtonClicked(bool);
     void onSelSubjToolButtonClicked(bool);
+    void onDelSubjToolButtonClicked(bool);
+    void onEdtSubjToolButtonClicked(bool);
 private:
     void customUi();
     void initUi();

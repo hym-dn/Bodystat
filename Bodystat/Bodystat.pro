@@ -34,7 +34,9 @@ SOURCES += \
     src/task/task.cpp \
     src/task/taskstream.cpp \
     src/task/pullsubjvtask.cpp \
-    src/ui/waitdialog.cpp
+    src/ui/waitdialog.cpp \
+    src/ui/subjlistmodel.cpp \
+    src/ui/subjsortfilterproxymodel.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -52,7 +54,9 @@ HEADERS += \
     src/task/task.h \
     src/task/taskstream.h \
     src/task/pullsubjvtask.h \
-    src/ui/waitdialog.h
+    src/ui/waitdialog.h \
+    src/ui/subjlistmodel.h \
+    src/ui/subjsortfilterproxymodel.h
 
 DESTDIR += ../bin
 

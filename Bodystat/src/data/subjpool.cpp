@@ -25,6 +25,10 @@ const Subject &SubjPool::getCurSubj() const{
     return(*_curSubj);
 }
 
+void SubjPool::clearCurSubj(){
+    setCurSubj(Subject());
+}
+
 int SubjPool::pullSubjV(QSqlDatabase &db){
     if(!db.isValid()||!db.isOpen()){
         return(-1);
@@ -50,6 +54,30 @@ int SubjPool::pullSubjV(QSqlDatabase &db){
     QMutexLocker locker(&_lock);
     _subjV.swap(subjV);
     return(0);
+}
+
+int SubjPool::getSubjVCount() const{
+    QMutexLocker locker(&_lock);
+    return(_subjV.count());
+}
+
+const Subject &SubjPool::getSubj(const int index) const{
+    QMutexLocker locker(&_lock);
+    Q_ASSERT(index>=0&&index<_subjV.count());
+    Q_ASSERT(!_subjV.at(index).isNull());
+    return(*(_subjV.at(index).data()));
+}
+
+QString SubjPool::getSubjBrief(const int index) const{
+    QMutexLocker locker(&_lock);
+    Q_ASSERT(index>=0&&index<_subjV.count());
+    Q_ASSERT(!_subjV.at(index).isNull());
+    return(_subjV.at(index)->getBrief());
+}
+
+void SubjPool::clearSubjV(){
+    QMutexLocker locker(&_lock);
+    _subjV.swap(SubjV());
 }
 
 SubjPool::SubjPool(QObject *parent/*=0*/)

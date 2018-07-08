@@ -47,6 +47,7 @@ public:
     void setAccessDateTime(const QDateTime &time);
     const QDateTime &getAccessDateTime() const;
     QString getAccessDateTimeText() const;
+    QString getBrief() const;
 public:
     Subject &operator=(const Subject &src);
 private:

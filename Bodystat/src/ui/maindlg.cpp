@@ -6,6 +6,9 @@
 #include"waitdialog.h"
 #include"../task/pullsubjvtask.h"
 #include"../task/taskstream.h"
+#include"selsubjwidget.h"
+#include"../data/subject.h"
+#include"../data/subjpool.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 
@@ -32,7 +35,7 @@ void MainDlg::onSubWidgetClose(){
 }
 
 void MainDlg::onNewSubjToolButtonClicked(bool){
-    creat(SUB_WIDGET_ID_SUBJ);
+    creat(SUB_WIDGET_ID_NEW_SUBJ);
 }
 
 void MainDlg::onSelSubjToolButtonClicked(bool){
@@ -57,6 +60,33 @@ void MainDlg::onSelSubjToolButtonClicked(bool){
         msgBox.exec();
         return;
     }
+    creat(SUB_WIDGET_ID_SEL_SUBJ);
+}
+
+void MainDlg::onDelSubjToolButtonClicked(bool){
+    if(SubjPool::instance()->getCurSubj().isValid()<0){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("报警"),tr("没有主题被选择！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
+    creat(SUB_WIDGET_ID_DEL_SUBJ);
+}
+
+void MainDlg::onEdtSubjToolButtonClicked(bool){
+    if(SubjPool::instance()->getCurSubj().isValid()<0){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("报警"),tr("没有主题被选择！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
+    creat(SUB_WIDGET_ID_EDT_SUBJ);
 }
 
 void MainDlg::customUi(){
@@ -87,14 +117,29 @@ void MainDlg::initUi(){
         this,SLOT(onNewSubjToolButtonClicked(bool)));
     connect(_ui->_selSubjToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onSelSubjToolButtonClicked(bool)));
+    connect(_ui->_delSubjToolButton,SIGNAL(clicked(bool)),
+        this,SLOT(onDelSubjToolButtonClicked(bool)));
+    connect(_ui->_edtSubjToolButton,SIGNAL(clicked(bool)),
+        this,SLOT(onEdtSubjToolButtonClicked(bool)));
     _ui->_subjDockWidget->setWidget(
         new CurSubjWidget(_ui->_subjDockWidget));
 }
 
 void MainDlg::creat(const SubWidgetID widgetId){
     destry();
-    if(SUB_WIDGET_ID_SUBJ==widgetId){
+    if(SUB_WIDGET_ID_NEW_SUBJ==widgetId){
         _subWidget=new SubjWidget;
+        Q_ASSERT(0!=_subWidget);
+    }else if(SUB_WIDGET_ID_SEL_SUBJ==widgetId){
+        _subWidget=new SelSubjWidget;
+        Q_ASSERT(0!=_subWidget);
+    }else if(SUB_WIDGET_ID_DEL_SUBJ==widgetId){
+        _subWidget=new SubjWidget(SubjWidget::MODE_DELETE,
+            SubjPool::instance()->getCurSubj());
+        Q_ASSERT(0!=_subWidget);
+    }else if(SUB_WIDGET_ID_EDT_SUBJ==widgetId){
+        _subWidget=new SubjWidget(SubjWidget::MODE_EDIT,
+            SubjPool::instance()->getCurSubj());
         Q_ASSERT(0!=_subWidget);
     }
     _subWidget->setAttribute(Qt::WA_DeleteOnClose); // 关闭即销毁

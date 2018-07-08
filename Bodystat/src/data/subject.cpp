@@ -131,7 +131,7 @@ int Subject::push(QSqlDatabase &db,const bool isAdd){
         // 更新
         sql=QString("UPDATE Subject SET Name='%1',Age=%2,Sex=%3,"
             "Height=%4,Weight=%5,EntryDateTime='%6',ModifyDateTime='%7',"
-            "AccessDateTime='%8' WHERE ID='%8';").arg(_name).arg(
+            "AccessDateTime='%8' WHERE ID='%9';").arg(_name).arg(
             getAgeText()).arg(_sex).arg(getHeightText()).arg(
             getWeightText()).arg(getEntryDateTimeText()).arg(
             getModifyDateTimeText()).arg(getAccessDateTimeText())
@@ -330,9 +330,20 @@ const QDateTime &Subject::getAccessDateTime() const{
 
 QString Subject::getAccessDateTimeText() const{
     if(_accessDateTime.isValid()){
-        return(_accessDateTime.toString("yyyy-MM-dd hh:mm:ss"));
+        return(_accessDateTime.toString(
+            "yyyy-MM-dd hh:mm:ss"));
     }else{
         return(QString());
+    }
+}
+
+QString Subject::getBrief() const{
+    if(isValid()<0){
+        return("Not Valid Subject!");
+    }else{
+        return(getId()+";"+getName()+";"+
+            getAgeText()+";"+getSexText()+";"+
+            getHeightText()+";"+getWeightText());
     }
 }
 

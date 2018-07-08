@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>349</width>
+    <width>326</width>
     <height>146</height>
    </rect>
   </property>
@@ -212,6 +212,19 @@
        </property>
        <property name="text">
         <string>保存</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="_deletePushButton">
+       <property name="minimumSize">
+        <size>
+         <width>96</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>删除</string>
        </property>
       </widget>
      </item>
