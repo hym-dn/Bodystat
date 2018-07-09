@@ -16,7 +16,8 @@ FORMS    += \
     ui/subjwidget.ui \
     ui/cursubjwidget.ui \
     ui/selsubjwidget.ui \
-    ui/waitdialog.ui
+    ui/waitdialog.ui \
+    ui/devinfowidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -36,7 +37,8 @@ SOURCES += \
     src/task/pullsubjvtask.cpp \
     src/ui/waitdialog.cpp \
     src/ui/subjlistmodel.cpp \
-    src/ui/subjsortfilterproxymodel.cpp
+    src/ui/subjsortfilterproxymodel.cpp \
+    src/ui/devinfowidget.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -56,7 +58,8 @@ HEADERS += \
     src/task/pullsubjvtask.h \
     src/ui/waitdialog.h \
     src/ui/subjlistmodel.h \
-    src/ui/subjsortfilterproxymodel.h
+    src/ui/subjsortfilterproxymodel.h \
+    src/ui/devinfowidget.h
 
 DESTDIR += ../bin
 

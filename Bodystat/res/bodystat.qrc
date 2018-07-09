@@ -3,5 +3,7 @@
         <file>rc/toolbutton.qss</file>
         <file>rc/person.png</file>
         <file>rc/wait.gif</file>
+        <file>rc/bluetoothconnected.png</file>
+        <file>rc/bluetoothdisabled.png</file>
     </qresource>
 </RCC>

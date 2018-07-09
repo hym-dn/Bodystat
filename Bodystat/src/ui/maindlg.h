@@ -20,6 +20,7 @@ private:
         SUB_WIDGET_ID_SEL_SUBJ=2,
         SUB_WIDGET_ID_DEL_SUBJ=3,
         SUB_WIDGET_ID_EDT_SUBJ=4,
+        SUB_WIDGET_ID_DEV_INFO=7,
     }SubWidgetID;
 private slots:
     void onSubWidgetClose();
@@ -27,6 +28,7 @@ private slots:
     void onSelSubjToolButtonClicked(bool);
     void onDelSubjToolButtonClicked(bool);
     void onEdtSubjToolButtonClicked(bool);
+    void onDevInfoToolButtonClicked(bool);
 private:
     void customUi();
     void initUi();

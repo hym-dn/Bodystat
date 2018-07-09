@@ -9,6 +9,7 @@
 #include"selsubjwidget.h"
 #include"../data/subject.h"
 #include"../data/subjpool.h"
+#include"devinfowidget.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 
@@ -89,6 +90,10 @@ void MainDlg::onEdtSubjToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_EDT_SUBJ);
 }
 
+void MainDlg::onDevInfoToolButtonClicked(bool){
+    creat(SUB_WIDGET_ID_DEV_INFO);
+}
+
 void MainDlg::customUi(){
     _ui->_newSubjToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
@@ -103,6 +108,12 @@ void MainDlg::customUi(){
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
     _ui->_recSubjToolButton->setStyleSheet(
+        ThemeManager::instance()->styleSheet(
+        ":rc/toolbutton.qss"));
+    _ui->_downloadDataToolButton->setStyleSheet(
+        ThemeManager::instance()->styleSheet(
+        ":rc/toolbutton.qss"));
+    _ui->_devInfoToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
 }
@@ -121,6 +132,8 @@ void MainDlg::initUi(){
         this,SLOT(onDelSubjToolButtonClicked(bool)));
     connect(_ui->_edtSubjToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onEdtSubjToolButtonClicked(bool)));
+    connect(_ui->_devInfoToolButton,SIGNAL(clicked(bool)),
+        this,SLOT(onDevInfoToolButtonClicked(bool)));
     _ui->_subjDockWidget->setWidget(
         new CurSubjWidget(_ui->_subjDockWidget));
 }
@@ -140,6 +153,9 @@ void MainDlg::creat(const SubWidgetID widgetId){
     }else if(SUB_WIDGET_ID_EDT_SUBJ==widgetId){
         _subWidget=new SubjWidget(SubjWidget::MODE_EDIT,
             SubjPool::instance()->getCurSubj());
+        Q_ASSERT(0!=_subWidget);
+    }else if(SUB_WIDGET_ID_DEV_INFO==widgetId){
+        _subWidget=new DevInfoWidget;
         Q_ASSERT(0!=_subWidget);
     }
     _subWidget->setAttribute(Qt::WA_DeleteOnClose); // 关闭即销毁
