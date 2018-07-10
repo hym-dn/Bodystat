@@ -5,5 +5,7 @@
         <file>rc/wait.gif</file>
         <file>rc/bluetoothconnected.png</file>
         <file>rc/bluetoothdisabled.png</file>
+        <file>rc/Quadscan4000.bmp</file>
+        <file>rc/progress.gif</file>
     </qresource>
 </RCC>
