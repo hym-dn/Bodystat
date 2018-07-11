@@ -119,23 +119,9 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QLabel" name="_radioManufLabel">
+            <widget class="QLabel" name="_btStackInfoLabel">
              <property name="text">
-              <string>无线电制造商：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="_radioHwVerLabel">
-             <property name="text">
-              <string>无线电硬件版本：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="_radioSwVerLabel">
-             <property name="text">
-              <string>无线电软件版本：</string>
+              <string/>
              </property>
             </widget>
            </item>

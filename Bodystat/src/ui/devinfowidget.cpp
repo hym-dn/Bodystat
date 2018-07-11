@@ -22,5 +22,5 @@ void DevInfoWidget::initUi(){
         QByteArray(),_ui->_progressLabel);
     _ui->_progressLabel->setMovie(movie);
     movie->start();
-    //_ui->_progressLabel->hide();
+    _ui->_progressLabel->hide();
 }

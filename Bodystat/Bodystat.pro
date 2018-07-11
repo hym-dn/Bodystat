@@ -38,7 +38,11 @@ SOURCES += \
     src/ui/waitdialog.cpp \
     src/ui/subjlistmodel.cpp \
     src/ui/subjsortfilterproxymodel.cpp \
-    src/ui/devinfowidget.cpp
+    src/ui/devinfowidget.cpp \
+    src/dev/dev.cpp \
+    src/commu/commu.cpp \
+    src/commu/btcommu.cpp \
+    src/commu/commupool.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -59,11 +63,17 @@ HEADERS += \
     src/ui/waitdialog.h \
     src/ui/subjlistmodel.h \
     src/ui/subjsortfilterproxymodel.h \
-    src/ui/devinfowidget.h
+    src/ui/devinfowidget.h \
+    src/dev/dev.h \
+    src/commu/commu.h \
+    src/commu/btcommu.h \
+    src/commu/commupool.h
 
 DESTDIR += ../bin
 
 PRECOMPILED_HEADER += ./precompile.h
+
+LIBS+= ../lib/BodystatSDK.lib
 
 RESOURCES += \
     res/bodystat.qrc
