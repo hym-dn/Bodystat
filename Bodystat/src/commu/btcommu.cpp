@@ -34,3 +34,8 @@ int BTCommu::readStackInfo(){
     emit stackInfoChanged();
     return(0);
 }
+
+const QString &BTCommu::getStackInfo() const{
+    QMutexLocker locker(&_lock);
+    return(_stackInfo);
+}

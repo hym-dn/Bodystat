@@ -15,6 +15,7 @@ signals:
 public:
     int isValid() const;
     int readStackInfo();
+    const QString &getStackInfo() const;
 private:
     mutable QMutex _lock;
     QString _stackInfo;
