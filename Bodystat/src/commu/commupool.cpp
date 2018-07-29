@@ -15,4 +15,5 @@ BTCommu *CommuPool::getBtCom(){
 
 CommuPool::CommuPool()
     :_btCom(new BTCommu){
+    Q_ASSERT(!_btCom.isNull());
 }

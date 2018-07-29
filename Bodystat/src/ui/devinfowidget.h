@@ -13,6 +13,9 @@ class DevInfoWidget
 public:
     explicit DevInfoWidget(QWidget *parent=0);
     virtual ~DevInfoWidget();
+private slots:
+    void onScanDevPushButtonClicked(bool);
+    void onBtStackInfoChanged();
 private:
     void initUi();
 private:

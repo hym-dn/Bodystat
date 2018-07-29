@@ -9,6 +9,9 @@ class Dev
 public:
     explicit Dev(QObject *parent=0);
     virtual ~Dev();
+private:
+    Dev(const Dev &);
+    Dev &operator=(const Dev &);
 };
 
 #endif // DEV_H

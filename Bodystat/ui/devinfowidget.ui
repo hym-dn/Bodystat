@@ -39,7 +39,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QPushButton" name="_sacnDevPushButton">
+        <widget class="QPushButton" name="_scanDevPushButton">
          <property name="minimumSize">
           <size>
            <width>96</width>
