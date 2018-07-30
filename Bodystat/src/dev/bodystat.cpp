@@ -23,19 +23,25 @@ BodyStat::~BodyStat(){
 }
 
 void BodyStat::reset(){
-    QMutexLocker locker(&_lock);
-    _name.clear();
-    _bda.clear();
-    _port.clear();
-    _isOpen=false;
-    _isConnect=false;
-    _model=0;
-    _majorV=0;
-    _minorV=0;
-    _psoc2V=0;
-    _eepromV=0;
-    _seriNum=0;
-    _calibDate=QDate();
+    {
+        QMutexLocker locker(&_lock);
+        _name.clear();
+        _bda.clear();
+        _port.clear();
+        _isOpen=false;
+        _isConnect=false;
+        _model=0;
+        _majorV=0;
+        _minorV=0;
+        _psoc2V=0;
+        _eepromV=0;
+        _seriNum=0;
+        _calibDate=QDate();
+    }
+    emit firmwareVChanged();
+    emit seriNumChanged();
+    emit calibDateChanged();
+    emit modelChanged();
 }
 
 void BodyStat::setName(const QString &name){
@@ -69,13 +75,28 @@ const QString &BodyStat::getPort() const{
 }
 
 void BodyStat::setModel(const unsigned int model){
-    QMutexLocker locker(&_lock);
-    _model=model;
+    {
+        QMutexLocker locker(&_lock);
+        _model=model;
+    }
+    emit modelChanged();
 }
 
 unsigned int BodyStat::getModel() const{
     QMutexLocker locker(&_lock);
     return(_model);
+}
+
+QString BodyStat::getModelText() const{
+    TCHAR model[32]={0};
+    if(Bodystat::NoError!=Bodystat::
+        BSGetDeviceModelName(static_cast<
+        Bodystat::BSDeviceModel>(getModel()),
+        model,32)){
+        return(QString());
+    }else{
+        return(QString::fromUtf16((ushort*)model));
+    }
 }
 
 void BodyStat::setIsOpen(const bool isOpen){
@@ -103,11 +124,14 @@ void BodyStat::setFirmwareV(
     const unsigned char minorV,
     const unsigned char psoc2V,
     const unsigned char eepromV){
-    QMutexLocker locker(&_lock);
-    _majorV=majorV;
-    _minorV=minorV;
-    _psoc2V=psoc2V;
-    _eepromV=eepromV;
+    {
+        QMutexLocker locker(&_lock);
+        _majorV=majorV;
+        _minorV=minorV;
+        _psoc2V=psoc2V;
+        _eepromV=eepromV;
+    }
+    emit firmwareVChanged();
 }
 
 QString BodyStat::getFirmwareVText() const{
@@ -118,8 +142,11 @@ QString BodyStat::getFirmwareVText() const{
 }
 
 void BodyStat::setSeriNum(const unsigned long seriNum){
-    QMutexLocker locker(&_lock);
-    _seriNum=seriNum;
+    {
+        QMutexLocker locker(&_lock);
+        _seriNum=seriNum;
+    }
+    emit seriNumChanged();
 }
 
 unsigned long BodyStat::getSeriNum() const{
@@ -128,9 +155,13 @@ unsigned long BodyStat::getSeriNum() const{
 }
 
 void BodyStat::setCalibDate(const QDate &calibDate){
-    QMutexLocker locker(&_lock);
-    _calibDate=calibDate;
+    {
+        QMutexLocker locker(&_lock);
+        _calibDate=calibDate;
+    }
+    emit calibDateChanged();
 }
+
 const QDate &BodyStat::getCalibDate() const{
     QMutexLocker locker(&_lock);
     return(_calibDate);

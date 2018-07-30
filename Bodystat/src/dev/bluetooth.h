@@ -12,7 +12,7 @@ class Bluetooth
     Q_OBJECT
 public:
     enum{
-        TASK_ID_CON_DEV=1001, // 连接设备
+        TASK_ID_CONN_DEV=1001, // 连接设备
     };
     enum{
         TASK_ERR_NONE=2000,// 无错误
@@ -34,13 +34,15 @@ public:
     Bluetooth(QObject *parent=0);
     virtual ~Bluetooth();
 signals:
-    void task(const unsigned int id,BodyStat &bodyStat);
+    void task(const unsigned int id,BodyStat *bodyStat);
     void taskDone(const unsigned int id,const unsigned int err);
     void drivInfoChanged();
 public:
+    void reset();
     const QString &getDrivInfo() const;
+    void connDev(BodyStat *bodyStat);
 private slots:
-    void onTask(const unsigned int id,BodyStat &bodyStat);
+    void onTask(const unsigned int id,BodyStat *bodyStat);
 private:
     void setDrivInfo(const QString &drivInfo);
 private:

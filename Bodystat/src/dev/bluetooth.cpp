@@ -10,6 +10,8 @@ Bluetooth::Bluetooth(QObject *parent/*=0*/)
     ,_lock()
     ,_drivInfo(){
     moveToThread(&_thread);
+    connect(this,SIGNAL(task(uint,BodyStat*)),
+        this,SLOT(onTask(uint,BodyStat*)));
     _thread.start();
 }
 
@@ -18,17 +20,31 @@ Bluetooth::~Bluetooth(){
     _thread.wait();
 }
 
+void Bluetooth::reset(){
+    {
+        QMutexLocker locker(&_lock);
+        _drivInfo.clear();
+    }
+    emit drivInfoChanged();
+}
+
 const QString &Bluetooth::getDrivInfo() const{
     QMutexLocker locker(&_lock);
     return(_drivInfo);
 }
 
-void Bluetooth::onTask(
-    const unsigned int id,BodyStat &bodyStat){
+void Bluetooth::connDev(BodyStat *bodyStat){
+    emit task(TASK_ID_CONN_DEV,bodyStat);
+}
+
+void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
     // 连接设备
-    if(TASK_ID_CON_DEV==id){
+    if(TASK_ID_CONN_DEV==id){
+        // 重置蓝牙、设备
+        reset();
+        bodyStat->reset();
         // 蓝牙驱动尚未安装
-        if(!Bodystat::BSIsDeviceInstallInProgress(0)){
+        if(Bodystat::BSIsDeviceInstallInProgress(0)){
             emit taskDone(id,TASK_ERR_DIRV_INVAL);
             return;
         }
@@ -74,26 +90,25 @@ void Bluetooth::onTask(
         TCHAR devName[512]={0};
         TCHAR bda[18]={0};
         TCHAR port[256]={0};
-        bodyStat.reset();
         if(!Bodystat::BSGetBTBodystatDevice(
             devName,512,bda,18,port,256,timeout)){
             emit taskDone(id,TASK_ERR_GET_DEV_INFO_FAILED);
             return;
         }
-        bodyStat.setName(QString::fromUtf16((ushort*)devName));
-        bodyStat.setBda(QString::fromUtf16((ushort*)bda));
-        bodyStat.setPort(QString::fromUtf16((ushort*)port));
+        bodyStat->setName(QString::fromUtf16((ushort*)devName));
+        bodyStat->setBda(QString::fromUtf16((ushort*)bda));
+        bodyStat->setPort(QString::fromUtf16((ushort*)port));
         // 连接设备
         if(Bodystat::NoError!=Bodystat::BSOpenComport(port,256)){
             emit taskDone(id,TASK_ERR_OPEN_PORT_FAILED);
             return;
         }
-        bodyStat.setIsOpen(true);
+        bodyStat->setIsOpen(true);
         if(Bodystat::NoError!=Bodystat::BSConnect()){
             emit taskDone(id,TASK_ERR_CONN_DEV_FAILED);
             return;
         }
-        bodyStat.setIsConnect(true);
+        bodyStat->setIsConnect(true);
         // 读取设备模型、固件版本
         Bodystat::BSDeviceModel model=Bodystat::BSUnknown;
         unsigned char majorV=0;
@@ -106,22 +121,22 @@ void Bluetooth::onTask(
             emit taskDone(id,TASK_ERR_GET_MODEL_VERSION_FAILED);
             return;
         }
-        bodyStat.setModel(model);
-        bodyStat.setFirmwareV(majorV,minorV,psoc2V,eepromV);
+        bodyStat->setModel(model);
+        bodyStat->setFirmwareV(majorV,minorV,psoc2V,eepromV);
         // 读取序列号
         unsigned long seriNum=0;
         if(Bodystat::NoError!=Bodystat::BSReadSerialNumber(&seriNum)){
             emit taskDone(id,TASK_ERR_GET_SERIAL_NUMBER_FAILED);
             return;
         }
-        bodyStat.setSeriNum(seriNum);
+        bodyStat->setSeriNum(seriNum);
         // 读取校准日期
         __time64_t time;
         if(Bodystat::NoError!=Bodystat::BSReadCalibrationTime(&time)){
             emit taskDone(id,TASK_ERR_GET_CALIB_TIME_FAILED);
             return;
         }
-        bodyStat.setCalibDate(QDateTime::fromTime_t(time).date());
+        bodyStat->setCalibDate(QDateTime::fromTime_t(time).date());
         // 发送无误信号
         emit taskDone(id,TASK_ERR_NONE);
         // 返回

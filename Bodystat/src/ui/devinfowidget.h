@@ -15,7 +15,7 @@ public:
     virtual ~DevInfoWidget();
 private slots:
     void onScanDevPushButtonClicked(bool);
-    void onBtStackInfoChanged();
+    void onDrivInfoChanged();
 private:
     void initUi();
 private:

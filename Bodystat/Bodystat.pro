@@ -44,7 +44,8 @@ SOURCES += \
     src/commu/btcommu.cpp \
     src/commu/commupool.cpp \
     src/dev/bluetooth.cpp \
-    src/dev/bodystat.cpp
+    src/dev/bodystat.cpp \
+    src/dev/devpool.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -71,7 +72,8 @@ HEADERS += \
     src/commu/btcommu.h \
     src/commu/commupool.h \
     src/dev/bluetooth.h \
-    src/dev/bodystat.h
+    src/dev/bodystat.h \
+    src/dev/devpool.h
 
 DESTDIR += ../bin
 

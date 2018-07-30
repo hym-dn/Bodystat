@@ -11,6 +11,11 @@ class BodyStat
 public:
     BodyStat(QObject *parent=0);
     virtual ~BodyStat();
+signals:
+    void firmwareVChanged();
+    void seriNumChanged();
+    void calibDateChanged();
+    void modelChanged();
 public:
     void reset();
     void setName(const QString &name);
