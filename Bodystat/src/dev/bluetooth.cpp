@@ -76,6 +76,10 @@ void Bluetooth::reloadDev(BodyStat *bodyStat){
     emit task(TASK_ID_RELOAD_DEV,bodyStat);
 }
 
+void Bluetooth::unauthDev(BodyStat *bodyStat){
+    emit task(TASK_ID_UNAUTH_DEV,bodyStat);
+}
+
 void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
     // 超时时限
     static unsigned short timeout=7;
@@ -182,6 +186,23 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
             return;
         }
         bodyStat->setCalibDate(QDateTime::fromTime_t(time).date());
+        // 发送无误信号
+        emit taskDone(id,TASK_ERR_NONE);
+        // 返回
+        return;
+    }
+    // 取消配对设备
+    else if(TASK_ID_UNAUTH_DEV==id){
+        // 重置蓝牙、设备
+        reset();
+        bodyStat->reset();
+        // 断开连接
+        Bodystat::BSCloseComport();
+        // 擦除配对
+        if(!Bodystat::BSUnAuthenticateBTDevices(1,0,timeout)){
+            emit taskDone(id,TASK_ERR_UNAU_FALIED);
+            return;
+        }
         // 发送无误信号
         emit taskDone(id,TASK_ERR_NONE);
         // 返回

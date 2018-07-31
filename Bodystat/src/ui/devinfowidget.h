@@ -15,6 +15,7 @@ public:
         TASK_NONE=1000,
         TASK_SCAN=1001,
         TASK_RELOAD=1002,
+        TASK_UNAUTH=1003,
     }Task;
 public:
     explicit DevInfoWidget(QWidget *parent=0);
@@ -22,6 +23,7 @@ public:
 private slots:
     void onScanDevPushButtonClicked(bool);
     void onReloadDevPushButtonClicked(bool);
+    void onUnauthDevPushButtonClicked(bool);
     void onBtDrivInfoChanged();
     void onDevNameChanged();
     void onDevFirmwareVChanged();
