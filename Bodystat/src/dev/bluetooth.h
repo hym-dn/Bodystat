@@ -38,6 +38,8 @@ signals:
     void taskDone(const unsigned int id,const unsigned int err);
     void drivInfoChanged();
 public:
+    static QString getTaskText(const unsigned int id);
+public:
     void reset();
     const QString &getDrivInfo() const;
     void connDev(BodyStat *bodyStat);

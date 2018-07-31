@@ -38,6 +38,7 @@ void BodyStat::reset(){
         _seriNum=0;
         _calibDate=QDate();
     }
+    emit nameChanged();
     emit firmwareVChanged();
     emit seriNumChanged();
     emit calibDateChanged();
@@ -45,8 +46,11 @@ void BodyStat::reset(){
 }
 
 void BodyStat::setName(const QString &name){
-    QMutexLocker locker(&_lock);
-    _name=name;
+    {
+        QMutexLocker locker(&_lock);
+        _name=name;
+    }
+    emit nameChanged();
 }
 
 const QString &BodyStat::getName() const{
@@ -165,4 +169,8 @@ void BodyStat::setCalibDate(const QDate &calibDate){
 const QDate &BodyStat::getCalibDate() const{
     QMutexLocker locker(&_lock);
     return(_calibDate);
+}
+
+QString BodyStat::getCalibDateText() const{
+    return(getCalibDate().toString("yyyy-MM-dd"));
 }

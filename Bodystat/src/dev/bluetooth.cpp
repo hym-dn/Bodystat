@@ -20,6 +20,41 @@ Bluetooth::~Bluetooth(){
     _thread.wait();
 }
 
+QString Bluetooth::getTaskText(const unsigned int id){
+    switch(id){
+    case TASK_ERR_NONE:
+        return(tr("无错误！"));
+    case TASK_ERR_DIRV_INVAL:
+        return(tr("未能检测到蓝牙驱动！"));
+    case TASK_ERR_DEV_INVAL:
+        return(tr("蓝牙设备无效！"));
+    case TASK_ERR_GET_DIRV_INFO_FAILED:
+        return(tr("获取蓝牙驱动信息失败！"));
+    case TASK_ERR_UNAU_FALIED:
+        return(tr("取消配对失败！"));
+    case TASK_ERR_FIND_DEV_FAILED:
+        return(tr("搜索设备失败！"));
+    case TASK_ERR_NO_DEV:
+        return(tr("未能搜索到相关设备！"));
+    case TASK_ERR_AUTH_FAILED:
+        return(tr("配对失败！"));
+    case TASK_ERR_GET_DEV_INFO_FAILED:
+        return(tr("获取设备信息失败！"));
+    case TASK_ERR_OPEN_PORT_FAILED:
+        return(tr("打开设备端口失败！"));
+    case TASK_ERR_CONN_DEV_FAILED:
+        return(tr("连接设备失败！"));
+    case TASK_ERR_GET_MODEL_VERSION_FAILED:
+        return(tr("获取设备固件版本失败！"));
+    case TASK_ERR_GET_SERIAL_NUMBER_FAILED:
+        return(tr("获取设备序列号失败！"));
+    case TASK_ERR_GET_CALIB_TIME_FAILED:
+        return(tr("获取设备校准时间失败！"));
+    default:
+        return(tr("未知错误！"));
+    }
+}
+
 void Bluetooth::reset(){
     {
         QMutexLocker locker(&_lock);

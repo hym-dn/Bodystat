@@ -12,6 +12,7 @@ public:
     BodyStat(QObject *parent=0);
     virtual ~BodyStat();
 signals:
+    void nameChanged();
     void firmwareVChanged();
     void seriNumChanged();
     void calibDateChanged();
@@ -41,6 +42,7 @@ public:
     unsigned long getSeriNum() const;
     void setCalibDate(const QDate &calibDate);
     const QDate &getCalibDate() const;
+    QString getCalibDateText() const;
 private:
     mutable QMutex _lock;
     QString _name;
