@@ -12,7 +12,8 @@ class Bluetooth
     Q_OBJECT
 public:
     enum{
-        TASK_ID_CONN_DEV=1001, // 连接设备
+        TASK_ID_SCAN_DEV=1001, // 连接设备
+        TASK_ID_RELOAD_DEV=1002, // 重载设备
     };
     enum{
         TASK_ERR_NONE=2000,// 无错误
@@ -42,7 +43,8 @@ public:
 public:
     void reset();
     const QString &getDrivInfo() const;
-    void connDev(BodyStat *bodyStat);
+    void scanDev(BodyStat *bodyStat);
+    void reloadDev(BodyStat *bodyStat);
 private slots:
     void onTask(const unsigned int id,BodyStat *bodyStat);
 private:

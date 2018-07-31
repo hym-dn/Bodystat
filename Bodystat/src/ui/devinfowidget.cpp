@@ -22,7 +22,21 @@ void DevInfoWidget::onScanDevPushButtonClicked(bool){
     // 设置当前任务
     _task=TASK_SCAN;
     // 启动扫描
-    DevPool::instance()->getBluetooth()->connDev(
+    DevPool::instance()->getBluetooth()->scanDev(
+        DevPool::instance()->getBodyStat());
+    // 失效按钮
+    _ui->_unpairPushButton->setDisabled(true);
+    _ui->_scanDevPushButton->setDisabled(true);
+    _ui->_reloadDevPushButton->setDisabled(true);
+    // 显示进度条
+    _ui->_progressLabel->show();
+}
+
+void DevInfoWidget::onReloadDevPushButtonClicked(bool){
+    // 设置当前任务
+    _task=TASK_RELOAD;
+    // 启动扫描
+    DevPool::instance()->getBluetooth()->reloadDev(
         DevPool::instance()->getBodyStat());
     // 失效按钮
     _ui->_unpairPushButton->setDisabled(true);
@@ -105,6 +119,9 @@ void DevInfoWidget::initUi(){
     connect(_ui->_scanDevPushButton,SIGNAL(
         clicked(bool)),this,SLOT(
         onScanDevPushButtonClicked(bool)));
+    connect(_ui->_reloadDevPushButton,
+        SIGNAL(clicked(bool)),this,SLOT(
+        onReloadDevPushButtonClicked(bool)));
     connect(DevPool::instance()->getBluetooth(),
         SIGNAL(drivInfoChanged()),this,SLOT(
         onBtDrivInfoChanged()));

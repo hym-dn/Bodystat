@@ -68,58 +68,68 @@ const QString &Bluetooth::getDrivInfo() const{
     return(_drivInfo);
 }
 
-void Bluetooth::connDev(BodyStat *bodyStat){
-    emit task(TASK_ID_CONN_DEV,bodyStat);
+void Bluetooth::scanDev(BodyStat *bodyStat){
+    emit task(TASK_ID_SCAN_DEV,bodyStat);
+}
+
+void Bluetooth::reloadDev(BodyStat *bodyStat){
+    emit task(TASK_ID_RELOAD_DEV,bodyStat);
 }
 
 void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
-    // 连接设备
-    if(TASK_ID_CONN_DEV==id){
+    // 超时时限
+    static unsigned short timeout=7;
+    // 连接设备或重载设备
+    if(TASK_ID_SCAN_DEV==id||TASK_ID_RELOAD_DEV==id){
         // 重置蓝牙、设备
-        reset();
+        if(TASK_ID_SCAN_DEV==id){
+            reset();
+        }
         bodyStat->reset();
-        // 蓝牙驱动尚未安装
-        if(Bodystat::BSIsDeviceInstallInProgress(0)){
-            emit taskDone(id,TASK_ERR_DIRV_INVAL);
-            return;
-        }
-        // 蓝牙设备无效
-        if(!Bodystat::BSIsBTAvailable()){
-            emit taskDone(id,TASK_ERR_DEV_INVAL);
-            return;
-        }
-        // 蓝牙驱动信息
-        setDrivInfo("");
-        TCHAR dirvInfo[1024]={0};
-        if(!Bodystat::BSGetBTStackInfo(dirvInfo,1024)){
-            emit taskDone(id,TASK_ERR_GET_DIRV_INFO_FAILED);
-            return;
-        }
-        setDrivInfo(QString::fromUtf16((ushort*)dirvInfo));
-        // 断开连接
-        Bodystat::BSCloseComport();
-        // 擦除配对
-        static unsigned short timeout=7;
-        if(!Bodystat::BSUnAuthenticateBTDevices(1,0,timeout)){
-            emit taskDone(id,TASK_ERR_UNAU_FALIED);
-            return;
-        }
-        // 搜索设备
-        int newDev=0;
-        int authDev=0;
-        if(!Bodystat::BSSearchBTDevices(
-            newDev,authDev,1,0,timeout)){ // 失败
-            emit taskDone(id,TASK_ERR_FIND_DEV_FAILED);
-            return;
-        }else if(newDev<=0){ // 无设备
-            timeout=min(timeout*2,45);
-            emit taskDone(id,TASK_ERR_NO_DEV);
-            return;
-        }
-        // Bodystat设备配对
-        if(!Bodystat::BSAuthenticateBTDevice(0,timeout)){
-            emit taskDone(id,TASK_ERR_AUTH_FAILED);
-            return;
+        // 扫描设备
+        if(TASK_ID_SCAN_DEV==id){
+            // 蓝牙驱动尚未安装
+            if(Bodystat::BSIsDeviceInstallInProgress(0)){
+                emit taskDone(id,TASK_ERR_DIRV_INVAL);
+                return;
+            }
+            // 蓝牙设备无效
+            if(!Bodystat::BSIsBTAvailable()){
+                emit taskDone(id,TASK_ERR_DEV_INVAL);
+                return;
+            }
+            // 蓝牙驱动信息
+            setDrivInfo("");
+            TCHAR dirvInfo[1024]={0};
+            if(!Bodystat::BSGetBTStackInfo(dirvInfo,1024)){
+                emit taskDone(id,TASK_ERR_GET_DIRV_INFO_FAILED);
+                return;
+            }
+            setDrivInfo(QString::fromUtf16((ushort*)dirvInfo));
+            // 断开连接
+            Bodystat::BSCloseComport();
+            // 擦除配对
+            if(!Bodystat::BSUnAuthenticateBTDevices(1,0,timeout)){
+                emit taskDone(id,TASK_ERR_UNAU_FALIED);
+                return;
+            }
+            // 搜索设备
+            int newDev=0;
+            int authDev=0;
+            if(!Bodystat::BSSearchBTDevices(
+                newDev,authDev,1,0,timeout)){ // 失败
+                emit taskDone(id,TASK_ERR_FIND_DEV_FAILED);
+                return;
+            }else if(newDev<=0){ // 无设备
+                timeout=min(timeout*2,45);
+                emit taskDone(id,TASK_ERR_NO_DEV);
+                return;
+            }
+            // Bodystat设备配对
+            if(!Bodystat::BSAuthenticateBTDevice(0,timeout)){
+                emit taskDone(id,TASK_ERR_AUTH_FAILED);
+                return;
+            }
         }
         // 获取设备信息
         TCHAR devName[512]={0};

@@ -21,6 +21,7 @@ public:
     virtual ~DevInfoWidget();
 private slots:
     void onScanDevPushButtonClicked(bool);
+    void onReloadDevPushButtonClicked(bool);
     void onBtDrivInfoChanged();
     void onDevNameChanged();
     void onDevFirmwareVChanged();
