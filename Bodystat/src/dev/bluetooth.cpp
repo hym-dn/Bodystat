@@ -81,6 +81,8 @@ void Bluetooth::unauthDev(BodyStat *bodyStat){
 }
 
 void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
+    // 任务启动
+    emit taskStart(id);
     // 超时时限
     static unsigned short timeout=7;
     // 连接设备或重载设备

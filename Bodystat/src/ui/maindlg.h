@@ -29,6 +29,9 @@ private slots:
     void onDelSubjToolButtonClicked(bool);
     void onEdtSubjToolButtonClicked(bool);
     void onDevInfoToolButtonClicked(bool);
+    void onBtTaskStart(const unsigned int id);
+    void onBtTaskDone(const unsigned int id,
+        const unsigned int err);
 private:
     void customUi();
     void initUi();

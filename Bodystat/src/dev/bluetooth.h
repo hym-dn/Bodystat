@@ -37,6 +37,7 @@ public:
     virtual ~Bluetooth();
 signals:
     void task(const unsigned int id,BodyStat *bodyStat);
+    void taskStart(const unsigned int id);
     void taskDone(const unsigned int id,const unsigned int err);
     void drivInfoChanged();
 public:

@@ -5,6 +5,7 @@
 #include"../dev/bodystat.h"
 #include<QMovie>
 #include<QMessageBox>
+#include<QCloseEvent>
 
 DevInfoWidget::DevInfoWidget(QWidget *parent/*=0*/)
     :MdiSubWidget(parent)
@@ -16,6 +17,21 @@ DevInfoWidget::DevInfoWidget(QWidget *parent/*=0*/)
 
 DevInfoWidget::~DevInfoWidget(){
     delete _ui;
+}
+
+void DevInfoWidget::closeEvent(QCloseEvent *event){
+    if(TASK_NONE==_task){
+        MdiSubWidget::closeEvent(event);
+    }else{
+        QMessageBox msgBox(
+            QMessageBox::Information,tr("提示"),
+            tr("任务正在执行，不能退出，稍后重试！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        event->ignore();
+    }
 }
 
 void DevInfoWidget::onScanDevPushButtonClicked(bool){

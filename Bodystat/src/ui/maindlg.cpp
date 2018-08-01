@@ -10,6 +10,8 @@
 #include"../data/subject.h"
 #include"../data/subjpool.h"
 #include"devinfowidget.h"
+#include"../dev/devpool.h"
+#include"../dev/bluetooth.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 
@@ -94,6 +96,27 @@ void MainDlg::onDevInfoToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_DEV_INFO);
 }
 
+void MainDlg::onBtTaskStart(const unsigned int /*id*/){
+    _ui->_newSubjToolButton->setDisabled(true);
+    _ui->_selSubjToolButton->setDisabled(true);
+    _ui->_delSubjToolButton->setDisabled(true);
+    _ui->_edtSubjToolButton->setDisabled(true);
+    _ui->_recSubjToolButton->setDisabled(true);
+    _ui->_downloadDataToolButton->setDisabled(true);
+    _ui->_devInfoToolButton->setDisabled(true);
+}
+
+void MainDlg::onBtTaskDone(
+    const unsigned int /*id*/,const unsigned int /*err*/){
+    _ui->_newSubjToolButton->setDisabled(false);
+    _ui->_selSubjToolButton->setDisabled(false);
+    _ui->_delSubjToolButton->setDisabled(false);
+    _ui->_edtSubjToolButton->setDisabled(false);
+    _ui->_recSubjToolButton->setDisabled(false);
+    _ui->_downloadDataToolButton->setDisabled(false);
+    _ui->_devInfoToolButton->setDisabled(false);
+}
+
 void MainDlg::customUi(){
     _ui->_newSubjToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
@@ -134,6 +157,13 @@ void MainDlg::initUi(){
         this,SLOT(onEdtSubjToolButtonClicked(bool)));
     connect(_ui->_devInfoToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onDevInfoToolButtonClicked(bool)));
+    connect(DevPool::instance()->getBluetooth(),
+        SIGNAL(taskStart(const unsigned int)),this,
+        SLOT(onBtTaskStart(const unsigned int)));
+    connect(DevPool::instance()->getBluetooth(),
+        SIGNAL(taskDone(const unsigned int,const unsigned int)),
+        this,SLOT(onBtTaskDone(const unsigned int,
+        const unsigned int)));
     _ui->_subjDockWidget->setWidget(
         new CurSubjWidget(_ui->_subjDockWidget));
 }

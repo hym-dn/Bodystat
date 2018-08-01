@@ -20,6 +20,8 @@ public:
 public:
     explicit DevInfoWidget(QWidget *parent=0);
     virtual ~DevInfoWidget();
+protected:
+    virtual void closeEvent(QCloseEvent *event);
 private slots:
     void onScanDevPushButtonClicked(bool);
     void onReloadDevPushButtonClicked(bool);
