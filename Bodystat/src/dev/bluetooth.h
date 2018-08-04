@@ -15,6 +15,7 @@ public:
         TASK_ID_SCAN_DEV=1001, // 连接设备
         TASK_ID_RELOAD_DEV=1002, // 重载设备
         TASK_ID_UNAUTH_DEV=1003, // 取消配对设备
+        TASK_ID_DOWNLOAD_TEST_DATA=1004, // 下载测试数据
     };
     enum{
         TASK_ERR_NONE=2000,// 无错误
