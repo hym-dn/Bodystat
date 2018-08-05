@@ -155,6 +155,7 @@ void SubjWidget::onCancelPushButtonClicked(bool){
 }
 
 void SubjWidget::initUi(){
+    // 主题信息
     // ID
     _ui->_idLineEdit->setMaxLength(46);
     _ui->_idLineEdit->setValidator(
@@ -164,26 +165,27 @@ void SubjWidget::initUi(){
     // Name
     _ui->_nameLineEdit->setMaxLength(46);
     _ui->_nameLineEdit->setDisabled(MODE_DELETE==_mode);
-    // Age
-    _ui->_ageLineEdit->setMaxLength(3);
-    _ui->_ageLineEdit->setValidator(
-        new QRegExpValidator(QRegExp("[0-9]+$"),this));
-    _ui->_ageLineEdit->setDisabled(MODE_DELETE==_mode);
+    // Birthday
+    _ui->_birthdayDateEdit->setDisabled(MODE_DELETE==_mode);
     // Sex
     _ui->_sexComboBox->addItem(tr("男"),Subject::SEX_MALE);
     _ui->_sexComboBox->addItem(tr("女"),Subject::SEX_FEMALE);
     _ui->_sexComboBox->addItem(tr("其他"),Subject::SEX_OTHER);
     _ui->_sexComboBox->setDisabled(MODE_DELETE==_mode);
-    // Height
-    _ui->_heightLineEdit->setMaxLength(7);
-    _ui->_heightLineEdit->setValidator(
-        new QRegExpValidator(QRegExp("^\\d{1,3}(?:\\.\\d{1,3})?$"),this));
-    _ui->_heightLineEdit->setDisabled(MODE_DELETE==_mode);
-    // Weight
-    _ui->_weightLineEdit->setMaxLength(7);
-    _ui->_weightLineEdit->setValidator(
-        new QRegExpValidator(QRegExp("^\\d{1,3}(?:\\.\\d{1,3})?$"),this));
-    _ui->_weightLineEdit->setDisabled(MODE_DELETE==_mode);
+    // 联系信息
+    // Tel No
+    _ui->_telNoLineEdit->setMaxLength(46);
+    _ui->_telNoLineEdit->setDisabled(MODE_DELETE==_mode);
+    // Mob No
+    _ui->_mobNoLineEdit->setMaxLength(46);
+    _ui->_mobNoLineEdit->setDisabled(MODE_DELETE==_mode);
+    // Email
+    _ui->_emailLineEdit->setMaxLength(46);
+    _ui->_emailLineEdit->setDisabled(MODE_DELETE==_mode);
+    // Addr
+    //_ui->_addrTextEdit->setMaxLength(255);
+    _ui->_addrTextEdit->setDisabled(MODE_DELETE==_mode);
+    // 按钮
     // Save
     _ui->_savePushButton->setDisabled(MODE_DELETE==_mode);
     if(MODE_DELETE==_mode){
@@ -208,12 +210,13 @@ void SubjWidget::initUi(){
 }
 
 void SubjWidget::toUi(){
+    // 主题信息
     // ID
     _ui->_idLineEdit->setText(_subject->getId());
     // Name
     _ui->_nameLineEdit->setText(_subject->getName());
-    // Age
-    _ui->_ageLineEdit->setText(_subject->getAgeText());
+    // birthday
+    _ui->_birthdayDateEdit->setDate(_subject->getBirthday());
     // Sex
     if(Subject::SEX_MALE==_subject->getSex()){
         _ui->_sexComboBox->setCurrentIndex(0);
@@ -224,13 +227,19 @@ void SubjWidget::toUi(){
     }else{
         _ui->_sexComboBox->setCurrentIndex(-1);
     }
-    // Height
-    _ui->_heightLineEdit->setText(_subject->getHeightText());
-    // Weight
-    _ui->_weightLineEdit->setText(_subject->getWeightText());
+    // 联系信息
+    // Tel No
+    _ui->_telNoLineEdit->setText(_subject->getTelNo());
+    // Mob No
+    _ui->_mobNoLineEdit->setText(_subject->getMobNo());
+    // Email
+    _ui->_emailLineEdit->setText(_subject->getEmail());
+    // addr
+    _ui->_addrTextEdit->setText(_subject->getAddr());
 }
 
 int SubjWidget::toSubject(Subject &subj) const{
+    // 主题信息
     // ID
     if(_ui->_idLineEdit->text().isEmpty()){
         QMessageBox msgBox(QMessageBox::Warning,
@@ -257,18 +266,11 @@ int SubjWidget::toSubject(Subject &subj) const{
     }else{
         subj.setName(_ui->_nameLineEdit->text());
     }
-    // Age
-    if(_ui->_ageLineEdit->text().isEmpty()){
-        QMessageBox msgBox(QMessageBox::Warning,
-            tr("警报"),tr("请输入【年龄】！"));
-        msgBox.setFont(font());
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
-        msgBox.exec();
-        _ui->_ageLineEdit->setFocus();
-        return(-3);
+    // Birthday
+    if(!_ui->_birthdayDateEdit->date().isValid()){
+        subj.setBirthday(QDate());
     }else{
-        subj.setAge(_ui->_ageLineEdit->text().toUInt());
+        subj.setBirthday(_ui->_birthdayDateEdit->date());
     }
     // Sex
     if(_ui->_sexComboBox->currentIndex()<0){
@@ -279,38 +281,22 @@ int SubjWidget::toSubject(Subject &subj) const{
         msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
         msgBox.exec();
         _ui->_sexComboBox->setFocus();
-        return(-4);
+        return(-3);
     }else{
         subj.setSex(static_cast<Subject::Sex>(
             _ui->_sexComboBox->itemData(_ui->_sexComboBox->
             currentIndex()).toUInt()));
     }
-    // Height
-    if(_ui->_heightLineEdit->text().isEmpty()){
-        QMessageBox msgBox(QMessageBox::Warning,
-            tr("警报"),tr("请输入【身高】！"));
-        msgBox.setFont(font());
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
-        msgBox.exec();
-        _ui->_heightLineEdit->setFocus();
-        return(-5);
-    }else{
-        subj.setHeight(_ui->_heightLineEdit->text().toFloat());
-    }
-    // Weight
-    if(_ui->_weightLineEdit->text().isEmpty()){
-        QMessageBox msgBox(QMessageBox::Warning,
-            tr("警报"),tr("请输入【体重】！"));
-        msgBox.setFont(font());
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
-        msgBox.exec();
-        _ui->_weightLineEdit->setFocus();
-        return(-6);
-    }else{
-        subj.setWeight(_ui->_weightLineEdit->text().toFloat());
-    }
+    // 联系信息
+    // Tel No
+    subj.setTelNo(_ui->_telNoLineEdit->text());
+    // Mob No
+    subj.setMobNo(_ui->_mobNoLineEdit->text());
+    // Email
+    subj.setEmail(_ui->_emailLineEdit->text());
+    // Addr
+    subj.setAddr(_ui->_addrTextEdit->toPlainText());
+    // 访问信息
     // Entry Date Time & Modify Date Time
     if(MODE_NEW==_mode){
         const QDateTime curDateTime=QDateTime::currentDateTime();
@@ -342,22 +328,13 @@ int SubjWidget::toSubject(Subject &subj) const{
             _ui->_nameLineEdit->setFocus();
             break;
         case -3:
-            _ui->_ageLineEdit->setFocus();
-            break;
-        case -4:
             _ui->_sexComboBox->setFocus();
-            break;
-        case -5:
-            _ui->_heightLineEdit->setFocus();
-            break;
-        case -6:
-            _ui->_weightLineEdit->setFocus();
             break;
         default:
             break;
         }
         // 返回
-        return(-7);
+        return(-4);
     }
     // 返回
     return(0);

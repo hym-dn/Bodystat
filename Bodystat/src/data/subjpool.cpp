@@ -33,9 +33,10 @@ int SubjPool::pullSubjV(QSqlDatabase &db){
     if(!db.isValid()||!db.isOpen()){
         return(-1);
     }
-    const QString sql("SELECT ID,Name,Age,Sex,"
-        "Height,Weight,EntryDateTime,ModifyDateTime,"
-        "AccessDateTime FROM Subject ORDER BY ID ASC;");
+    const QString sql("SELECT ID,Name,Birthday,Sex,"
+        "TelNo,MobNo,Email,Addr,EntryDateTime,"
+        "ModifyDateTime,AccessDateTime FROM Subject "
+        "ORDER BY ID ASC;");
     QSqlQuery query(db);
     if(!query.exec(sql)){
         return(-2);

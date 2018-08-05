@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>166</width>
-    <height>168</height>
+    <width>148</width>
+    <height>116</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,8 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="_idLineEdit">
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="_nameLineEdit">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -50,37 +50,15 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="_nameLineEdit">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="_ageLabel">
+    <widget class="QLabel" name="_birthdayLabel">
      <property name="text">
-      <string>年龄</string>
+      <string>生日</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="_ageLineEdit">
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="_idLineEdit">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -98,13 +76,6 @@
      </property>
      <property name="readOnly">
       <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QLabel" name="_yearLabel">
-     <property name="text">
-      <string>岁</string>
      </property>
     </widget>
    </item>
@@ -137,15 +108,8 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="_heightLabel">
-     <property name="text">
-      <string>身高</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="_heightLineEdit">
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="_birthdayLineEdit">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -162,50 +126,7 @@
       </size>
      </property>
      <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="2">
-    <widget class="QLabel" name="_cmLabel">
-     <property name="text">
-      <string>cm</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="_weightLabel">
-     <property name="text">
-      <string>体重</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QLineEdit" name="_weightLineEdit">
-     <property name="enabled">
       <bool>false</bool>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="2">
-    <widget class="QLabel" name="_kgLabel">
-     <property name="text">
-      <string>Kg</string>
      </property>
     </widget>
    </item>

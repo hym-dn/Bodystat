@@ -5,6 +5,7 @@
 #include<QDateTime>
 #include<QSqlDatabase>
 #include<QSqlQuery>
+#include<QDate>
 
 class Subject{
 public:
@@ -26,18 +27,20 @@ public:
     const QString &getId() const;
     void setName(const QString &name);
     const QString &getName() const;
-    void setAge(const unsigned int age);
-    unsigned int getAge() const;
-    QString getAgeText() const;
+    void setBirthday(const QDate &birthday);
+    const QDate &getBirthday() const;
+    QString getBirthdayText() const;
     void setSex(const Sex sex);
     Sex getSex() const;
     QString getSexText() const;
-    void setHeight(const float height);
-    float getHeight() const;
-    QString getHeightText() const;
-    void setWeight(const float weight);
-    float getWeight() const;
-    QString getWeightText() const;
+    void setTelNo(const QString &telNo);
+    const QString &getTelNo() const;
+    void setMobNo(const QString &mobNo);
+    const QString &getMobNo() const;
+    void setEmail(const QString &email);
+    const QString &getEmail() const;
+    void setAddr(const QString &addr);
+    const QString &getAddr() const;
     void setEntryDateTime(const QDateTime &time);
     const QDateTime &getEntryDateTime() const;
     QString getEntryDateTimeText() const;
@@ -53,10 +56,12 @@ public:
 private:
     QString _id;
     QString _name;
-    unsigned int _age;
+    QDate _birthday;
     Sex _sex;
-    float _height;
-    float _weight;
+    QString _telNo;
+    QString _mobNo;
+    QString _email;
+    QString _addr;
     QDateTime _entryDateTime;
     QDateTime _modifyDateTime;
     QDateTime _accessDateTime;

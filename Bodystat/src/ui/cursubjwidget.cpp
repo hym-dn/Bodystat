@@ -32,16 +32,10 @@ void CurSubjWidget::updateUi(){
     _ui->_nameLineEdit->setText(
         SubjPool::instance()->
         getCurSubj().getName());
-    _ui->_ageLineEdit->setText(
+    _ui->_birthdayLineEdit->setText(
         SubjPool::instance()->
-        getCurSubj().getAgeText());
+        getCurSubj().getBirthdayText());
     _ui->_sexLineEdit->setText(
         SubjPool::instance()->
         getCurSubj().getSexText());
-    _ui->_heightLineEdit->setText(
-        SubjPool::instance()->
-        getCurSubj().getHeightText());
-    _ui->_weightLineEdit->setText(
-        SubjPool::instance()->
-        getCurSubj().getWeightText());
 }

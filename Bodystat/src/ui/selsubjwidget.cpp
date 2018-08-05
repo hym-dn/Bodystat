@@ -103,19 +103,21 @@ void SelSubjWidget::initUi(){
 void SelSubjWidget::clearSubj(){
     _ui->_idLineEdit->setText("");
     _ui->_nameLineEdit->setText("");
-    _ui->_ageLineEdit->setText("");
+    _ui->_birthdayLineEdit->setText("");
     _ui->_sexLineEdit->setText("");
-    _ui->_heightLineEdit->setText("");
-    _ui->_weightLineEdit->setText("");
 }
 
 void SelSubjWidget::showSubj(const Subject &subj){
+    // 主题信息
     _ui->_idLineEdit->setText(subj.getId());
     _ui->_nameLineEdit->setText(subj.getName());
-    _ui->_ageLineEdit->setText(subj.getAgeText());
+    _ui->_birthdayLineEdit->setText(subj.getBirthdayText());
     _ui->_sexLineEdit->setText(subj.getSexText());
-    _ui->_heightLineEdit->setText(subj.getHeightText());
-    _ui->_weightLineEdit->setText(subj.getWeightText());
+    // 联系信息
+    _ui->_telNoLineEdit->setText(subj.getTelNo());
+    _ui->_mobNoLineEdit->setText(subj.getMobNo());
+    _ui->_emailLineEdit->setText(subj.getEmail());
+    _ui->_addrTextEdit->setText(subj.getAddr());
 }
 
 void SelSubjWidget::updateCurSubj(const Subject &subj){

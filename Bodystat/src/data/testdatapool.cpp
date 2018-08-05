@@ -9,5 +9,7 @@ TestDataPool *TestDataPool::instance(){
 }
 
 TestDataPool::TestDataPool(QObject *parent/*=0*/)
-    :QObject(parent){
+    :QObject(parent)
+    ,_lock()
+    ,_testDataV(){
 }
