@@ -6,8 +6,10 @@
 class TestData{
 public:
     typedef enum{
+        SEX_UNKNOWN=0,
         SEX_MALE=1,
         SEX_FEMALE=2,
+        SEX_OTHER=3,
     }Sex;
 public:
     TestData();
@@ -20,6 +22,8 @@ public:
     unsigned long getSeriNum() const;
     void setTestDateTime(const QDateTime &dateTime);
     const QDateTime &getTestDateTime() const;
+    void setSex(const Sex sex);
+    Sex getSex() const;
     void setAge(const int age);
     int getAge() const;
     void setHeight(const float height);
@@ -52,6 +56,7 @@ private:
     unsigned int _devModel;
     unsigned long _devSeriNum;
     QDateTime _testDateTime;
+    Sex _sex;
     int _age;
     int _height;
     float _weight;

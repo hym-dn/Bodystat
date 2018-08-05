@@ -4,6 +4,7 @@ TestData::TestData()
     :_devModel(0)
     ,_devSeriNum(0)
     ,_testDateTime()
+    ,_sex(SEX_UNKNOWN)
     ,_age(0)
     ,_height(0)
     ,_weight(0.0)
@@ -23,6 +24,7 @@ TestData::TestData(const TestData &src)
     :_devModel(src._devModel)
     ,_devSeriNum(src._devSeriNum)
     ,_testDateTime(src._testDateTime)
+    ,_sex(src._sex)
     ,_age(src._age)
     ,_height(src._height)
     ,_weight(src._weight)
@@ -63,6 +65,14 @@ void TestData::setTestDateTime(const QDateTime &dateTime){
 
 const QDateTime &TestData::getTestDateTime() const{
     return(_testDateTime);
+}
+
+void TestData::setSex(const Sex sex){
+    _sex=sex;
+}
+
+TestData::Sex TestData::getSex() const{
+    return(_sex);
 }
 
 void TestData::setAge(const int age){
@@ -173,6 +183,7 @@ TestData &TestData::operator=(const TestData &src){
     _devModel=src._devModel;
     _devSeriNum=src._devSeriNum;
     _testDateTime=src._testDateTime;
+    _sex=src._sex;
     _age=src._age;
     _height=src._height;
     _weight=src._weight;
