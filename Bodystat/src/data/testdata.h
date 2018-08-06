@@ -3,6 +3,10 @@
 
 #include<QDateTime>
 
+namespace Bodystat{
+    struct BSMeasurement;
+}
+
 class TestData{
 public:
     typedef enum{
@@ -13,13 +17,15 @@ public:
     }Sex;
 public:
     TestData();
-    TestData(const TestData &src);
+    explicit TestData(const Bodystat::BSMeasurement &meas);
+    explicit TestData(const TestData &src);
     ~TestData();
 public:
+    int isValid() const;
     void setDevModel(const unsigned int model);
     unsigned int getDevModel() const;
-    void setSeriNum(const unsigned long seriNum);
-    unsigned long getSeriNum() const;
+    void setDevSeriNum(const unsigned long seriNum);
+    unsigned long getDevSeriNum() const;
     void setTestDateTime(const QDateTime &dateTime);
     const QDateTime &getTestDateTime() const;
     void setSex(const Sex sex);
@@ -30,7 +36,7 @@ public:
     int getHeight() const;
     void setWeight(const float weight);
     float getWeight() const;
-    int setActivity(const int activity);
+    void setActivity(const int activity);
     int getActivity() const;
     void setWaist(const int waist);
     int getWaist() const;

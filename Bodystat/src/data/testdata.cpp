@@ -1,4 +1,5 @@
 ﻿#include"testdata.h"
+#include"../../../Include/BodystatSDK.h"
 
 TestData::TestData()
     :_devModel(0)
@@ -18,6 +19,26 @@ TestData::TestData()
     ,_ir50kHz(0)
     ,_fx50kHz(0)
     ,_fpa50kHz(0){
+}
+
+TestData::TestData(const Bodystat::BSMeasurement &meas)
+    :_devModel(meas.iDeviceModel)
+    ,_devSeriNum(meas.ulDeviceSerialNumber)
+    ,_testDateTime(QDateTime::fromTime_t(meas.tTestDate))
+    ,_sex(Bodystat::BSMale==meas.iGender?SEX_MALE:SEX_FEMALE)
+    ,_age(meas.iAge)
+    ,_height(meas.iHeight)
+    ,_weight(meas.fWeight)
+    ,_activity(meas.iActivity)
+    ,_waist(meas.iWaist)
+    ,_hip(meas.iHip)
+    ,_iz5kHz(meas.iZ_5kHz)
+    ,_iz50kHz(meas.iZ_50kHz)
+    ,_iz100kHz(meas.iZ_100kHz)
+    ,_iz200kHz(meas.iZ_200kHz)
+    ,_ir50kHz(meas.iR_50kHz)
+    ,_fx50kHz(meas.fX_50kHz)
+    ,_fpa50kHz(meas.fPA_50kHz){
 }
 
 TestData::TestData(const TestData &src)
@@ -43,6 +64,34 @@ TestData::TestData(const TestData &src)
 TestData::~TestData(){
 }
 
+int TestData::isValid() const{
+    // 设备模型
+    if(0==_devModel){
+        return(-1);
+    }
+    // 设备序号
+    if(0==_devSeriNum){
+        return(-2);
+    }
+    // 测试日期
+    if(!_testDateTime.isValid()){
+        return(-3);
+    }
+    // 性别
+    if(SEX_UNKNOWN==_sex){
+        return(-4);
+    }
+    // 年龄
+    // 身高
+    // 体重
+    // 活跃度
+    // 胸围
+    // 臀围
+    // ...
+    // 返回
+    return(0);
+}
+
 void TestData::setDevModel(const unsigned int model){
     _devModel=model;
 }
@@ -51,12 +100,12 @@ unsigned int TestData::getDevModel() const{
     return(_devModel);
 }
 
-void TestData::setSeriNum(const unsigned long seriNum){
-    _seriNum=seriNum;
+void TestData::setDevSeriNum(const unsigned long seriNum){
+    _devSeriNum=seriNum;
 }
 
-unsigned long TestData::getSeriNum() const{
-    return(_seriNum);
+unsigned long TestData::getDevSeriNum() const{
+    return(_devSeriNum);
 }
 
 void TestData::setTestDateTime(const QDateTime &dateTime){
@@ -99,7 +148,7 @@ float TestData::getWeight() const{
     return(_weight);
 }
 
-int TestData::setActivity(const int activity){
+void TestData::setActivity(const int activity){
     _activity=activity;
 }
 

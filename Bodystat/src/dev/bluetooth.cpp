@@ -1,6 +1,8 @@
 ﻿#include"bluetooth.h"
 #include"../../../include/BodystatSDK.h"
 #include"bodystat.h"
+#include"../data/testdatapool.h"
+#include"../db/dbmanager.h"
 #include<QMutexLocker>
 #include<QDateTime>
 
@@ -50,6 +52,10 @@ QString Bluetooth::getTaskText(const unsigned int id){
         return(tr("获取设备序列号失败！"));
     case TASK_ERR_GET_CALIB_TIME_FAILED:
         return(tr("获取设备校准时间失败！"));
+    case TASK_ERR_DEV_NOT_READY:
+        return(tr("设备尚未就绪！"));
+    case TASK_ERR_GET_TEST_DATE_FAILED:
+        return(tr("获取测试数据失败！"));
     default:
         return(tr("未知错误！"));
     }
@@ -78,6 +84,10 @@ void Bluetooth::reloadDev(BodyStat *bodyStat){
 
 void Bluetooth::unauthDev(BodyStat *bodyStat){
     emit task(TASK_ID_UNAUTH_DEV,bodyStat);
+}
+
+void Bluetooth::downloadTestData(BodyStat *bodyStat){
+    emit task(TASK_ID_DOWNLOAD_TEST_DATA,bodyStat);
 }
 
 void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
@@ -204,6 +214,40 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
         if(!Bodystat::BSUnAuthenticateBTDevices(1,0,timeout)){
             emit taskDone(id,TASK_ERR_UNAU_FALIED);
             return;
+        }
+        // 发送无误信号
+        emit taskDone(id,TASK_ERR_NONE);
+        // 返回
+        return;
+    }
+    // 下载测试数据
+    else if(TASK_ID_DOWNLOAD_TEST_DATA==id){
+        // 设备尚未连接
+        if(bodyStat->getIsOpen()&&
+            bodyStat->getIsConnect()){
+            // 发送信号
+            emit taskDone(id,TASK_ERR_DEV_NOT_READY);
+            // 返回
+            return;
+        }
+        // 声明测试数据
+        Bodystat::BSRawData rawData;
+        rawData.iRecordArraySize=
+            Bodystat::BS_RAWDATA_ARRAYSIZE;
+        // 读取测试数据
+        if(Bodystat::NoError!=
+            Bodystat::BSReadStoredTestData(&rawData)){
+            // 发送信号
+            emit taskDone(id,TASK_ERR_GET_TEST_DATE_FAILED);
+            // 返回
+            return;
+        }
+        // 清除测试数据
+        TestDataPool::instance()->clear();
+        // 追加测试数据
+        for(int i=rawData.ulFirstTestNum;i<rawData.iTotalNumRecs;++i){
+            TestDataPool::instance()->add(
+                DBManager::instance()->getDB(),rawData.record[i]);
         }
         // 发送无误信号
         emit taskDone(id,TASK_ERR_NONE);

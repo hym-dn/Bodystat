@@ -32,6 +32,8 @@ public:
         TASK_ERR_GET_MODEL_VERSION_FAILED=2011, // 获取模型版本失败
         TASK_ERR_GET_SERIAL_NUMBER_FAILED=2012, // 获取序列号失败
         TASK_ERR_GET_CALIB_TIME_FAILED=2013, // 获取校准时间失败
+        TASK_ERR_DEV_NOT_READY=2014, // 设备尚未就绪
+        TASK_ERR_GET_TEST_DATE_FAILED=2015, // 获取测试数据失败
     };
 public:
     Bluetooth(QObject *parent=0);
@@ -49,6 +51,7 @@ public:
     void scanDev(BodyStat *bodyStat);
     void reloadDev(BodyStat *bodyStat);
     void unauthDev(BodyStat *bodyStat);
+    void downloadTestData(BodyStat *bodyStat);
 private slots:
     void onTask(const unsigned int id,BodyStat *bodyStat);
 private:

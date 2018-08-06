@@ -1,4 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////////////////////////////
+﻿#include<Windows.h>
+////////////////////////////////////////////////////////////////////////////////////////////////////
 /// <summary> <para> Bodystat SDK </para>		   
 ///			  <para> (C) 2010-2015 Bodystat (Isle of Man) Ltd. All rights reserved. </para>  
 ///			  <para> Use subject to license. </para>
@@ -71,8 +72,6 @@
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
-
-#include<Windows.h>
 
 /// <property name="title" value="Bodystat API" />
 /// <property name="toctitle" value="Bodystat API" />

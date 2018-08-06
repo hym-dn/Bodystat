@@ -9,6 +9,10 @@
 template<typename T>
 class Singleton;
 class TestData;
+class QSqlDatabase;
+namespace Bodystat{
+    struct BSMeasurement;
+}
 
 class TestDataPool
     :public QObject{
@@ -17,18 +21,24 @@ public:
     virtual ~TestDataPool();
 public:
     static TestDataPool *instance();
+public:
+    void clear();
+    int add(QSqlDatabase &db,
+        const Bodystat::BSMeasurement &mData);
 private:
-    typedef QSharedPointer<TestData> PtrTestData;
-    typedef QVector<PtrTestData> TestDataV;
+    typedef QSharedPointer<TestData> PtrToData;
+    typedef QVector<PtrToData> DataV;
     friend class Singleton<TestDataPool>;
 private:
     explicit TestDataPool(QObject *parent=0);
+private:
+    void add(PtrToData &data);
 private:
     TestDataPool(const TestDataPool &);
     TestDataPool &operator=(const TestDataPool &);
 private:
     QMutex _lock;
-    TestDataV _testDataV;
+    DataV _dataV;
 };
 
 #endif // TEST_DATA_POOL_H
