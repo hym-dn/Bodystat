@@ -17,7 +17,8 @@ FORMS    += \
     ui/cursubjwidget.ui \
     ui/selsubjwidget.ui \
     ui/waitdialog.ui \
-    ui/devinfowidget.ui
+    ui/devinfowidget.ui \
+    ui/downloaddatawidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -47,7 +48,9 @@ SOURCES += \
     src/dev/bodystat.cpp \
     src/dev/devpool.cpp \
     src/data/testdata.cpp \
-    src/data/testdatapool.cpp
+    src/data/testdatapool.cpp \
+    src/ui/downloaddatawidget.cpp \
+    src/ui/testdatatablemodel.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -77,7 +80,9 @@ HEADERS += \
     src/dev/bodystat.h \
     src/dev/devpool.h \
     src/data/testdata.h \
-    src/data/testdatapool.h
+    src/data/testdatapool.h \
+    src/ui/downloaddatawidget.h \
+    src/ui/testdatatablemodel.h
 
 DESTDIR += ../bin
 

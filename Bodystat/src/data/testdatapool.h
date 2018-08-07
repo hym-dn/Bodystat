@@ -23,6 +23,7 @@ public:
     static TestDataPool *instance();
 public:
     void clear();
+    int count() const;
     int add(QSqlDatabase &db,
         const Bodystat::BSMeasurement &mData);
 private:
@@ -37,7 +38,7 @@ private:
     TestDataPool(const TestDataPool &);
     TestDataPool &operator=(const TestDataPool &);
 private:
-    QMutex _lock;
+    mutable QMutex _lock;
     DataV _dataV;
 };
 

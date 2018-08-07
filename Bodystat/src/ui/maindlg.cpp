@@ -12,6 +12,8 @@
 #include"devinfowidget.h"
 #include"../dev/devpool.h"
 #include"../dev/bluetooth.h"
+#include"../dev/bodystat.h"
+#include"downloaddatawidget.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 
@@ -92,6 +94,20 @@ void MainDlg::onEdtSubjToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_EDT_SUBJ);
 }
 
+void MainDlg::onDownloadDataToolButtonClicked(bool){
+    if(!DevPool::instance()->getBodyStat()->getIsOpen()||
+        !DevPool::instance()->getBodyStat()->getIsConnect()){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("报警"),tr("设备尚未就绪！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
+    creat(SUB_WIDGET_ID_DWL_DATA);
+}
+
 void MainDlg::onDevInfoToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_DEV_INFO);
 }
@@ -155,6 +171,8 @@ void MainDlg::initUi(){
         this,SLOT(onDelSubjToolButtonClicked(bool)));
     connect(_ui->_edtSubjToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onEdtSubjToolButtonClicked(bool)));
+    connect(_ui->_downloadDataToolButton,SIGNAL(clicked(bool)),
+        this,SLOT(onDownloadDataToolButtonClicked(bool)));
     connect(_ui->_devInfoToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onDevInfoToolButtonClicked(bool)));
     connect(DevPool::instance()->getBluetooth(),
@@ -183,6 +201,9 @@ void MainDlg::creat(const SubWidgetID widgetId){
     }else if(SUB_WIDGET_ID_EDT_SUBJ==widgetId){
         _subWidget=new SubjWidget(SubjWidget::MODE_EDIT,
             SubjPool::instance()->getCurSubj());
+        Q_ASSERT(0!=_subWidget);
+    }else if(SUB_WIDGET_ID_DWL_DATA==widgetId){
+        _subWidget=new DownloadDataWidget;
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DEV_INFO==widgetId){
         _subWidget=new DevInfoWidget;

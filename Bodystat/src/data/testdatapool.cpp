@@ -20,6 +20,11 @@ void TestDataPool::clear(){
     _dataV.clear();
 }
 
+int TestDataPool::count() const{
+    QMutexLocker locker(&_lock);
+    return(_dataV.count());
+}
+
 int TestDataPool::add(QSqlDatabase &db,
     const Bodystat::BSMeasurement &mData){
     // 数据库非法

@@ -7,5 +7,6 @@
         <file>rc/bluetoothdisabled.png</file>
         <file>rc/Quadscan4000.bmp</file>
         <file>rc/progress.gif</file>
+        <file>rc/prompt.png</file>
     </qresource>
 </RCC>
