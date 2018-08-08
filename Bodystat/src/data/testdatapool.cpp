@@ -58,6 +58,16 @@ int TestDataPool::add(QSqlDatabase &db,
     return(0);
 }
 
+TestDataPool::PtrToCData
+    TestDataPool::getData(const int i){
+    QMutexLocker locker(&_lock);
+    if(i>=_dataV.count()){
+        return(PtrToCData());
+    }else{
+        return(_dataV.at(i));
+    }
+}
+
 TestDataPool::TestDataPool(QObject *parent/*=0*/)
     :QObject(parent)
     ,_lock()

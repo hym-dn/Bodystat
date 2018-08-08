@@ -1,5 +1,6 @@
 ﻿#include"testdata.h"
 #include"../../../Include/BodystatSDK.h"
+#include<QObject>
 
 TestData::TestData()
     :_devModel(0)
@@ -108,12 +109,21 @@ unsigned long TestData::getDevSeriNum() const{
     return(_devSeriNum);
 }
 
+QString TestData::getDevSeriNumText() const{
+    return(QString("%1").arg(getDevSeriNum()));
+}
+
 void TestData::setTestDateTime(const QDateTime &dateTime){
     _testDateTime=dateTime;
 }
 
 const QDateTime &TestData::getTestDateTime() const{
     return(_testDateTime);
+}
+
+QString TestData::getTestDateTimeText() const{
+    return(getTestDateTime().toString(
+        "yyyy-MM-dd hh:mm:ss"));
 }
 
 void TestData::setSex(const Sex sex){
@@ -124,12 +134,29 @@ TestData::Sex TestData::getSex() const{
     return(_sex);
 }
 
+QString TestData::getSexText() const{
+    const Sex sex=getSex();
+    if(SEX_MALE==sex){
+        return(QObject::tr("男"));
+    }else if(SEX_FEMALE==sex){
+        return(QObject::tr("女"));
+    }else if(SEX_OTHER==sex){
+        return(QObject::tr("其他"));
+    }else{
+        return(QObject::tr("未知"));
+    }
+}
+
 void TestData::setAge(const int age){
     _age=age;
 }
 
 int TestData::getAge() const{
     return(_age);
+}
+
+QString TestData::getAgeText() const{
+    return(QString("%1").arg(getAge()));
 }
 
 void TestData::setHeight(const float height){
@@ -140,12 +167,20 @@ int TestData::getHeight() const{
     return(_height);
 }
 
+QString TestData::getHeightText() const{
+    return(QString("%1").arg(getHeight()));
+}
+
 void TestData::setWeight(const float weight){
     _weight=weight;
 }
 
 float TestData::getWeight() const{
     return(_weight);
+}
+
+QString TestData::getWeightText() const{
+    return(QString("%1").arg(getWeight(),0,'f',3));
 }
 
 void TestData::setActivity(const int activity){
@@ -164,12 +199,20 @@ int TestData::getWaist() const{
     return(_waist);
 }
 
+QString TestData::getWaistText() const{
+    return(QString("%1").arg(getWaist()));
+}
+
 void TestData::setHip(const int hip){
     _hip=hip;
 }
 
 int TestData::getHip() const{
     return(_hip);
+}
+
+QString TestData::getHipText() const{
+    return(QString("%1").arg(getHip()));
 }
 
 void TestData::setIz5kHz(const int iz5kHz){

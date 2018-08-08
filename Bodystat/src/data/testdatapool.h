@@ -18,6 +18,9 @@ class TestDataPool
     :public QObject{
     Q_OBJECT
 public:
+    typedef QSharedPointer<
+        const TestData> PtrToCData;
+public:
     virtual ~TestDataPool();
 public:
     static TestDataPool *instance();
@@ -26,6 +29,7 @@ public:
     int count() const;
     int add(QSqlDatabase &db,
         const Bodystat::BSMeasurement &mData);
+    PtrToCData getData(const int i);
 private:
     typedef QSharedPointer<TestData> PtrToData;
     typedef QVector<PtrToData> DataV;

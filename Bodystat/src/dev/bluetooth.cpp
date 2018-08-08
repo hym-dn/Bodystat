@@ -223,8 +223,8 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
     // 下载测试数据
     else if(TASK_ID_DOWNLOAD_TEST_DATA==id){
         // 设备尚未连接
-        if(bodyStat->getIsOpen()&&
-            bodyStat->getIsConnect()){
+        if(!bodyStat->getIsOpen()||
+            !bodyStat->getIsConnect()){
             // 发送信号
             emit taskDone(id,TASK_ERR_DEV_NOT_READY);
             // 返回
@@ -245,7 +245,7 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
         // 清除测试数据
         TestDataPool::instance()->clear();
         // 追加测试数据
-        for(int i=rawData.ulFirstTestNum;i<rawData.iTotalNumRecs;++i){
+        for(int i=0;i<rawData.iTotalNumRecs;++i){
             TestDataPool::instance()->add(
                 DBManager::instance()->getDB(),rawData.record[i]);
         }

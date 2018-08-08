@@ -1,4 +1,5 @@
 ﻿#include"testdatatablemodel.h"
+#include"../data/testdata.h"
 #include"../data/testdatapool.h"
 
 TestDataTableModel::TestDataTableModel(
@@ -7,6 +8,11 @@ TestDataTableModel::TestDataTableModel(
 }
 
 TestDataTableModel::~TestDataTableModel(){
+}
+
+void TestDataTableModel::update(){
+    beginResetModel();
+    endResetModel();
 }
 
 QVariant TestDataTableModel::headerData(
@@ -69,11 +75,84 @@ int TestDataTableModel::columnCount(
     return(COLUMN_COUNT);
 }
 
-QVariant TestDataTableModel::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid())
-        return QVariant();
-
-    // FIXME: Implement me!
-    return QVariant();
+QVariant TestDataTableModel::data(
+    const QModelIndex &index,int role) const{
+    // 索引无效
+    if(!index.isValid()){
+        return(QVariant());
+    }
+    // 索引有效
+    else{
+        // 显示角色
+        if((Qt::DisplayRole==role)||(
+            Qt::UserRole==role)){
+            // 获取测试数据
+            TestDataPool::PtrToCData testData=
+                TestDataPool::instance()->
+                getData(index.row());
+            // 获取测试数据失败
+            if(testData.isNull()){
+                return(QVariant());
+            }
+            // 获取测试数据成功
+            else{
+                // 测试数据
+                if(0==index.column()){
+                    return(testData->getTestDateTimeText());
+                }
+                // 测试号
+                else if(1==index.column()){
+                    return(testData->getDevSeriNumText());
+                }
+                // 测试参考
+                else if(2==index.column()){
+                    return(QVariant());
+                }
+                // 测试组
+                else if(3==index.column()){
+                    return(QVariant());
+                }
+                // 主题名称
+                else if(4==index.column()){
+                    return(QVariant());
+                }
+                // 主题参考
+                else if(5==index.column()){
+                    return(QVariant());
+                }
+                // 年龄
+                else if(6==index.column()){
+                    return(testData->getAgeText());
+                }
+                // 性别
+                else if(7==index.column()){
+                    return(testData->getSexText());
+                }
+                // 身高
+                else if(8==index.column()){
+                    return(testData->getHeightText());
+                }
+                // 体重
+                else if(9==index.column()){
+                    return(testData->getWeightText());
+                }
+                // 腰围
+                else if(10==index.column()){
+                    return(testData->getWaistText());
+                }
+                // 臀围
+                else if(11==index.column()){
+                    return(testData->getHipText());
+                }
+                // 显示其它
+                else{
+                    return(QVariant());
+                }
+            } // 获取测试数据成功
+        }
+        // 其它角色
+        else{
+            return(QVariant());
+        }
+    }
 }
