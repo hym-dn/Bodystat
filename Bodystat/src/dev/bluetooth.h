@@ -34,6 +34,7 @@ public:
         TASK_ERR_GET_CALIB_TIME_FAILED=2013, // 获取校准时间失败
         TASK_ERR_DEV_NOT_READY=2014, // 设备尚未就绪
         TASK_ERR_GET_TEST_DATE_FAILED=2015, // 获取测试数据失败
+        TASK_ERR_NO_NEW_TEST_DATA=2016, // 无新的测试数据
     };
 public:
     Bluetooth(QObject *parent=0);
