@@ -129,5 +129,5 @@ void SelSubjWidget::updateCurSubj(const Subject &subj){
         QSqlQuery query(db);
         query.exec(sql);
     }
-    SubjPool::instance()->setCurSubj(subj);
+    // SubjPool::instance()->setCurSubj(subj);
 }

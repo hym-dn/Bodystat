@@ -18,10 +18,10 @@ SubjWidget::SubjWidget(
 }
 
 SubjWidget::SubjWidget(const Mode mode,
-    const Subject &subj,QWidget *parent/*=0*/)
+    const Subject &/*subj*/,QWidget *parent/*=0*/)
     :MdiSubWidget(parent)
     ,_mode(mode)
-    ,_subject(new Subject(subj))
+    ,_subject(new Subject(/*subj*/))
     ,_ui(new Ui::SubjWidget){
     _ui->setupUi(this);
     initUi();
@@ -81,7 +81,7 @@ void SubjWidget::onSavePushButtonClicked(bool){
             return;
         }
     }else{
-        SubjPool::instance()->setCurSubj(*_subject);
+        //SubjPool::instance()->setCurSubj(*_subject);
         QMessageBox msgBox(QMessageBox::Information,
             tr("提示"),tr("保存完成！"));
         msgBox.setFont(font());
@@ -117,6 +117,7 @@ void SubjWidget::onDeletePushButtonClicked(bool){
         msgBox.exec();
         return;
     }
+    /*
     QString sql=QString("DELETE FROM Subject WHERE ID='%1';")
         .arg(SubjPool::instance()->getCurSubj().getId());
     QSqlQuery query(db);
@@ -129,8 +130,9 @@ void SubjWidget::onDeletePushButtonClicked(bool){
         msgBox.exec();
         return;
     }
+    */
     // 清除当前主题
-    SubjPool::instance()->clearCurSubj();
+    // SubjPool::instance()->clearCurSubj();
     // 关闭
     close();
 }

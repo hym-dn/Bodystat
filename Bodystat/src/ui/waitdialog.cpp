@@ -1,6 +1,6 @@
 ﻿#include"waitdialog.h"
 #include"ui_waitdialog.h"
-#include"../task/taskstream.h"
+#include"../task/taskpool.h"
 #include"../task/task.h"
 #include<QKeyEvent>
 #include<QMovie>
@@ -13,7 +13,7 @@ WaitDialog::WaitDialog(
     Q_ASSERT(!_task.isNull());
     _ui->setupUi(this);
     initUi();
-    TaskStream::instance()->addTask(_task);
+    TaskPool::instance()->add(_task);
 }
 
 WaitDialog::~WaitDialog(){
@@ -44,7 +44,7 @@ void WaitDialog::initUi(){
     _ui->_movieLabel->setMovie(movie);
     movie->start();
     // 信号、槽
-    connect(TaskStream::instance(),
+    connect(TaskPool::instance(),
         SIGNAL(taskFinished(unsigned int,int)),
         this,SLOT(onTaskFinished(unsigned int,int)));
 }

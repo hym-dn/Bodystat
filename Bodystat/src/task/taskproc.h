@@ -18,21 +18,19 @@ public:
     TaskProc();
     ~TaskProc();
 signals:
-    void taskArrived();
-    void taskFinished(
-        const unsigned int id,
-        const int res);
+    void task();
+    void taskDone(const unsigned int id,const int err);
 public:
     void setId(const unsigned int id);
     unsigned int getId() const;
-    void addTask(PtrTask &task);
+    void addTask(PtrTask &tsk);
 private:
     typedef QQueue<PtrTask> TaskQ;
 private:
     TaskProc(const TaskProc&);
     TaskProc &operator=(const TaskProc&);
 private slots:
-    void onTaskArrived();
+    void onTask();
 private:
     PtrTask popTask();
 private:

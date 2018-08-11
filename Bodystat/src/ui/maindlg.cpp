@@ -5,7 +5,7 @@
 #include"cursubjwidget.h"
 #include"waitdialog.h"
 #include"../task/pullsubjvtask.h"
-#include"../task/taskstream.h"
+#include"../task/taskpool.h"
 #include"selsubjwidget.h"
 #include"../data/subject.h"
 #include"../data/subjpool.h"
@@ -44,8 +44,9 @@ void MainDlg::onNewSubjToolButtonClicked(bool){
 }
 
 void MainDlg::onSelSubjToolButtonClicked(bool){
+    /*
     WaitDialog::PtrTask task(new PullSubjVTask(
-        TaskStream::PROC_ROUTINE,true));
+        TaskPool::PROC_ROUTINE,true));
     if(task.isNull()){
         QMessageBox msgBox(QMessageBox::Critical,
             tr("异常"),tr("内存异常，请重试！"));
@@ -65,10 +66,12 @@ void MainDlg::onSelSubjToolButtonClicked(bool){
         msgBox.exec();
         return;
     }
+    */
     creat(SUB_WIDGET_ID_SEL_SUBJ);
 }
 
 void MainDlg::onDelSubjToolButtonClicked(bool){
+    /*
     if(SubjPool::instance()->getCurSubj().isValid()<0){
         QMessageBox msgBox(QMessageBox::Warning,
             tr("报警"),tr("没有主题被选择！"));
@@ -78,10 +81,12 @@ void MainDlg::onDelSubjToolButtonClicked(bool){
         msgBox.exec();
         return;
     }
+    */
     creat(SUB_WIDGET_ID_DEL_SUBJ);
 }
 
 void MainDlg::onEdtSubjToolButtonClicked(bool){
+    /*
     if(SubjPool::instance()->getCurSubj().isValid()<0){
         QMessageBox msgBox(QMessageBox::Warning,
             tr("报警"),tr("没有主题被选择！"));
@@ -91,6 +96,7 @@ void MainDlg::onEdtSubjToolButtonClicked(bool){
         msgBox.exec();
         return;
     }
+    */
     creat(SUB_WIDGET_ID_EDT_SUBJ);
 }
 
@@ -149,6 +155,9 @@ void MainDlg::customUi(){
     _ui->_recSubjToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
+    _ui->_distDwnlToolButton->setStyleSheet(
+        ThemeManager::instance()->styleSheet(
+        ":rc/toolbutton.qss"));
     _ui->_downloadDataToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
@@ -195,12 +204,12 @@ void MainDlg::creat(const SubWidgetID widgetId){
         _subWidget=new SelSubjWidget;
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DEL_SUBJ==widgetId){
-        _subWidget=new SubjWidget(SubjWidget::MODE_DELETE,
-            SubjPool::instance()->getCurSubj());
+        //_subWidget=new SubjWidget(SubjWidget::MODE_DELETE,
+            //SubjPool::instance()->getCurSubj());
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_EDT_SUBJ==widgetId){
-        _subWidget=new SubjWidget(SubjWidget::MODE_EDIT,
-            SubjPool::instance()->getCurSubj());
+        //_subWidget=new SubjWidget(SubjWidget::MODE_EDIT,
+            //SubjPool::instance()->getCurSubj());
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DWL_DATA==widgetId){
         _subWidget=new DownloadDataWidget;

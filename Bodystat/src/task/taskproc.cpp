@@ -8,8 +8,8 @@ TaskProc::TaskProc()
     ,_thr()
     ,_lock(){
     moveToThread(&_thr);
-    connect(this,SIGNAL(taskArrived()),
-        this,SLOT(onTaskArrived()));
+    connect(this,SIGNAL(task()),
+        this,SLOT(onTask()));
     _thr.start();
 }
 
@@ -18,27 +18,25 @@ TaskProc::~TaskProc(){
     _thr.wait();
 }
 
-void TaskProc::addTask(PtrTask &task){
-    Q_ASSERT(!task.isNull()&&
-        task->isValid()>=0);
+void TaskProc::addTask(PtrTask &tsk){
+    Q_ASSERT((!tsk.isNull())&&(
+        tsk->isValid()>=0));
     {
         QMutexLocker locker(&_lock);
-        _taskQ.push_back(task);
+        _taskQ.push_back(tsk);
     }
-    emit taskArrived();
+    emit task();
 }
 
-void TaskProc::onTaskArrived(){
+void TaskProc::onTask(){
     while(true){
         PtrTask task=popTask();
         if(task.isNull()){
             break;
         }
-        const int res=task->exec(
-            DBManager::instance()->
-            getDB());
-        emit taskFinished(
-            task->getId(),res);
+        const int err=task->exec(
+            DBManager::instance()->getDB());
+        emit taskDone(task->getId(),err);
     }
 }
 

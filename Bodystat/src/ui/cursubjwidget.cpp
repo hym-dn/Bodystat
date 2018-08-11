@@ -26,6 +26,7 @@ void CurSubjWidget::initUi(){
 }
 
 void CurSubjWidget::updateUi(){
+    /*
     _ui->_idLineEdit->setText(
         SubjPool::instance()->
         getCurSubj().getId());
@@ -38,4 +39,5 @@ void CurSubjWidget::updateUi(){
     _ui->_sexLineEdit->setText(
         SubjPool::instance()->
         getCurSubj().getSexText());
+    */
 }
