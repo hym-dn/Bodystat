@@ -5,6 +5,7 @@
 #include<QSharedPointer>
 #include<QVector>
 #include<QMutex>
+#include<QSet>
 
 template<typename T>
 class Singleton;
@@ -26,6 +27,8 @@ public:
     static TestDataPool *instance();
 public:
     int pull(QSqlDatabase &db);
+    int assign(QSqlDatabase &db,
+        const int subjIdx,const QSet<int> &tdIdxS);
     void clear();
     int count() const;
     int add(QSqlDatabase &db,

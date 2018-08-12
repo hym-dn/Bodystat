@@ -20,7 +20,8 @@ private:
         SUB_WIDGET_ID_SEL_SUBJ=2,
         SUB_WIDGET_ID_DEL_SUBJ=3,
         SUB_WIDGET_ID_EDT_SUBJ=4,
-        SUB_WIDGET_ID_DWL_DATA=5,
+        SUB_WIDGET_ID_ASN_DWLD=5,
+        SUB_WIDGET_ID_DWL_DATA=6,
         SUB_WIDGET_ID_DEV_INFO=7,
     }SubWidgetID;
 private slots:
@@ -29,6 +30,7 @@ private slots:
     void onSelSubjToolButtonClicked(bool);
     void onDelSubjToolButtonClicked(bool);
     void onEdtSubjToolButtonClicked(bool);
+    void onAssignDownloadToolButtonClicked(bool);
     void onDownloadDataToolButtonClicked(bool);
     void onDevInfoToolButtonClicked(bool);
     void onBtTaskStart(const unsigned int id);

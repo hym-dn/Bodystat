@@ -19,6 +19,8 @@ public:
     explicit DownloadDataWidget(
         QWidget *parent=0);
     ~DownloadDataWidget();
+signals:
+    void showAssignTestDataWidget();
 protected:
     virtual void closeEvent(QCloseEvent *event);
 private slots:

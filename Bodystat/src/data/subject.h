@@ -15,6 +15,9 @@ class TestData;
 
 class Subject{
 public:
+    typedef QSharedPointer<TestData> PtrTestData;
+    typedef QVector<PtrTestData> TestDataV;
+public:
     Subject();
     ~Subject();
 public:
@@ -23,13 +26,12 @@ public:
         const SubjInfo &subjInfo,
         const bool isAdd);
     int erase(QSqlQuery &query) const;
+    int assign(QSqlQuery &query,const TestDataV &testDataV);
     int isValid(QString *msg=0) const;
     void setSubjInfo(const SubjInfo &info);
     const SubjInfo &getSubjInfo() const;
 private:
     typedef QScopedPointer<SubjInfo> PtrInfo;
-    typedef QSharedPointer<TestData> PtrTestData;
-    typedef QVector<PtrTestData> TestDataV;
 private:
     Subject(const Subject &);
     Subject &operator=(const Subject &);

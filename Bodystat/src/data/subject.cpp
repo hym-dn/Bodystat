@@ -4,6 +4,28 @@
 #include<QObject>
 #include<QSqlQuery>
 #include<QVariant>
+#include<QtAlgorithms>
+
+static bool testDataLessThan(const Subject::PtrTestData &l,
+    const Subject::PtrTestData &r){
+    if(l->getDevModel()<r->getDevModel()){
+        return(true);
+    }else if(l->getDevModel()==r->getDevModel()){
+        if(l->getDevSeriNum()<r->getDevSeriNum()){
+            return(true);
+        }else if(l->getDevSeriNum()==r->getDevSeriNum()){
+            if(l->getTestDateTime()<r->getTestDateTime()){
+                return(true);
+            }else{
+                return(false);
+            }
+        }else{
+            return(false);
+        }
+    }else{
+        return(false);
+    }
+}
 
 Subject::Subject()
     :_info(new SubjInfo)
@@ -65,6 +87,40 @@ int Subject::push(QSqlQuery &query,
 
 int Subject::erase(QSqlQuery &query) const{
     return(_info->erase(query));
+}
+
+int Subject::assign(QSqlQuery &query,const TestDataV &testDataV){
+    if(testDataV.isEmpty()){
+        return(-1);
+    }
+    if(isValid()<0){
+        return(-2);
+    }
+    QString sql(QString("UPDATE TestData SET SubjectID='%1' WHERE")
+        .arg(_info->getId()));
+    for(TestDataV::const_iterator itr=testDataV.begin();
+        itr!=testDataV.end();++itr){
+        if((*itr).isNull()){
+            return(-3);
+        }
+        if((*itr)->isValid()<0){
+            return(-4);
+        }
+        if(itr!=testDataV.begin()){
+            sql+=" OR";
+        }
+        sql+=QString(" (DevModel=%1 AND DevSeriNum=%2 "
+            "AND TestDateTime=#%3#)").arg((*itr)->getDevModel())
+            .arg((*itr)->getDevSeriNum()).arg((*itr)->
+            getTestDateTimeText());
+    }
+    sql+=";";
+    if(!query.exec(sql)){
+        return(-5);
+    }
+    _testDataV.append(testDataV);
+    qSort(_testDataV.begin(),_testDataV.end(),testDataLessThan);
+    return(0);
 }
 
 int Subject::isValid(QString *msg/*=0*/) const{

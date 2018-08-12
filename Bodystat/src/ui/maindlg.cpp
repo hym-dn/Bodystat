@@ -10,6 +10,7 @@
 #include"../dev/devpool.h"
 #include"../dev/bluetooth.h"
 #include"../dev/bodystat.h"
+#include"assigndownloadwidget.h"
 #include"downloaddatawidget.h"
 #include<QSharedPointer>
 #include<QMessageBox>
@@ -70,6 +71,10 @@ void MainDlg::onEdtSubjToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_EDT_SUBJ);
 }
 
+void MainDlg::onAssignDownloadToolButtonClicked(bool){
+    creat(SUB_WIDGET_ID_ASN_DWLD);
+}
+
 void MainDlg::onDownloadDataToolButtonClicked(bool){
     if(!DevPool::instance()->getBodyStat()->getIsOpen()||
         !DevPool::instance()->getBodyStat()->getIsConnect()){
@@ -94,6 +99,7 @@ void MainDlg::onBtTaskStart(const unsigned int /*id*/){
     _ui->_delSubjToolButton->setDisabled(true);
     _ui->_edtSubjToolButton->setDisabled(true);
     _ui->_recSubjToolButton->setDisabled(true);
+    _ui->_assignDownloadToolButton->setDisabled(true);
     _ui->_downloadDataToolButton->setDisabled(true);
     _ui->_devInfoToolButton->setDisabled(true);
 }
@@ -105,6 +111,7 @@ void MainDlg::onBtTaskDone(
     _ui->_delSubjToolButton->setDisabled(false);
     _ui->_edtSubjToolButton->setDisabled(false);
     _ui->_recSubjToolButton->setDisabled(false);
+    _ui->_assignDownloadToolButton->setDisabled(false);
     _ui->_downloadDataToolButton->setDisabled(false);
     _ui->_devInfoToolButton->setDisabled(false);
 }
@@ -125,7 +132,7 @@ void MainDlg::customUi(){
     _ui->_recSubjToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
-    _ui->_distDwnlToolButton->setStyleSheet(
+    _ui->_assignDownloadToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
     _ui->_downloadDataToolButton->setStyleSheet(
@@ -150,6 +157,8 @@ void MainDlg::initUi(){
         this,SLOT(onDelSubjToolButtonClicked(bool)));
     connect(_ui->_edtSubjToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onEdtSubjToolButtonClicked(bool)));
+    connect(_ui->_assignDownloadToolButton,SIGNAL(clicked(bool)),
+        this,SLOT(onAssignDownloadToolButtonClicked(bool)));
     connect(_ui->_downloadDataToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onDownloadDataToolButtonClicked(bool)));
     connect(_ui->_devInfoToolButton,SIGNAL(clicked(bool)),
@@ -180,6 +189,9 @@ void MainDlg::creat(const SubWidgetID widgetId){
     }else if(SUB_WIDGET_ID_EDT_SUBJ==widgetId){
         _subWidget=new SubjWidget(SubjWidget::MODE_EDIT,
             &SubjPool::instance()->getCur()->getSubjInfo());
+        Q_ASSERT(0!=_subWidget);
+    }else if(SUB_WIDGET_ID_ASN_DWLD==widgetId){
+        _subWidget=new AssignDownloadWidget;
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DWL_DATA==widgetId){
         _subWidget=new DownloadDataWidget;

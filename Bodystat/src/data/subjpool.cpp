@@ -6,10 +6,10 @@
 #include<QSqlQuery>
 #include<QtAlgorithms>
 
-static bool subjMoreThan(
+static bool subjLessThan(
     const SubjPool::PtrSubj &l,const SubjPool::PtrSubj &r){
-    return(l->getSubjInfo().getAccsDt()>
-        r->getSubjInfo().getAccsDt());
+    return(l->getSubjInfo().getEntrDt()<
+        r->getSubjInfo().getEntrDt());
 }
 
 SubjPool::~SubjPool(){
@@ -40,7 +40,7 @@ int SubjPool::pull(QSqlDatabase &db){
         "TestData.ECWLegacy,TestData.TBWLegacy,TestData.OHY,TestData.SkMuscle,"
         "TestData.Cm,TestData.Rext,TestData.Rint,TestData.FC,TestData.Alpha,"
         "TestData.SubjectID FROM Subject LEFT JOIN TestData ON "
-        "Subject.ID=TestData.SubjectID ORDER BY Subject.AccessDateTime DESC,"
+        "Subject.ID=TestData.SubjectID ORDER BY Subject.EntryDateTime ASC,"
         "Subject.ID ASC,TestData.DevModel ASC,TestData.DevSeriNum ASC,"
         "TestData.TestDateTime ASC;");
     QSqlQuery query(db);
@@ -124,6 +124,22 @@ int SubjPool::erase(QSqlDatabase &db,
         }
     }
     return(-4);
+}
+
+int SubjPool::assign(QSqlDatabase &db,
+    const int subjIdx,const TestDataV &testDataV){
+    if(!db.isValid()||!db.isOpen()){
+        return(-1);
+    }
+    QMutexLocker locker(&_lock);
+    if(subjIdx<0||subjIdx>=_subjV.count()){
+        return(-2);
+    }
+    QSqlQuery query(db);
+    if(_subjV[subjIdx]->assign(query,testDataV)<0){
+        return(-3);
+    }
+    return(0);
 }
 
 int SubjPool::count() const{
@@ -210,5 +226,5 @@ SubjPool::PtrSubj SubjPool::find(const QString &subjId){
 void SubjPool::sort(){
     QMutexLocker locker(&_lock);
     qSort(_subjV.begin(),_subjV.end(),
-        subjMoreThan);
+        subjLessThan);
 }

@@ -11,6 +11,7 @@ template<typename T>
 class Singleton;
 class SubjInfo;
 class Subject;
+class TestData;
 
 class SubjPool
     :public QObject{
@@ -18,6 +19,8 @@ class SubjPool
 public:
     typedef QSharedPointer<Subject> PtrSubj;
     typedef QSharedPointer<const Subject> PtrCSubj;
+    typedef QSharedPointer<TestData> PtrTestData;
+    typedef QVector<PtrTestData> TestDataV;
 public:
     ~SubjPool();
 public:
@@ -30,6 +33,8 @@ public:
         const SubjInfo &info,const bool isAdd);
     int erase(QSqlDatabase &db,
         const QString &subjId);
+    int assign(QSqlDatabase &db,const int subjIdx,
+        const TestDataV &testDataV);
     int count() const;
     PtrCSubj get(const int idx) const;
     void setCur(const int iSubj);

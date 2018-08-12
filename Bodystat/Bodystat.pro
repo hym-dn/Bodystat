@@ -19,7 +19,8 @@ FORMS    += \
     ui/waitdialog.ui \
     ui/devinfowidget.ui \
     ui/downloaddatawidget.ui \
-    ui/startdialog.ui
+    ui/startdialog.ui \
+    ui/assigndownloadwidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -54,7 +55,8 @@ SOURCES += \
     src/ui/startdialog.cpp \
     src/task/taskpool.cpp \
     src/task/starttask.cpp \
-    src/data/subjinfo.cpp
+    src/data/subjinfo.cpp \
+    src/ui/assigndownloadwidget.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -89,7 +91,8 @@ HEADERS += \
     src/ui/startdialog.h \
     src/task/taskpool.h \
     src/task/starttask.h \
-    src/data/subjinfo.h
+    src/data/subjinfo.h \
+    src/ui/assigndownloadwidget.h
 
 DESTDIR += ../bin
 

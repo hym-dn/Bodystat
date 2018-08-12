@@ -259,7 +259,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="_distDwnlToolButton">
+          <widget class="QToolButton" name="_assignDownloadToolButton">
            <property name="minimumSize">
             <size>
              <width>63</width>

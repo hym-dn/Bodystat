@@ -2,6 +2,9 @@
 #include"../comm/singleton.h"
 #include"../../../include/BodystatSDK.h"
 #include"testdata.h"
+#include"subjinfo.h"
+#include"subject.h"
+#include"subjpool.h"
 #include<QSqlDatabase>
 #include<QDateTime>
 #include<QSqlQuery>
@@ -54,6 +57,31 @@ int TestDataPool::pull(QSqlDatabase &db){
     // 交换向量
     swap(dataV);
     // 返回
+    return(0);
+}
+
+int TestDataPool::assign(QSqlDatabase &db,
+    const int subjIdx,const QSet<int> &tdIdxS){
+    if(!db.isValid()||!db.isOpen()){
+        return(-1);
+    }
+    if(tdIdxS.isEmpty()){
+        return(-2);
+    }
+    QMutexLocker locker(&_lock);
+    DataV aDataV;
+    DataV rDataV;
+    for(int i=0;i<_dataV.count();++i){
+        if(tdIdxS.contains(i)){
+            aDataV.push_back(_dataV[i]);
+        }else{
+            rDataV.push_back(_dataV[i]);
+        }
+    }
+    if(SubjPool::instance()->assign(db,subjIdx,aDataV)<0){
+        return(-3);
+    }
+    _dataV.swap(rDataV);
     return(0);
 }
 
