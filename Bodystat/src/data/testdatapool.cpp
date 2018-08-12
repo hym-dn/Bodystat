@@ -15,6 +15,48 @@ TestDataPool *TestDataPool::instance(){
     return(Singleton<TestDataPool>::instance());
 }
 
+int TestDataPool::pull(QSqlDatabase &db){
+    // 数据库非法
+    if(!db.isValid()||!db.isOpen()){
+        return(-1);
+    }
+    // 查找SQL
+    QString sql("SELECT DevModel,DevSeriNum,TestDateTime,"
+        "Sex,Age,Height,Weight,Activity,Waist,Hip,Iz5kHz,"
+        "IZ50kHz,Iz100kHz,Iz200kHz,Ir50kHz,Fx50kHz,Fpa50kHz,"
+        "FatPerc,FatKg,LeanPerc,LeanKg,TotalWeight,DryLW,"
+        "TBWPerc,TBW,ECWPerc,ECW,ICWPerc,ICW,BCM,ThirdSpace,"
+        "Nutrition,Illness,BMR,BMRKg,EstAvg,BMI,BFMI,FFMI,"
+        "WaistHip,Wellness,ECWLegacy,TBWLegacy,OHY,SkMuscle,"
+        "Cm,Rext,Rint,FC,Alpha,SubjectID FROM TestData WHERE "
+        "SubjectID IS null ORDER BY DevModel,DevSeriNum,"
+        "TestDateTime ASC;");
+    // 执行SQL
+    QSqlQuery query(db);
+    if(!query.exec(sql)){
+        return(-2);
+    }
+    // 获取测试数据
+    DataV dataV;
+    while(query.next()){
+        // 创建测试数据
+        PtrToData data(new TestData);
+        if(data.isNull()){
+            continue;
+        }
+        // 下载测试数据
+        if(data->pull(query)<0){
+            continue;
+        }
+        // 加入向量
+        dataV.push_back(data);
+    }
+    // 交换向量
+    swap(dataV);
+    // 返回
+    return(0);
+}
+
 void TestDataPool::clear(){
     QMutexLocker locker(&_lock);
     _dataV.clear();
@@ -31,7 +73,8 @@ int TestDataPool::add(QSqlDatabase &db,
     if(!db.isValid()||!db.isOpen()){
         return(-1);
     }
-    // 检测数据是否已经分配
+    // 检测测试分配
+    /*
     QString sql=QString("SELECT COUNT(*) FROM TestData WHERE "
         "DevModel=%1 AND DevSeriNum=%2 AND TestDateTime='%3';")
         .arg(mData.iDeviceModel).arg(mData.ulDeviceSerialNumber)
@@ -44,13 +87,22 @@ int TestDataPool::add(QSqlDatabase &db,
     if(query.next()&&query.value(0).toInt()>0){// 测试数据已经分配
         return(1);
     }
-    // 创建测试
-    PtrToData data(new TestData(mData));
-    if(data.isNull()){
+    */
+    // 换算测试结果
+    Bodystat::BSResults mRes;
+    if(Bodystat::NoError!=Bodystat::BSCalculateResults(
+        &mData,&mRes,Bodystat::BSAnalysisModeBoth)){
         return(-3);
     }
-    if(data->isValid()<0){
+    // 创建测试
+    PtrToData data(new TestData(mData,mRes));
+    if(data.isNull()){
         return(-4);
+    }
+    // 推送测试
+    QSqlQuery query_t(db);
+    if(data->push(query_t)<0){
+        return(-5);
     }
     // 插入测试数据
     add(data);
@@ -77,4 +129,9 @@ TestDataPool::TestDataPool(QObject *parent/*=0*/)
 void TestDataPool::add(PtrToData &data){
     QMutexLocker locker(&_lock);
     _dataV.push_back(data);
+}
+
+void TestDataPool::swap(DataV &dataV){
+    QMutexLocker locker(&_lock);
+    _dataV.swap(dataV);
 }

@@ -245,9 +245,11 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
             return;
         }
         // 清除测试数据
-        TestDataPool::instance()->clear();
+        // TestDataPool::instance()->clear();
         // 追加测试数据
         for(int i=0;i<rawData.iTotalNumRecs;++i){
+            rawData.record[i].iFrequencies=0;
+            rawData.record[i].pMultifreqData=0;
             TestDataPool::instance()->add(
                 DBManager::instance()->getDB(),rawData.record[i]);
         }

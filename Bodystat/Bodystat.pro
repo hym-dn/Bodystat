@@ -18,7 +18,8 @@ FORMS    += \
     ui/selsubjwidget.ui \
     ui/waitdialog.ui \
     ui/devinfowidget.ui \
-    ui/downloaddatawidget.ui
+    ui/downloaddatawidget.ui \
+    ui/startdialog.ui
 
 SOURCES += \
     src/main.cpp \
@@ -34,7 +35,6 @@ SOURCES += \
     src/ui/cursubjwidget.cpp \
     src/task/taskproc.cpp \
     src/task/task.cpp \
-    src/task/taskstream.cpp \
     src/task/pullsubjvtask.cpp \
     src/ui/waitdialog.cpp \
     src/ui/subjlistmodel.cpp \
@@ -50,7 +50,11 @@ SOURCES += \
     src/data/testdata.cpp \
     src/data/testdatapool.cpp \
     src/ui/downloaddatawidget.cpp \
-    src/ui/testdatatablemodel.cpp
+    src/ui/testdatatablemodel.cpp \
+    src/ui/startdialog.cpp \
+    src/task/taskpool.cpp \
+    src/task/starttask.cpp \
+    src/data/subjinfo.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -66,7 +70,6 @@ HEADERS += \
     src/data/subjpool.h \
     src/task/taskproc.h \
     src/task/task.h \
-    src/task/taskstream.h \
     src/task/pullsubjvtask.h \
     src/ui/waitdialog.h \
     src/ui/subjlistmodel.h \
@@ -82,7 +85,11 @@ HEADERS += \
     src/data/testdata.h \
     src/data/testdatapool.h \
     src/ui/downloaddatawidget.h \
-    src/ui/testdatatablemodel.h
+    src/ui/testdatatablemodel.h \
+    src/ui/startdialog.h \
+    src/task/taskpool.h \
+    src/task/starttask.h \
+    src/data/subjinfo.h
 
 DESTDIR += ../bin
 

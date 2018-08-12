@@ -1,4 +1,6 @@
 ﻿#include"subjlistmodel.h"
+#include"../data/subjinfo.h"
+#include"../data/subject.h"
 #include"../data/subjpool.h"
 
 SubjListModel::SubjListModel(
@@ -11,7 +13,7 @@ SubjListModel::~SubjListModel(){
 
 int SubjListModel::rowCount(
     const QModelIndex &/*parent*/) const{
-    return(SubjPool::instance()->getSubjVCount());
+    return(SubjPool::instance()->count());
 }
 
 QVariant SubjListModel::data(
@@ -19,8 +21,13 @@ QVariant SubjListModel::data(
     if(!index.isValid()){
         return(QVariant());
     }else if(Qt::DisplayRole==role){
-        return(SubjPool::instance()->
-            getSubjBrief(index.row()));
+        SubjPool::PtrCSubj subj=SubjPool::
+            instance()->get(index.row());
+        if(subj.isNull()){
+            return(QVariant());
+        }else{
+            return(subj->getSubjInfo().getBrief());
+        }
     }else{
         return QVariant();
     }

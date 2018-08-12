@@ -3,12 +3,15 @@
 
 #include<QDateTime>
 
+class QSqlQuery;
 namespace Bodystat{
     struct BSMeasurement;
+    struct BSResults;
 }
 
 class TestData{
 public:
+    enum{PREC_LIMIT=3,};
     typedef enum{
         SEX_UNKNOWN=0,
         SEX_MALE=1,
@@ -17,13 +20,18 @@ public:
     }Sex;
 public:
     TestData();
-    explicit TestData(const Bodystat::BSMeasurement &meas);
+    explicit TestData(
+        const Bodystat::BSMeasurement &meas,
+        const Bodystat::BSResults &ress);
     explicit TestData(const TestData &src);
     ~TestData();
 public:
     int isValid() const;
+    int pull(QSqlQuery &query,const unsigned long sIdx=0);
+    int push(QSqlQuery &query);
     void setDevModel(const unsigned int model);
     unsigned int getDevModel() const;
+    QString getDevModelText() const;
     void setDevSeriNum(const unsigned long seriNum);
     unsigned long getDevSeriNum() const;
     QString getDevSeriNumText() const;
@@ -64,6 +72,107 @@ public:
     float getFx50kHz() const;
     void setFpa50kHz(const float fpa50kHz);
     float getFpa50kHz() const;
+    void setFatPerc(const float fatPerc);
+    float getFatPerc() const;
+    QString getFatPercText() const;
+    void setFatKg(const float fatKg);
+    float getFatKg() const;
+    QString getFatKgText() const;
+    void setLeanPerc(const float leanPerc);
+    float getLeanPerc() const;
+    QString getLeanPercText() const;
+    void setLeanKg(const float leanKg);
+    float getLeanKg() const;
+    QString getLeanKgText() const;
+    void setTotalWeight(const float totalWeight);
+    float getTotalWeight() const;
+    QString getTotalWeightText() const;
+    void setDryLW(const float dryLW);
+    float getDryLW() const;
+    QString getDryLWText() const;
+    void setTbwPerc(const float tbwPerc);
+    float getTbwPerc() const;
+    QString getTbwPercText() const;
+    void setTbw(const float tbw);
+    float getTbw() const;
+    QString getTbwText() const;
+    void setEcwPerc(const float ecwPerc);
+    float getEcwPerc() const;
+    QString getEcwPercText() const;
+    void setEcw(const float ecw);
+    float getEcw() const;
+    QString getEcwText() const;
+    void setIcwPerc(const float icwPerc);
+    float getIcwPerc() const;
+    QString getIcwPercText() const;
+    void setIcw(const float icw);
+    float getIcw() const;
+    QString getIcwText() const;
+    void setBcm(const float bcm);
+    float getBcm() const;
+    QString getBcmText() const;
+    void setThirdSpace(const float thirdSpace);
+    float getThirdSpace() const;
+    QString gethirdSpaceText() const;
+    void setNutrition(const float nutrition);
+    float getNutrition() const;
+    QString getNutritionText() const;
+    void setIllness(const float illness);
+    float getIllness() const;
+    QString getIllnessText() const;
+    void setBmr(const float bmr);
+    float getBmr() const;
+    QString getBmrText() const;
+    void setBmrKg(const float bmrKg);
+    float getBmrKg() const;
+    QString getBmrKgText() const;
+    void setEstAvg(const float estAvg);
+    float getEstAvg() const;
+    QString getEstAvgText() const;
+    void setBmi(const float bmi);
+    float getBmi() const;
+    QString getBmiText() const;
+    void setBfmi(const float bfmi);
+    float getBfmi() const;
+    QString getBfmiText() const;
+    void setFfmi(const float ffmi);
+    float getFfmi() const;
+    QString getFfmiText() const;
+    void setWaistHip(const float waistHip);
+    float getWaistHip() const;
+    QString getWaistHipText() const;
+    void setWellness(const float wellness);
+    float getWellness() const;
+    QString getWellnessText() const;
+    void setEcwLegacy(const float ecwLegacy);
+    float getEcwLegacy() const;
+    QString getEcwLegacyText() const;
+    void setTbwLegacy(const float tbwLegacy);
+    float getTbwLegacy() const;
+    QString getTbwLegacyText() const;
+    void setOhy(const float ohy);
+    float getOhy() const;
+    QString getOhyText() const;
+    void setSkMuscle(const float skMuscle);
+    float getSkMuscle() const;
+    QString getSkMuscleText() const;
+    void setCm(const float cm);
+    float getCm() const;
+    QString getCmText() const;
+    void setRext(const float rext);
+    float getRext() const;
+    QString getRextText() const;
+    void setRint(const float rint);
+    float getRint() const;
+    QString getRintText() const;
+    void setFc(const float fc);
+    float getFc() const;
+    QString getFcText() const;
+    void setAlpha(const float alpha);
+    float getAlpha() const;
+    QString getAlphaText() const;
+    void setSubjId(const QString &subjId);
+    const QString &getSubjId() const;
 public:
     TestData &operator=(const TestData &src);
 private:
@@ -84,6 +193,40 @@ private:
     int _ir50kHz;
     float _fx50kHz;
     float _fpa50kHz;
+    float _fatPerc; // 脂肪（%）
+    float _fatKg; // 脂肪（kg）
+    float _leanPerc; // 瘦肉（%）
+    float _leanKg; // 瘦肉（kg）
+    float _totalWeight;   // Total Weight (in kg)
+    float _dryLW; // 干瘦肉（kg）
+    float _tbwPerc; // 总水量（%）
+    float _tbw; // 总水量（升）
+    float _ecwPerc; // 细胞外液（%）
+    float _ecw; // 细胞外液（升）
+    float _icwPerc; // 细胞内液（%）
+    float _icw; // 细胞内液（升）
+    float _bcm; // 人体细胞总量
+    float _thirdSpace;	// 第三空间水（升）
+    float _nutrition; // 营养指数
+    float _illness; // 预测指数
+    float _bmr; // 基础代谢率（kcal）
+    float _bmrKg; // Basal Metabolic Rate per kilogram in (kcal/kg)
+    float _estAvg; // 基础需能量 (kcal)
+    float _bmi; // 身体质量指数
+    float _bfmi; // 身体脂肪质量指数
+    float _ffmi; // 非脂肪质量指数
+    float _waistHip; // 腰臀比
+    float _wellness; // Wellness Marker (TM)	(MDD only)
+    float _ecwLegacy; // Legacy ECW calculation (QuanScan mode)
+    float _tbwLegacy;
+    float _ohy; // Over hydration
+    float _skMuscle; // 骨骼肌
+    float _cm; // Cell membrane capacitance
+    float _rext; // R extracellular
+    float _rint; // R intracellular
+    float _fc; // Characteristic frequency
+    float _alpha; // 相位角
+    QString _subjId;
 };
 
 #endif // TEST_DATA_H

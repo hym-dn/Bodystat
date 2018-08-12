@@ -28,7 +28,7 @@ int PullSubjVTask::exec(QSqlDatabase &db){
     if(_isDelay){
         tm.start();
     }
-    if(SubjPool::instance()->pullSubjV(db)<0){
+    if(SubjPool::instance()->pull(db)<0){
         return(-3);
     }
     if(_isDelay){

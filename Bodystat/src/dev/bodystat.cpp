@@ -22,6 +22,23 @@ BodyStat::BodyStat(QObject *parent/*=0*/)
 BodyStat::~BodyStat(){
 }
 
+QString BodyStat::getModelText(
+    const unsigned int model){
+    if(model<Bodystat::BSUnknown||
+        model>Bodystat::BSMultiScanTouch){
+        return(QString());
+    }
+    TCHAR modTxt[32]={0};
+    if(Bodystat::NoError!=Bodystat::
+        BSGetDeviceModelName(static_cast<
+        Bodystat::BSDeviceModel>(model),
+        modTxt,32)){
+        return(QString());
+    }else{
+        return(QString::fromUtf16((ushort*)modTxt));
+    }
+}
+
 void BodyStat::reset(){
     {
         QMutexLocker locker(&_lock);
@@ -92,15 +109,7 @@ unsigned int BodyStat::getModel() const{
 }
 
 QString BodyStat::getModelText() const{
-    TCHAR model[32]={0};
-    if(Bodystat::NoError!=Bodystat::
-        BSGetDeviceModelName(static_cast<
-        Bodystat::BSDeviceModel>(getModel()),
-        model,32)){
-        return(QString());
-    }else{
-        return(QString::fromUtf16((ushort*)model));
-    }
+    return(getModelText(getModel()));
 }
 
 void BodyStat::setIsOpen(const bool isOpen){

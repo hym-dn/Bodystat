@@ -2,6 +2,7 @@
 #include"ui_cursubjwidget.h"
 #include"../data/subjpool.h"
 #include"../data/subject.h"
+#include"../data/subjinfo.h"
 
 CurSubjWidget::CurSubjWidget(
     QWidget *parent/*=0*/)
@@ -20,24 +21,28 @@ void CurSubjWidget::onCurSubjChanged(){
 }
 
 void CurSubjWidget::initUi(){
-    connect(SubjPool::instance(),SIGNAL(curSubjChanged()),
-        this,SLOT(onCurSubjChanged()));
+    connect(SubjPool::instance(),
+        SIGNAL(curSubjChanged()),this,
+        SLOT(onCurSubjChanged()));
     updateUi();
 }
 
 void CurSubjWidget::updateUi(){
-    /*
-    _ui->_idLineEdit->setText(
-        SubjPool::instance()->
-        getCurSubj().getId());
-    _ui->_nameLineEdit->setText(
-        SubjPool::instance()->
-        getCurSubj().getName());
-    _ui->_birthdayLineEdit->setText(
-        SubjPool::instance()->
-        getCurSubj().getBirthdayText());
-    _ui->_sexLineEdit->setText(
-        SubjPool::instance()->
-        getCurSubj().getSexText());
-    */
+    SubjPool::PtrCSubj subj=
+        SubjPool::instance()->getCur();
+    if(subj.isNull()){
+        _ui->_idLineEdit->setText("");
+        _ui->_nameLineEdit->setText("");
+        _ui->_birthdayLineEdit->setText("");
+        _ui->_sexLineEdit->setText("");
+    }else{
+        _ui->_idLineEdit->setText(
+            subj->getSubjInfo().getId());
+        _ui->_nameLineEdit->setText(
+            subj->getSubjInfo().getName());
+        _ui->_birthdayLineEdit->setText(
+            subj->getSubjInfo().getBirthdayText());
+        _ui->_sexLineEdit->setText(
+            subj->getSubjInfo().getSexText());
+    }
 }

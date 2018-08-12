@@ -9,6 +9,7 @@
 
 template<typename T>
 class Singleton;
+class SubjInfo;
 class Subject;
 
 class SubjPool
@@ -16,7 +17,7 @@ class SubjPool
     Q_OBJECT
 public:
     typedef QSharedPointer<Subject> PtrSubj;
-    typedef QVector<PtrSubj> SubjV;
+    typedef QSharedPointer<const Subject> PtrCSubj;
 public:
     ~SubjPool();
 public:
@@ -24,24 +25,33 @@ public:
 signals:
     void curSubjChanged();
 public:
-    void setCurSubj(const Subject &subj);
-    const Subject &getCurSubj() const;
-    void clearCurSubj();
-    int pullSubjV(QSqlDatabase &db);
-    int getSubjVCount() const;
-    const Subject &getSubj(const int index) const;
-    QString getSubjBrief(const int index) const;
-    void clearSubjV();
+    int pull(QSqlDatabase &db);
+    int push(QSqlDatabase &db,
+        const SubjInfo &info,const bool isAdd);
+    int erase(QSqlDatabase &db,
+        const QString &subjId);
+    int count() const;
+    PtrCSubj get(const int idx) const;
+    void setCur(const int iSubj);
+    void setCur(const QString &subjId);
+    PtrCSubj getCur() const;
 private:
     friend class Singleton<SubjPool>;
+    typedef QVector<PtrSubj> SubjV;
 private:
     explicit SubjPool(QObject *parent=0);
 private:
     SubjPool(const SubjPool&);
     SubjPool &operator=(const SubjPool&);
 private:
+    void add(const PtrSubj &subj);
+    void swap(SubjV &subjV);
+    bool contain(const QString &subjId) const;
+    PtrSubj find(const QString &subjId);
+    void sort();
+private:
     mutable QMutex _lock;
-    Subject *_curSubj;
+    int _curSubj;
     SubjV _subjV;
 };
 

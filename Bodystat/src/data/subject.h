@@ -6,65 +6,36 @@
 #include<QSqlDatabase>
 #include<QSqlQuery>
 #include<QDate>
+#include<QScopedPointer>
+#include<QSharedPointer>
+#include<QVector>
+
+class SubjInfo;
+class TestData;
 
 class Subject{
 public:
-    typedef enum{
-        SEX_UNKNOWN=0,
-        SEX_MALE=1,
-        SEX_FEMALE=2,
-        SEX_OTHER=3,
-    }Sex;
-public:
     Subject();
-    Subject(const Subject &src);
     ~Subject();
 public:
     int pull(QSqlQuery &query);
-    int push(QSqlDatabase &db,const bool isAdd);
+    int push(QSqlQuery &query,
+        const SubjInfo &subjInfo,
+        const bool isAdd);
+    int erase(QSqlQuery &query) const;
     int isValid(QString *msg=0) const;
-    void setId(const QString &id);
-    const QString &getId() const;
-    void setName(const QString &name);
-    const QString &getName() const;
-    void setBirthday(const QDate &birthday);
-    const QDate &getBirthday() const;
-    QString getBirthdayText() const;
-    void setSex(const Sex sex);
-    Sex getSex() const;
-    QString getSexText() const;
-    void setTelNo(const QString &telNo);
-    const QString &getTelNo() const;
-    void setMobNo(const QString &mobNo);
-    const QString &getMobNo() const;
-    void setEmail(const QString &email);
-    const QString &getEmail() const;
-    void setAddr(const QString &addr);
-    const QString &getAddr() const;
-    void setEntryDateTime(const QDateTime &time);
-    const QDateTime &getEntryDateTime() const;
-    QString getEntryDateTimeText() const;
-    void setModifyDateTime(const QDateTime &time);
-    const QDateTime &getModifyDateTime() const;
-    QString getModifyDateTimeText() const;
-    void setAccessDateTime(const QDateTime &time);
-    const QDateTime &getAccessDateTime() const;
-    QString getAccessDateTimeText() const;
-    QString getBrief() const;
-public:
-    Subject &operator=(const Subject &src);
+    void setSubjInfo(const SubjInfo &info);
+    const SubjInfo &getSubjInfo() const;
 private:
-    QString _id;
-    QString _name;
-    QDate _birthday;
-    Sex _sex;
-    QString _telNo;
-    QString _mobNo;
-    QString _email;
-    QString _addr;
-    QDateTime _entryDateTime;
-    QDateTime _modifyDateTime;
-    QDateTime _accessDateTime;
+    typedef QScopedPointer<SubjInfo> PtrInfo;
+    typedef QSharedPointer<TestData> PtrTestData;
+    typedef QVector<PtrTestData> TestDataV;
+private:
+    Subject(const Subject &);
+    Subject &operator=(const Subject &);
+private:
+    PtrInfo _info;
+    TestDataV _testDataV;
 };
 
 #endif // SUBJECT_H

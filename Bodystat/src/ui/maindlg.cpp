@@ -3,9 +3,6 @@
 #include"../theme/thememanager.h"
 #include"subjwidget.h"
 #include"cursubjwidget.h"
-#include"waitdialog.h"
-#include"../task/pullsubjvtask.h"
-#include"../task/taskpool.h"
 #include"selsubjwidget.h"
 #include"../data/subject.h"
 #include"../data/subjpool.h"
@@ -44,35 +41,11 @@ void MainDlg::onNewSubjToolButtonClicked(bool){
 }
 
 void MainDlg::onSelSubjToolButtonClicked(bool){
-    /*
-    WaitDialog::PtrTask task(new PullSubjVTask(
-        TaskPool::PROC_ROUTINE,true));
-    if(task.isNull()){
-        QMessageBox msgBox(QMessageBox::Critical,
-            tr("异常"),tr("内存异常，请重试！"));
-        msgBox.setFont(font());
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
-        msgBox.exec();
-        return;
-    }
-    WaitDialog dlg(task);
-    if(0==dlg.exec()){
-        QMessageBox msgBox(QMessageBox::Warning,
-            tr("报警"),tr("主题信息查询失败，请重试！"));
-        msgBox.setFont(font());
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
-        msgBox.exec();
-        return;
-    }
-    */
     creat(SUB_WIDGET_ID_SEL_SUBJ);
 }
 
 void MainDlg::onDelSubjToolButtonClicked(bool){
-    /*
-    if(SubjPool::instance()->getCurSubj().isValid()<0){
+    if(SubjPool::instance()->getCur().isNull()){
         QMessageBox msgBox(QMessageBox::Warning,
             tr("报警"),tr("没有主题被选择！"));
         msgBox.setFont(font());
@@ -81,13 +54,11 @@ void MainDlg::onDelSubjToolButtonClicked(bool){
         msgBox.exec();
         return;
     }
-    */
     creat(SUB_WIDGET_ID_DEL_SUBJ);
 }
 
 void MainDlg::onEdtSubjToolButtonClicked(bool){
-    /*
-    if(SubjPool::instance()->getCurSubj().isValid()<0){
+    if(SubjPool::instance()->getCur().isNull()){
         QMessageBox msgBox(QMessageBox::Warning,
             tr("报警"),tr("没有主题被选择！"));
         msgBox.setFont(font());
@@ -96,7 +67,6 @@ void MainDlg::onEdtSubjToolButtonClicked(bool){
         msgBox.exec();
         return;
     }
-    */
     creat(SUB_WIDGET_ID_EDT_SUBJ);
 }
 
@@ -204,12 +174,12 @@ void MainDlg::creat(const SubWidgetID widgetId){
         _subWidget=new SelSubjWidget;
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DEL_SUBJ==widgetId){
-        //_subWidget=new SubjWidget(SubjWidget::MODE_DELETE,
-            //SubjPool::instance()->getCurSubj());
+        _subWidget=new SubjWidget(SubjWidget::MODE_DELETE,
+            &SubjPool::instance()->getCur()->getSubjInfo());
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_EDT_SUBJ==widgetId){
-        //_subWidget=new SubjWidget(SubjWidget::MODE_EDIT,
-            //SubjPool::instance()->getCurSubj());
+        _subWidget=new SubjWidget(SubjWidget::MODE_EDIT,
+            &SubjPool::instance()->getCur()->getSubjInfo());
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DWL_DATA==widgetId){
         _subWidget=new DownloadDataWidget;

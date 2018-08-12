@@ -25,6 +25,7 @@ public:
 public:
     static TestDataPool *instance();
 public:
+    int pull(QSqlDatabase &db);
     void clear();
     int count() const;
     int add(QSqlDatabase &db,
@@ -38,6 +39,7 @@ private:
     explicit TestDataPool(QObject *parent=0);
 private:
     void add(PtrToData &data);
+    void swap(DataV &dataV);
 private:
     TestDataPool(const TestDataPool &);
     TestDataPool &operator=(const TestDataPool &);

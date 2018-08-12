@@ -1,4 +1,6 @@
 ﻿#include"subjsortfilterproxymodel.h"
+#include"../data/subjinfo.h"
+#include"../data/subject.h"
 #include"../data/subjpool.h"
 
 SubjSortFilterProxyModel::SubjSortFilterProxyModel(
@@ -29,7 +31,13 @@ bool SubjSortFilterProxyModel::filterAcceptsRow(
     }else{
         const QModelIndex srcIndex=sourceModel()->
             index(source_row,0,source_parent);
-        return(SubjPool::instance()->getSubjBrief(
-            srcIndex.row()).contains(_matchString));
+        SubjPool::PtrCSubj subj=SubjPool::instance()
+            ->get(srcIndex.row());
+        if(subj.isNull()){
+            return(false);
+        }else{
+            return(((subj->getSubjInfo()).getBrief())
+                .contains(_matchString));
+        }
     }
 }

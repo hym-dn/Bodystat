@@ -18,6 +18,9 @@ signals:
     void calibDateChanged();
     void modelChanged();
 public:
+    static QString getModelText(
+        const unsigned int model);
+public:
     void reset();
     void setName(const QString &name);
     const QString &getName() const;

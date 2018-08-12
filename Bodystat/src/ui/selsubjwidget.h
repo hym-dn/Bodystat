@@ -7,7 +7,7 @@
 namespace Ui{
     class SelSubjWidget;
 }
-class Subject;
+class SubjInfo;
 
 class SelSubjWidget
     :public MdiSubWidget{
@@ -15,8 +15,6 @@ class SelSubjWidget
 public:
     explicit SelSubjWidget(QWidget *parent=0);
     ~SelSubjWidget();
-protected:
-    virtual void closeEvent(QCloseEvent *event);
 private slots:
     void onFilterLineEditTextChanged(const QString &text);
     void onSubjListViewSelectionChanged(
@@ -25,9 +23,9 @@ private slots:
     void onSelSubjPushButtonClicked(bool);
 private:
     void initUi();
-    void clearSubj();
-    void showSubj(const Subject &subj);
-    void updateCurSubj(const Subject &subj);
+    void clearSubjInfo();
+    void showSubjInfo(const SubjInfo &subjInfo);
+    void updateCurSubjInfo(const SubjInfo &subjInfo);
 private:
     Ui::SelSubjWidget *_ui;
 };

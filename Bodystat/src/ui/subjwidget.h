@@ -2,26 +2,24 @@
 #define SUBJ_WIDGET_H
 
 #include"mdisubwidget.h"
+#include<QScopedPointer>
 
 namespace Ui{
     class SubjWidget;
 }
-class Subject;
+class SubjInfo;
 
 class SubjWidget
     :public MdiSubWidget{
     Q_OBJECT
 public:
-    typedef enum{
-        MODE_NEW=1,
-        MODE_EDIT=2,
-        MODE_DELETE=3,
-    }Mode;
+    typedef enum{MODE_NEW=1,
+        MODE_EDIT=2,MODE_DELETE=3,}Mode;
 public:
     explicit SubjWidget(
-        const Mode mode=MODE_NEW,QWidget *parent=0);
-    explicit SubjWidget(const Mode mode,
-        const Subject &subj,QWidget *parent=0);
+        const Mode mode=MODE_NEW,
+        const SubjInfo *subjInfo=0,
+        QWidget *parent=0);
     virtual ~SubjWidget();
 private slots:
     void onSavePushButtonClicked(bool);
@@ -30,10 +28,12 @@ private slots:
 private:
     void initUi();
     void toUi();
-    int toSubject(Subject &subj) const;
+    int toSubjInfo(SubjInfo &subjInfo) const;
+private:
+    typedef QScopedPointer<SubjInfo> PtrSubjInfo;
 private:
     const Mode _mode;
-    Subject *_subject;
+    PtrSubjInfo _subjInfo;
     Ui::SubjWidget *_ui;
 };
 
