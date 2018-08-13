@@ -16,6 +16,7 @@ class TestData;
 class Subject{
 public:
     typedef QSharedPointer<TestData> PtrTestData;
+    typedef QSharedPointer<const TestData> PtrCTestData;
     typedef QVector<PtrTestData> TestDataV;
 public:
     Subject();
@@ -30,6 +31,8 @@ public:
     int isValid(QString *msg=0) const;
     void setSubjInfo(const SubjInfo &info);
     const SubjInfo &getSubjInfo() const;
+    int getTestDataCount() const;
+    PtrCTestData getTestData(const int idx) const;
 private:
     typedef QScopedPointer<SubjInfo> PtrInfo;
 private:

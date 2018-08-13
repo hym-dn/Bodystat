@@ -160,8 +160,10 @@ void SubjPool::setCur(const int iSubj){
     {
         QMutexLocker locker(&_lock);
         _curSubj=iSubj;
+        _curTestData=-1;
     }
     emit curSubjChanged();
+    emit curTestDataChanged();
 }
 
 void SubjPool::setCur(const QString &subjId){
@@ -170,10 +172,13 @@ void SubjPool::setCur(const QString &subjId){
         for(int i=0;i<_subjV.count();++i){
             if(subjId==_subjV.at(i)->getSubjInfo().getId()){
                 _curSubj=i;
+                _curTestData=-1;
+                break;
             }
         }
     }
     emit curSubjChanged();
+    emit curTestDataChanged();
 }
 
 SubjPool::PtrCSubj SubjPool::getCur() const{
@@ -185,10 +190,41 @@ SubjPool::PtrCSubj SubjPool::getCur() const{
     }
 }
 
+void SubjPool::setCurTestData(const int tdIdx){
+    {
+        QMutexLocker locker(&_lock);
+        _curTestData=tdIdx;
+    }
+    emit curTestDataChanged();
+}
+
+SubjPool::PtrCTestData SubjPool::getCurTestData() const{
+    return(getCurTestData(_curTestData));
+}
+
+int SubjPool::getCurTestDataCount() const{
+    QMutexLocker locker(&_lock);
+    if(_curSubj<0||_curSubj>=_subjV.count()){
+        return(0);
+    }else{
+        return(_subjV.at(_curSubj)->getTestDataCount());
+    }
+}
+
+SubjPool::PtrCTestData SubjPool::getCurTestData(const int i) const{
+    QMutexLocker locker(&_lock);
+    if(_curSubj<0||_curSubj>=_subjV.count()){
+        return(PtrCTestData());
+    }else{
+        return(_subjV.at(_curSubj)->getTestData(i));
+    }
+}
+
 SubjPool::SubjPool(QObject *parent/*=0*/)
     :QObject(parent)
     ,_lock()
     ,_curSubj(-1)
+    ,_curTestData(-1)
     ,_subjV(){
 }
 

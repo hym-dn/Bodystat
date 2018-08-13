@@ -20,6 +20,7 @@ public:
     typedef QSharedPointer<Subject> PtrSubj;
     typedef QSharedPointer<const Subject> PtrCSubj;
     typedef QSharedPointer<TestData> PtrTestData;
+    typedef QSharedPointer<const TestData> PtrCTestData;
     typedef QVector<PtrTestData> TestDataV;
 public:
     ~SubjPool();
@@ -27,6 +28,7 @@ public:
     static SubjPool *instance();
 signals:
     void curSubjChanged();
+    void curTestDataChanged();
 public:
     int pull(QSqlDatabase &db);
     int push(QSqlDatabase &db,
@@ -40,6 +42,10 @@ public:
     void setCur(const int iSubj);
     void setCur(const QString &subjId);
     PtrCSubj getCur() const;
+    void setCurTestData(const int tdIdx);
+    PtrCTestData getCurTestData() const;
+    int getCurTestDataCount() const;
+    PtrCTestData getCurTestData(const int i) const;
 private:
     friend class Singleton<SubjPool>;
     typedef QVector<PtrSubj> SubjV;
@@ -57,6 +63,7 @@ private:
 private:
     mutable QMutex _lock;
     int _curSubj;
+    int _curTestData;
     SubjV _subjV;
 };
 

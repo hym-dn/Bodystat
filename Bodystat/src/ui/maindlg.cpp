@@ -12,6 +12,7 @@
 #include"../dev/bodystat.h"
 #include"assigndownloadwidget.h"
 #include"downloaddatawidget.h"
+#include"curtestdatawidget.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 
@@ -172,6 +173,8 @@ void MainDlg::initUi(){
         const unsigned int)));
     _ui->_subjDockWidget->setWidget(
         new CurSubjWidget(_ui->_subjDockWidget));
+    _ui->_testDockWidget->setWidget(
+        new CurTestDataWidget(_ui->_testDockWidget));
 }
 
 void MainDlg::creat(const SubWidgetID widgetId){
@@ -195,6 +198,8 @@ void MainDlg::creat(const SubWidgetID widgetId){
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DWL_DATA==widgetId){
         _subWidget=new DownloadDataWidget;
+        connect(_subWidget,SIGNAL(showAssignDownloadWidget(bool)),
+            this,SLOT(onAssignDownloadToolButtonClicked(bool)));
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DEV_INFO==widgetId){
         _subWidget=new DevInfoWidget;

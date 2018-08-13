@@ -6,22 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>148</width>
-    <height>116</height>
+    <width>176</width>
+    <height>231</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="_idLabel">
      <property name="text">
       <string>ID</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="1">
     <widget class="QLineEdit" name="_nameLineEdit">
      <property name="enabled">
       <bool>false</bool>
@@ -43,21 +43,14 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="_nameLabel">
+   <item row="4" column="0">
+    <widget class="QLabel" name="_sexLabel">
      <property name="text">
-      <string>姓名</string>
+      <string>性别</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="_birthdayLabel">
-     <property name="text">
-      <string>生日</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
+   <item row="1" column="1">
     <widget class="QLineEdit" name="_idLineEdit">
      <property name="enabled">
       <bool>false</bool>
@@ -79,14 +72,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="_sexLabel">
-     <property name="text">
-      <string>性别</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="QLineEdit" name="_sexLineEdit">
      <property name="enabled">
       <bool>false</bool>
@@ -108,7 +94,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <widget class="QLineEdit" name="_birthdayLineEdit">
      <property name="enabled">
       <bool>false</bool>
@@ -129,6 +115,49 @@
       <bool>false</bool>
      </property>
     </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="_birthdayLabel">
+     <property name="text">
+      <string>生日</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="_nameLabel">
+     <property name="text">
+      <string>姓名</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="_subjLabel">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>主题信息</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="_testLabel">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>测试信息</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QListView" name="_testDataListView"/>
    </item>
   </layout>
  </widget>

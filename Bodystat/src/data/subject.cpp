@@ -149,3 +149,15 @@ void Subject::setSubjInfo(const SubjInfo &info){
 const SubjInfo &Subject::getSubjInfo() const{
     return(*_info);
 }
+
+int Subject::getTestDataCount() const{
+    return(_testDataV.count());
+}
+
+Subject::PtrCTestData Subject::getTestData(const int idx) const{
+    if(idx<0||idx>=_testDataV.count()){
+        return(PtrCTestData());
+    }else{
+        return(_testDataV.at(idx));
+    }
+}

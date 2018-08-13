@@ -20,12 +20,13 @@ public:
         QWidget *parent=0);
     ~DownloadDataWidget();
 signals:
-    void showAssignTestDataWidget();
+    void showAssignDownloadWidget(bool);
 protected:
     virtual void closeEvent(QCloseEvent *event);
 private slots:
     void onBtTaskDone(const unsigned int id,
         const unsigned int err);
+    void onOpenTestDialogPushButton(bool);
 private:
     void initUi();
 private:

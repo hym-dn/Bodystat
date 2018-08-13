@@ -63,6 +63,10 @@ void DownloadDataWidget::onBtTaskDone(
         _testDataTableView->model())->update();
 }
 
+void DownloadDataWidget::onOpenTestDialogPushButton(bool){
+    emit showAssignDownloadWidget(true);
+}
+
 void DownloadDataWidget::initUi(){
     layout()->setSizeConstraint(
         QLayout::SetFixedSize);
@@ -85,4 +89,7 @@ void DownloadDataWidget::initUi(){
         const unsigned int)),this,SLOT(
         onBtTaskDone(const unsigned int,
         const unsigned int)));
+    connect(_ui->_openTestDialogPushButton,
+        SIGNAL(clicked(bool)),this,SLOT(
+        onOpenTestDialogPushButton(bool)));
 }
