@@ -13,6 +13,7 @@
 #include"assigndownloadwidget.h"
 #include"downloaddatawidget.h"
 #include"curtestdatawidget.h"
+#include"../data/subjinfo.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 
@@ -47,7 +48,7 @@ void MainDlg::onSelSubjToolButtonClicked(bool){
 }
 
 void MainDlg::onDelSubjToolButtonClicked(bool){
-    if(SubjPool::instance()->getCur().isNull()){
+    if(SubjPool::instance()->getCurSubj()<0){
         QMessageBox msgBox(QMessageBox::Warning,
             tr("报警"),tr("没有主题被选择！"));
         msgBox.setFont(font());
@@ -60,7 +61,7 @@ void MainDlg::onDelSubjToolButtonClicked(bool){
 }
 
 void MainDlg::onEdtSubjToolButtonClicked(bool){
-    if(SubjPool::instance()->getCur().isNull()){
+    if(SubjPool::instance()->getCurSubj()<0){
         QMessageBox msgBox(QMessageBox::Warning,
             tr("报警"),tr("没有主题被选择！"));
         msgBox.setFont(font());
@@ -186,12 +187,14 @@ void MainDlg::creat(const SubWidgetID widgetId){
         _subWidget=new SelSubjWidget;
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DEL_SUBJ==widgetId){
-        _subWidget=new SubjWidget(SubjWidget::MODE_DELETE,
-            &SubjPool::instance()->getCur()->getSubjInfo());
+        SubjInfo subjInfo;
+        SubjPool::instance()->getCurSubjInfo(subjInfo);
+        _subWidget=new SubjWidget(SubjWidget::MODE_DELETE,&subjInfo);
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_EDT_SUBJ==widgetId){
-        _subWidget=new SubjWidget(SubjWidget::MODE_EDIT,
-            &SubjPool::instance()->getCur()->getSubjInfo());
+        SubjInfo subjInfo;
+        SubjPool::instance()->getCurSubjInfo(subjInfo);
+        _subWidget=new SubjWidget(SubjWidget::MODE_EDIT,&subjInfo);
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_ASN_DWLD==widgetId){
         _subWidget=new AssignDownloadWidget;

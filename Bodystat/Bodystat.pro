@@ -60,6 +60,8 @@ SOURCES += \
     src/ui/assigndownloadwidget.cpp \
     src/ui/testdatalistmodel.cpp \
     src/ui/curtestdatawidget.cpp
+    src/ui/curtestdatawidget.cpp \
+    src/ui/testdatalistmodel.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -98,6 +100,8 @@ HEADERS += \
     src/ui/assigndownloadwidget.h \
     src/ui/testdatalistmodel.h \
     src/ui/curtestdatawidget.h
+    src/ui/curtestdatawidget.h \
+    src/ui/testdatalistmodel.h
 
 DESTDIR += ../bin
 

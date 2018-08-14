@@ -21,12 +21,12 @@ QVariant SubjListModel::data(
     if(!index.isValid()){
         return(QVariant());
     }else if(Qt::DisplayRole==role){
-        SubjPool::PtrCSubj subj=SubjPool::
-            instance()->get(index.row());
-        if(subj.isNull()){
+        SubjInfo subjInfo;
+        if(SubjPool::instance()->getSubjInfo(
+            index.row(),subjInfo)<0){
             return(QVariant());
         }else{
-            return(subj->getSubjInfo().getBrief());
+            return(subjInfo.getBrief());
         }
     }else{
         return QVariant();

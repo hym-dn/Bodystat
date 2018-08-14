@@ -19,11 +19,9 @@ TestDataPool *TestDataPool::instance(){
 }
 
 int TestDataPool::pull(QSqlDatabase &db){
-    // 数据库非法
     if(!db.isValid()||!db.isOpen()){
         return(-1);
     }
-    // 查找SQL
     QString sql("SELECT DevModel,DevSeriNum,TestDateTime,"
         "Sex,Age,Height,Weight,Activity,Waist,Hip,Iz5kHz,"
         "IZ50kHz,Iz100kHz,Iz200kHz,Ir50kHz,Fx50kHz,Fpa50kHz,"
@@ -34,29 +32,22 @@ int TestDataPool::pull(QSqlDatabase &db){
         "Cm,Rext,Rint,FC,Alpha,SubjectID FROM TestData WHERE "
         "SubjectID IS null ORDER BY DevModel,DevSeriNum,"
         "TestDateTime ASC;");
-    // 执行SQL
     QSqlQuery query(db);
     if(!query.exec(sql)){
         return(-2);
     }
-    // 获取测试数据
     DataV dataV;
     while(query.next()){
-        // 创建测试数据
         PtrToData data(new TestData);
         if(data.isNull()){
             continue;
         }
-        // 下载测试数据
         if(data->pull(query)<0){
             continue;
         }
-        // 加入向量
         dataV.push_back(data);
     }
-    // 交换向量
     swap(dataV);
-    // 返回
     return(0);
 }
 
@@ -101,7 +92,15 @@ int TestDataPool::add(QSqlDatabase &db,
     if(!db.isValid()||!db.isOpen()){
         return(-1);
     }
-    // 检测测试分配
+    // 冲突探测
+    if(SubjPool::instance()->containTestData(
+        mData.iDeviceModel,mData.ulDeviceSerialNumber,
+        QDateTime::fromTime_t(mData.tTestDate))||
+       TestDataPool::instance()->contain(mData.iDeviceModel,
+        mData.ulDeviceSerialNumber,QDateTime::fromTime_t(
+        mData.tTestDate))){
+        return(1);
+    }
     /*
     QString sql=QString("SELECT COUNT(*) FROM TestData WHERE "
         "DevModel=%1 AND DevSeriNum=%2 AND TestDateTime='%3';")
@@ -139,12 +138,12 @@ int TestDataPool::add(QSqlDatabase &db,
 }
 
 TestDataPool::PtrToCData
-    TestDataPool::getData(const int i){
+    TestDataPool::getData(const int idx){
     QMutexLocker locker(&_lock);
-    if(i>=_dataV.count()){
+    if(idx<0||idx>=_dataV.count()){
         return(PtrToCData());
     }else{
-        return(_dataV.at(i));
+        return(_dataV.at(idx));
     }
 }
 
@@ -162,4 +161,15 @@ void TestDataPool::add(PtrToData &data){
 void TestDataPool::swap(DataV &dataV){
     QMutexLocker locker(&_lock);
     _dataV.swap(dataV);
+}
+
+bool TestDataPool::contain(const unsigned int devModel,
+    const unsigned int devSeriNum,const QDateTime &testDateTime) const{
+    QMutexLocker locker(&_lock);
+    for(DataV::const_iterator itr=_dataV.begin();itr!=_dataV.end();++itr){
+        if((*itr)->same(devModel,devSeriNum,testDateTime)){
+            return(true);
+        }
+    }
+    return(false);
 }

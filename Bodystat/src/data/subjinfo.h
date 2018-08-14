@@ -21,7 +21,8 @@ public:
     ~SubjInfo();
 public:
     int pull(QSqlQuery &query);
-    int push(QSqlQuery &query,const bool isAdd) const;
+    int push(QSqlQuery &query,
+        const bool isAdd) const;
     int erase(QSqlQuery &query) const;
     int isValid(QString *msg=0) const;
     void setId(const QString &id);

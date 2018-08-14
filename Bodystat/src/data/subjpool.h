@@ -32,20 +32,24 @@ signals:
 public:
     int pull(QSqlDatabase &db);
     int push(QSqlDatabase &db,
-        const SubjInfo &info,const bool isAdd);
-    int erase(QSqlDatabase &db,
-        const QString &subjId);
+        const SubjInfo &subjInfo,const bool isAdd);
+    int erase(QSqlDatabase &db,const QString &subjId);
     int assign(QSqlDatabase &db,const int subjIdx,
         const TestDataV &testDataV);
     int count() const;
-    PtrCSubj get(const int idx) const;
-    void setCur(const int iSubj);
-    void setCur(const QString &subjId);
-    PtrCSubj getCur() const;
-    void setCurTestData(const int tdIdx);
+    int getSubjInfo(const int idx,SubjInfo &subjInfo) const;
+    void setCurSubj(const int subjIdx);
+    void setCurSubj(const QString &subjId);
+    int getCurSubj() const;
+    int getCurSubjInfo(SubjInfo &subjInfo) const;
+    void setCurTestData(const int testDataIdx);
     PtrCTestData getCurTestData() const;
-    int getCurTestDataCount() const;
-    PtrCTestData getCurTestData(const int i) const;
+    int curTestDataCount() const;
+    PtrCTestData getCurTestData(const int idx) const;
+    bool containTestData(
+        const unsigned int devModel,
+        const unsigned long devSeriNum,
+        const QDateTime &testDateTime) const;
 private:
     friend class Singleton<SubjPool>;
     typedef QVector<PtrSubj> SubjV;
@@ -55,11 +59,11 @@ private:
     SubjPool(const SubjPool&);
     SubjPool &operator=(const SubjPool&);
 private:
-    void add(const PtrSubj &subj);
-    void swap(SubjV &subjV);
-    bool contain(const QString &subjId) const;
-    PtrSubj find(const QString &subjId);
-    void sort();
+    void addSubj(const PtrSubj &subj);
+    void swapSubj(SubjV &subjV);
+    bool containSubj(const QString &subjId) const;
+    void sortSubj();
+    PtrSubj findSubj(const QString &subjId);
 private:
     mutable QMutex _lock;
     int _curSubj;

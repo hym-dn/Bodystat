@@ -53,22 +53,17 @@ void CurSubjWidget::initUi(){
 }
 
 void CurSubjWidget::updateUi(){
-    SubjPool::PtrCSubj subj=
-        SubjPool::instance()->getCur();
-    if(subj.isNull()){
+    SubjInfo subjInfo;
+    if(SubjPool::instance()->getCurSubjInfo(subjInfo)<0){
         _ui->_idLineEdit->setText("");
         _ui->_nameLineEdit->setText("");
         _ui->_birthdayLineEdit->setText("");
         _ui->_sexLineEdit->setText("");
     }else{
-        _ui->_idLineEdit->setText(
-            subj->getSubjInfo().getId());
-        _ui->_nameLineEdit->setText(
-            subj->getSubjInfo().getName());
-        _ui->_birthdayLineEdit->setText(
-            subj->getSubjInfo().getBirthdayText());
-        _ui->_sexLineEdit->setText(
-            subj->getSubjInfo().getSexText());
+        _ui->_idLineEdit->setText(subjInfo.getId());
+        _ui->_nameLineEdit->setText(subjInfo.getName());
+        _ui->_birthdayLineEdit->setText(subjInfo.getBirthdayText());
+        _ui->_sexLineEdit->setText(subjInfo.getSexText());
     }
     dynamic_cast<TestDataListModel*>(_ui->
         _testDataListView->model())->update();

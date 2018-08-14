@@ -24,22 +24,25 @@ public:
 public:
     int pull(QSqlQuery &query);
     int push(QSqlQuery &query,
-        const SubjInfo &subjInfo,
-        const bool isAdd);
+        const SubjInfo &subjInfo,const bool isAdd);
     int erase(QSqlQuery &query) const;
     int assign(QSqlQuery &query,const TestDataV &testDataV);
     int isValid(QString *msg=0) const;
-    void setSubjInfo(const SubjInfo &info);
+    void setSubjInfo(const SubjInfo &subjInfo);
     const SubjInfo &getSubjInfo() const;
-    int getTestDataCount() const;
+    int testDataCount() const;
     PtrCTestData getTestData(const int idx) const;
+    bool containTestData(
+        const unsigned int devModel,
+        const unsigned long devSeriNum,
+        const QDateTime &testDateTime) const;
 private:
-    typedef QScopedPointer<SubjInfo> PtrInfo;
+    typedef QScopedPointer<SubjInfo> PtrSubjInfo;
 private:
     Subject(const Subject &);
     Subject &operator=(const Subject &);
 private:
-    PtrInfo _info;
+    PtrSubjInfo _subjInfo;
     TestDataV _testDataV;
 };
 
