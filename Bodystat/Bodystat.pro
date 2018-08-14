@@ -20,7 +20,8 @@ FORMS    += \
     ui/devinfowidget.ui \
     ui/downloaddatawidget.ui \
     ui/startdialog.ui \
-    ui/assigndownloadwidget.ui
+    ui/assigndownloadwidget.ui \
+    ui/curtestdatawidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -56,7 +57,9 @@ SOURCES += \
     src/task/taskpool.cpp \
     src/task/starttask.cpp \
     src/data/subjinfo.cpp \
-    src/ui/assigndownloadwidget.cpp
+    src/ui/assigndownloadwidget.cpp \
+    src/ui/testdatalistmodel.cpp \
+    src/ui/curtestdatawidget.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -92,7 +95,9 @@ HEADERS += \
     src/task/taskpool.h \
     src/task/starttask.h \
     src/data/subjinfo.h \
-    src/ui/assigndownloadwidget.h
+    src/ui/assigndownloadwidget.h \
+    src/ui/testdatalistmodel.h \
+    src/ui/curtestdatawidget.h
 
 DESTDIR += ../bin
 

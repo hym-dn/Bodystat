@@ -1,28 +1,35 @@
-#include "testdatalistmodel.h"
+﻿#include"testdatalistmodel.h"
+#include"../data/subjpool.h"
+#include"../data/testdata.h"
 
-TestDataListModel::TestDataListModel(QObject *parent)
-    : QAbstractListModel(parent)
-{
+TestDataListModel::TestDataListModel(QObject *parent/*=0*/)
+    :QAbstractListModel(parent){
 }
 
-QVariant TestDataListModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    // FIXME: Implement me!
+TestDataListModel::~TestDataListModel(){
 }
 
-int TestDataListModel::rowCount(const QModelIndex &parent) const
-{
-    if (!parent.isValid())
-        return 0;
-
-    // FIXME: Implement me!
+void TestDataListModel::update(){
+    beginResetModel();
+    endResetModel();
 }
 
-QVariant TestDataListModel::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid())
+int TestDataListModel::rowCount(const QModelIndex &/*parent*/) const{
+    return(SubjPool::instance()->getCurTestDataCount());
+}
+
+QVariant TestDataListModel::data(const QModelIndex &index,int role) const{
+    if(!index.isValid()){
+        return(QVariant());
+    }else if(Qt::DisplayRole==role){
+        SubjPool::PtrCTestData testData=SubjPool::
+            instance()->getCurTestData(index.row());
+        if(testData.isNull()){
+            return(QVariant());
+        }else{
+            return(testData->getTestDateTimeText());
+        }
+    }else{
         return QVariant();
-
-    // FIXME: Implement me!
-    return QVariant();
+    }
 }

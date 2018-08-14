@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>671</width>
-    <height>411</height>
+    <height>377</height>
    </rect>
   </property>
   <property name="font">
@@ -397,7 +397,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,8">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,5">
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>

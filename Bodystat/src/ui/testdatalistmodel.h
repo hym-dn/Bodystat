@@ -1,24 +1,19 @@
-#ifndef TESTDATALISTMODEL_H
-#define TESTDATALISTMODEL_H
+﻿#ifndef TEST_DATA_LISTMODEL_H
+#define TEST_DATA_LISTMODEL_H
 
-#include <QAbstractListModel>
+#include<QAbstractListModel>
 
-class TestDataListModel : public QAbstractListModel
-{
+class TestDataListModel
+    :public QAbstractListModel{
     Q_OBJECT
-
 public:
-    explicit TestDataListModel(QObject *parent = 0);
-
-    // Header:
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-
-    // Basic functionality:
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
-private:
+    explicit TestDataListModel(QObject *parent=0);
+    virtual ~TestDataListModel();
+public:
+    void update();
+protected:
+    virtual int rowCount(const QModelIndex &parent=QModelIndex()) const override;
+    virtual QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const override;
 };
 
-#endif // TESTDATALISTMODEL_H
+#endif // TEST_DATA_LISTMODEL_H

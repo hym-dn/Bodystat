@@ -3,6 +3,7 @@
 #include"../data/subjpool.h"
 #include"../data/subject.h"
 #include"../data/subjinfo.h"
+#include"testdatalistmodel.h"
 
 CurSubjWidget::CurSubjWidget(
     QWidget *parent/*=0*/)
@@ -20,10 +21,34 @@ void CurSubjWidget::onCurSubjChanged(){
     updateUi();
 }
 
+void CurSubjWidget::onSelectionChangedTestDataListView(
+    const QItemSelection &selected,const QItemSelection &/*deselected*/){
+    QModelIndexList idxList=selected.indexes();
+    if(idxList.isEmpty()){
+        SubjPool::instance()->setCurTestData(-1);
+        return;
+    }
+    const QModelIndex &idx=idxList.at(0);
+    if(!idx.isValid()){
+        SubjPool::instance()->setCurTestData(-1);
+        return;
+    }
+    SubjPool::instance()->setCurTestData(idx.row());
+}
+
 void CurSubjWidget::initUi(){
+    TestDataListModel *listModel=
+        new TestDataListModel(_ui->_testDataListView);
+    Q_ASSERT(0!=listModel);
+    _ui->_testDataListView->setModel(listModel);
     connect(SubjPool::instance(),
         SIGNAL(curSubjChanged()),this,
         SLOT(onCurSubjChanged()));
+    connect(_ui->_testDataListView->selectionModel(),
+        SIGNAL(selectionChanged(const QItemSelection&,
+        const QItemSelection&)),this,SLOT(
+        onSelectionChangedTestDataListView(
+        const QItemSelection&,const QItemSelection&)));
     updateUi();
 }
 
@@ -45,4 +70,6 @@ void CurSubjWidget::updateUi(){
         _ui->_sexLineEdit->setText(
             subj->getSubjInfo().getSexText());
     }
+    dynamic_cast<TestDataListModel*>(_ui->
+        _testDataListView->model())->update();
 }

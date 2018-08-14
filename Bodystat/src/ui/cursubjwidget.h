@@ -2,6 +2,7 @@
 #define CUR_SUBJ_WIDGET_H
 
 #include<QWidget>
+#include<QItemSelection>
 
 namespace Ui{
     class CurSubjWidget;
@@ -16,6 +17,9 @@ public:
     ~CurSubjWidget();
 private slots:
     void onCurSubjChanged();
+    void onSelectionChangedTestDataListView(
+        const QItemSelection &selected,
+        const QItemSelection &deselected);
 private:
     void initUi();
     void updateUi();
