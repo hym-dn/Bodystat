@@ -58,7 +58,8 @@ SOURCES += \
     src/task/starttask.cpp \
     src/data/subjinfo.cpp \
     src/ui/assigndownloadwidget.cpp \
-    src/ui/curtestdatawidget.cpp
+    src/ui/curtestdatawidget.cpp \
+    src/ui/testdatalistmodel.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -95,7 +96,8 @@ HEADERS += \
     src/task/starttask.h \
     src/data/subjinfo.h \
     src/ui/assigndownloadwidget.h \
-    src/ui/curtestdatawidget.h
+    src/ui/curtestdatawidget.h \
+    src/ui/testdatalistmodel.h
 
 DESTDIR += ../bin
 
