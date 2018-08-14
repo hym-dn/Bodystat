@@ -7,9 +7,10 @@
 #include<QtAlgorithms>
 
 static bool subjLessThan(
-    const SubjPool::PtrSubj &l,const SubjPool::PtrSubj &r){
-    return(l->getSubjInfo().getEntrDt()<
-        r->getSubjInfo().getEntrDt());
+    const SubjPool::PtrSubj &l,
+    const SubjPool::PtrSubj &r){
+    return(l->getSubjInfo().getAccsDt()<
+           r->getSubjInfo().getAccsDt());
 }
 
 SubjPool::~SubjPool(){
@@ -40,7 +41,7 @@ int SubjPool::pull(QSqlDatabase &db){
         "TestData.ECWLegacy,TestData.TBWLegacy,TestData.OHY,TestData.SkMuscle,"
         "TestData.Cm,TestData.Rext,TestData.Rint,TestData.FC,TestData.Alpha,"
         "TestData.SubjectID FROM Subject LEFT JOIN TestData ON "
-        "Subject.ID=TestData.SubjectID ORDER BY Subject.EntryDateTime ASC,"
+        "Subject.ID=TestData.SubjectID ORDER BY Subject.AccessDateTime ASC,"
         "Subject.ID ASC,TestData.DevModel ASC,TestData.DevSeriNum ASC,"
         "TestData.TestDateTime ASC;");
     QSqlQuery query(db);
@@ -59,52 +60,51 @@ int SubjPool::pull(QSqlDatabase &db){
                 return(-4);
             }
             subjV.push_back(subj);
-            if(0==res){ // 记录尾
+            if(0==res){
                 break;
             }
         }
     }
-    swap(subjV);
+    swapSubj(subjV);
     return(0);
 }
 
 int SubjPool::push(QSqlDatabase &db,
-    const SubjInfo &info,const bool isAdd){
+    const SubjInfo &subjInfo,const bool isAdd){
     if(!db.isValid()||!db.isOpen()){
         return(-1);
     }
-    if(info.isValid()<0){
+    if(subjInfo.isValid()<0){
         return(-2);
     }
     QSqlQuery query(db);
     if(isAdd){
-        if(contain(info.getId())){
+        if(containSubj(subjInfo.getId())){ // 冲突
             return(1);
         }
         PtrSubj subj(new Subject);
         if(subj.isNull()){
             return(-3);
         }
-        if(subj->push(query,info,true)<0){
+        if(subj->push(query,subjInfo,true)<0){
             return(-4);
         }
-        add(subj);
-        sort();
+        addSubj(subj);
+        sortSubj();
     }else{
         QMutexLocker locker(&_lock);
-        PtrSubj subj=find(info.getId());
+        PtrSubj subj=findSubj(subjInfo.getId());
         if(subj.isNull()){
             return(-5);
         }
-        if(subj->push(query,info,false)<0){
+        if(subj->push(query,subjInfo,false)<0){
             return(-6);
         }
-    }
+    }    
     return(0);
 }
 
-int SubjPool::erase(QSqlDatabase &db,
-    const QString &subjId){
+int SubjPool::erase(QSqlDatabase &db,const QString &subjId){
     if(!db.isValid()||!db.isOpen()){
         return(-1);
     }
@@ -114,7 +114,7 @@ int SubjPool::erase(QSqlDatabase &db,
     QMutexLocker locker(&_lock);
     for(SubjV::iterator itr=_subjV.begin();
         itr!=_subjV.end();++itr){
-        if((*itr)->getSubjInfo().getId()==subjId){
+        if(subjId==(*itr)->getSubjInfo().getId()){
             QSqlQuery query(db);
             if((*itr)->erase(query)<0){
                 return(-3);
@@ -147,26 +147,28 @@ int SubjPool::count() const{
     return(_subjV.count());
 }
 
-SubjPool::PtrCSubj SubjPool::get(const int i) const{
+int SubjPool::getSubjInfo(const int idx,
+    SubjInfo &subjInfo) const{
     QMutexLocker locker(&_lock);
-    if(i<0||i>=_subjV.count()){
-        return(PtrCSubj());
+    if(idx<0||idx>=_subjV.count()){
+        return(-1);
     }else{
-        return(_subjV.at(i));
+        subjInfo=_subjV.at(idx)->getSubjInfo();
+        return(0);
     }
 }
 
-void SubjPool::setCur(const int iSubj){
+void SubjPool::setCurSubj(const int subjIdx){
     {
         QMutexLocker locker(&_lock);
-        _curSubj=iSubj;
+        _curSubj=subjIdx;
         _curTestData=-1;
     }
     emit curSubjChanged();
     emit curTestDataChanged();
 }
 
-void SubjPool::setCur(const QString &subjId){
+void SubjPool::setCurSubj(const QString &subjId){
     {
         QMutexLocker locker(&_lock);
         for(int i=0;i<_subjV.count();++i){
@@ -181,19 +183,25 @@ void SubjPool::setCur(const QString &subjId){
     emit curTestDataChanged();
 }
 
-SubjPool::PtrCSubj SubjPool::getCur() const{
+int SubjPool::getCurSubj() const{
+    QMutexLocker locker(&_lock);
+    return(_curSubj);
+}
+
+int SubjPool::getCurSubjInfo(SubjInfo &subjInfo) const{
     QMutexLocker locker(&_lock);
     if(_curSubj<0||_curSubj>=_subjV.count()){
-        return(PtrCSubj());
+        return(-1);
     }else{
-        return(_subjV.at(_curSubj));
+        subjInfo=_subjV.at(_curSubj)->getSubjInfo();
+        return(0);
     }
 }
 
-void SubjPool::setCurTestData(const int tdIdx){
+void SubjPool::setCurTestData(const int testDataIdx){
     {
         QMutexLocker locker(&_lock);
-        _curTestData=tdIdx;
+        _curTestData=testDataIdx;
     }
     emit curTestDataChanged();
 }
@@ -202,21 +210,32 @@ SubjPool::PtrCTestData SubjPool::getCurTestData() const{
     return(getCurTestData(_curTestData));
 }
 
-int SubjPool::getCurTestDataCount() const{
+bool SubjPool::containTestData(const unsigned int devModel,
+    const unsigned long devSeriNum,const QDateTime &testDateTime) const{
+    QMutexLocker locker(&_lock);
+    for(SubjV::const_iterator itr=_subjV.begin();itr!=_subjV.end();++itr){
+        if((*itr)->containTestData(devModel,devSeriNum,testDateTime)){
+            return(true);
+        }
+    }
+    return(false);
+}
+
+int SubjPool::curTestDataCount() const{
     QMutexLocker locker(&_lock);
     if(_curSubj<0||_curSubj>=_subjV.count()){
         return(0);
     }else{
-        return(_subjV.at(_curSubj)->getTestDataCount());
+        return(_subjV.at(_curSubj)->testDataCount());
     }
 }
 
-SubjPool::PtrCTestData SubjPool::getCurTestData(const int i) const{
+SubjPool::PtrCTestData SubjPool::getCurTestData(const int idx) const{
     QMutexLocker locker(&_lock);
     if(_curSubj<0||_curSubj>=_subjV.count()){
         return(PtrCTestData());
     }else{
-        return(_subjV.at(_curSubj)->getTestData(i));
+        return(_subjV.at(_curSubj)->getTestData(idx));
     }
 }
 
@@ -228,17 +247,17 @@ SubjPool::SubjPool(QObject *parent/*=0*/)
     ,_subjV(){
 }
 
-void SubjPool::add(const PtrSubj &subj){
+void SubjPool::addSubj(const PtrSubj &subj){
     QMutexLocker locker(&_lock);
     _subjV.push_back(subj);
 }
 
-void SubjPool::swap(SubjV &subjV){
+void SubjPool::swapSubj(SubjV &subjV){
     QMutexLocker locker(&_lock);
     _subjV.swap(subjV);
 }
 
-bool SubjPool::contain(const QString &subjId) const{
+bool SubjPool::containSubj(const QString &subjId) const{
     QMutexLocker locker(&_lock);
     for(SubjV::const_iterator itr=_subjV.begin();
         itr!=_subjV.end();++itr){
@@ -249,7 +268,12 @@ bool SubjPool::contain(const QString &subjId) const{
     return(false);
 }
 
-SubjPool::PtrSubj SubjPool::find(const QString &subjId){
+void SubjPool::sortSubj(){
+    QMutexLocker locker(&_lock);
+    qSort(_subjV.begin(),_subjV.end(),subjLessThan);
+}
+
+SubjPool::PtrSubj SubjPool::findSubj(const QString &subjId){
     for(SubjV::iterator itr=_subjV.begin();
         itr!=_subjV.end();++itr){
         if((*itr)->getSubjInfo().getId()==subjId){
@@ -257,10 +281,4 @@ SubjPool::PtrSubj SubjPool::find(const QString &subjId){
         }
     }
     return(PtrSubj());
-}
-
-void SubjPool::sort(){
-    QMutexLocker locker(&_lock);
-    qSort(_subjV.begin(),_subjV.end(),
-        subjLessThan);
 }

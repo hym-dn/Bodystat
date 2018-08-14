@@ -6,11 +6,13 @@
 #include<QVariant>
 #include<QtAlgorithms>
 
-static bool testDataLessThan(const Subject::PtrTestData &l,
+static bool testDataLessThan(
+    const Subject::PtrTestData &l,
     const Subject::PtrTestData &r){
     if(l->getDevModel()<r->getDevModel()){
         return(true);
     }else if(l->getDevModel()==r->getDevModel()){
+
         if(l->getDevSeriNum()<r->getDevSeriNum()){
             return(true);
         }else if(l->getDevSeriNum()==r->getDevSeriNum()){
@@ -22,71 +24,68 @@ static bool testDataLessThan(const Subject::PtrTestData &l,
         }else{
             return(false);
         }
+
     }else{
         return(false);
     }
 }
 
 Subject::Subject()
-    :_info(new SubjInfo)
+    :_subjInfo(new SubjInfo)
     ,_testDataV(){
-    Q_ASSERT(!_info.isNull());
+    Q_ASSERT(!_subjInfo.isNull());
 }
 
 Subject::~Subject(){
 }
 
 int Subject::pull(QSqlQuery &query){
-    // 主题信息
-    if(_info->pull(query)<0){
+    if(_subjInfo->pull(query)<0){
         return(-1);
     }
-    // 测试数据
-    bool isEnd=false;
-    TestDataV dataV;
+    bool isEOF=false;
+    TestDataV testDataV;
     while(true){
         if(!query.value(11).isNull()){
-            PtrTestData data(new TestData);
-            if(data.isNull()){
+            PtrTestData testData(new TestData);
+            if(testData.isNull()){
                 return(-2);
             }
-            if(data->pull(query,11)<0){
+            if(testData->pull(query,11)<0){
                 return(-3);
             }
-            if(data->isValid()<0){
+            if(testData->isValid()<0){
                 return(-4);
             }
-            dataV.push_back(data);
+            testDataV.push_back(testData);
         }
         if(!query.next()){
-            isEnd=true;
+            isEOF=true;
             break;
         }
-        if(_info->getId()!=
-            query.value(0).toString()){
+        if(_subjInfo->getId()!=query.value(0).toString()){
             break;
         }
     }
-    _testDataV.swap(dataV);
-    // 返回
-    if(isEnd){ // 记录尾
+    _testDataV.swap(testDataV);
+    if(isEOF){
         return(0);
-    }else{ // 非记录尾
+    }else{
         return(1);
     }
 }
 
 int Subject::push(QSqlQuery &query,
-    const SubjInfo &info,const bool isAdd){
-    if(info.push(query,isAdd)<0){
+    const SubjInfo &subjInfo,const bool isAdd){
+    if(subjInfo.push(query,isAdd)<0){
         return(-1);
     }
-    (*_info)=info;
+    (*_subjInfo)=subjInfo;
     return(0);
 }
 
 int Subject::erase(QSqlQuery &query) const{
-    return(_info->erase(query));
+    return(_subjInfo->erase(query));
 }
 
 int Subject::assign(QSqlQuery &query,const TestDataV &testDataV){
@@ -96,8 +95,8 @@ int Subject::assign(QSqlQuery &query,const TestDataV &testDataV){
     if(isValid()<0){
         return(-2);
     }
-    QString sql(QString("UPDATE TestData SET SubjectID='%1' WHERE")
-        .arg(_info->getId()));
+    QString sql(QString("UPDATE TestData SET SubjectID='%1' "
+        "WHERE").arg(_subjInfo->getId()));
     for(TestDataV::const_iterator itr=testDataV.begin();
         itr!=testDataV.end();++itr){
         if((*itr).isNull()){
@@ -124,11 +123,9 @@ int Subject::assign(QSqlQuery &query,const TestDataV &testDataV){
 }
 
 int Subject::isValid(QString *msg/*=0*/) const{
-    // 主题信息
-    if(_info->isValid(msg)<0){
+    if(_subjInfo->isValid(msg)<0){
         return(-1);
     }
-    // 测试数据
     for(TestDataV::const_iterator itr=_testDataV.begin();
         itr!=_testDataV.end();++itr){
         if((*itr)->isValid()<0){
@@ -138,19 +135,18 @@ int Subject::isValid(QString *msg/*=0*/) const{
             return(-2);
         }
     }
-    // 返回
     return(0);
 }
 
-void Subject::setSubjInfo(const SubjInfo &info){
-    *_info=info;
+void Subject::setSubjInfo(const SubjInfo &subjInfo){
+    *_subjInfo=subjInfo;
 }
 
 const SubjInfo &Subject::getSubjInfo() const{
-    return(*_info);
+    return(*_subjInfo);
 }
 
-int Subject::getTestDataCount() const{
+int Subject::testDataCount() const{
     return(_testDataV.count());
 }
 
@@ -160,4 +156,14 @@ Subject::PtrCTestData Subject::getTestData(const int idx) const{
     }else{
         return(_testDataV.at(idx));
     }
+}
+
+bool Subject::containTestData(const unsigned int devModel,
+    const unsigned long devSeriNum,const QDateTime &testDateTime) const{
+    for(TestDataV::const_iterator itr=_testDataV.begin();itr!=_testDataV.end();++itr){
+        if((*itr)->same(devModel,devSeriNum,testDateTime)){
+            return(true);
+        }
+    }
+    return(false);
 }

@@ -64,7 +64,7 @@ void SubjWidget::onSavePushButtonClicked(bool){
         msgBox.exec();
         return;
     }else{
-        SubjPool::instance()->setCur(_subjInfo->getId());
+        SubjPool::instance()->setCurSubj(_subjInfo->getId());
         QMessageBox msgBox(QMessageBox::Information,
             tr("提示"),tr("保存完成！"));
         msgBox.setFont(font());
@@ -101,7 +101,7 @@ void SubjWidget::onDeletePushButtonClicked(bool){
         msgBox.exec();
         return;
     }
-    SubjPool::instance()->setCur(-1);
+    SubjPool::instance()->setCurSubj(-1);
     // 关闭
     close();
 }

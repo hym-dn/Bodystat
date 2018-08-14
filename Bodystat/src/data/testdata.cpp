@@ -172,47 +172,20 @@ TestData::TestData(const TestData &src)
 TestData::~TestData(){
 }
 
-int TestData::isValid() const{
-    // 设备模型
-    if(0==_devModel){
-        return(-1);
-    }
-    // 设备序号
-    if(0==_devSeriNum){
-        return(-2);
-    }
-    // 测试日期
-    if(!_testDateTime.isValid()){
-        return(-3);
-    }
-    // 性别
-    if(SEX_UNKNOWN==_sex){
-        return(-4);
-    }
-    // ...
-    // 返回
-    return(0);
-}
-
 int TestData::pull(QSqlQuery &query,const unsigned long sIdx/*=0*/){
-    // 查询无效
     if(!query.isValid()){
         return(-1);
     }
-    // 设备模型
     bool ok=false;
     _devModel=query.value(sIdx+0).toUInt(&ok);
     if(!ok){
         return(-2);
     }
-    // 设备序号
     _devSeriNum=query.value(sIdx+1).toUInt(&ok);
     if(!ok){
         return(-3);
     }
-    // 测试日期
     _testDateTime=query.value(sIdx+2).toDateTime();
-    // 性别
     unsigned int uInt=query.value(sIdx+3).toUInt(&ok);
     if(!ok){
         return(-4);
@@ -221,37 +194,30 @@ int TestData::pull(QSqlQuery &query,const unsigned long sIdx/*=0*/){
         return(-5);
     }
     _sex=static_cast<Sex>(uInt);
-    // 年龄
     _age=query.value(sIdx+4).toInt(&ok);
     if(!ok){
         return(-6);
     }
-    // 身高
     _height=query.value(sIdx+5).toInt(&ok);
     if(!ok){
         return(-7);
     }
-    // 体重
     _weight=query.value(sIdx+6).toFloat(&ok);
     if(!ok){
         return(-8);
     }
-    // 活跃度
     _activity=query.value(sIdx+7).toInt(&ok);
     if(!ok){
         return(-9);
     }
-    // 胸围
     _waist=query.value(sIdx+8).toInt(&ok);
     if(!ok){
         return(-10);
     }
-    // 臀围
     _hip=query.value(sIdx+9).toInt(&ok);
     if(!ok){
         return(-11);
     }
-    // 阻抗
     _iz5kHz=query.value(sIdx+10).toInt(&ok);
     if(!ok){
         return(-12);
@@ -280,191 +246,153 @@ int TestData::pull(QSqlQuery &query,const unsigned long sIdx/*=0*/){
     if(!ok){
         return(-18);
     }
-    // 脂肪（%）
     _fatPerc=query.value(sIdx+17).toFloat(&ok);
     if(!ok){
         return(-19);
     }
-    // 脂肪（kg）
     _fatKg=query.value(sIdx+18).toFloat(&ok);
     if(!ok){
         return(-20);
     }
-    // 瘦肉（%）
     _leanPerc=query.value(sIdx+19).toFloat(&ok);
     if(!ok){
         return(-21);
     }
-    // 瘦肉（kg）
     _leanKg=query.value(sIdx+20).toFloat(&ok);
     if(!ok){
         return(-22);
     }
-    // Total Weight (in kg)
     _totalWeight=query.value(sIdx+21).toFloat(&ok);
     if(!ok){
         return(-23);
     }
-    // 干瘦肉（kg）
     _dryLW=query.value(sIdx+22).toFloat(&ok);
     if(!ok){
         return(-24);
     }
-    // 总水量（%）
     _tbwPerc=query.value(sIdx+23).toFloat(&ok);
     if(!ok){
         return(-25);
     }
-    // 总水量（升）
     _tbw=query.value(sIdx+24).toFloat(&ok);
     if(!ok){
         return(-26);
     }
-    // 细胞外液（%）
     _ecwPerc=query.value(sIdx+25).toFloat(&ok);
     if(!ok){
         return(-27);
     }
-    // 细胞外液（升）
     _ecw=query.value(sIdx+26).toFloat(&ok);
     if(!ok){
         return(-28);
     }
-    // 细胞内液（%）
     _icwPerc=query.value(sIdx+27).toFloat(&ok);
     if(!ok){
         return(-29);
     }
-    // 细胞内液（升）
     _icw=query.value(sIdx+28).toFloat(&ok);
     if(!ok){
         return(-30);
     }
-    // 人体细胞总量
     _bcm=query.value(sIdx+29).toFloat(&ok);
     if(!ok){
         return(-31);
     }
-    // 第三空间水（升）
     _thirdSpace=query.value(sIdx+30).toFloat(&ok);
     if(!ok){
         return(-32);
     }
-    // 营养指数
     _nutrition=query.value(sIdx+31).toFloat(&ok);
     if(!ok){
         return(-33);
     }
-    // 预测指数
     _illness=query.value(sIdx+32).toFloat(&ok);
     if(!ok){
         return(-34);
     }
-    // 基础代谢率（kcal）
     _bmr=query.value(sIdx+33).toFloat(&ok);
     if(!ok){
         return(-35);
     }
-    // Basal Metabolic Rate per kilogram in (kcal/kg)
     _bmrKg=query.value(sIdx+34).toFloat(&ok);
     if(!ok){
         return(-36);
     }
-    // 基础需能量 (kcal)
     _estAvg=query.value(sIdx+35).toFloat(&ok);
     if(!ok){
         return(-37);
     }
-    // 身体质量指数
     _bmi=query.value(sIdx+36).toFloat(&ok);
     if(!ok){
         return(-38);
     }
-    // 身体脂肪质量指数
     _bfmi=query.value(sIdx+37).toFloat(&ok);
     if(!ok){
         return(-39);
     }
-    // 非脂肪质量指数
     _ffmi=query.value(sIdx+38).toFloat(&ok);
     if(!ok){
         return(-40);
     }
-    // 腰臀比
     _waistHip=query.value(sIdx+39).toFloat(&ok);
     if(!ok){
         return(-41);
     }
-    // Wellness Marker (TM)	(MDD only)s
     _wellness=query.value(sIdx+40).toFloat(&ok);
     if(!ok){
         return(-42);
     }
-    // Legacy ECW calculation (QuanScan mode)
     _ecwLegacy=query.value(sIdx+41).toFloat(&ok);
     if(!ok){
         return(-43);
     }
-    //
     _tbwLegacy=query.value(sIdx+42).toFloat(&ok);
     if(!ok){
         return(-44);
     }
-    // Over hydration
     _ohy=query.value(sIdx+43).toFloat(&ok);
     if(!ok){
         return(-45);
     }
-    // 骨骼肌
     _skMuscle=query.value(sIdx+44).toFloat(&ok);
     if(!ok){
         return(-46);
     }
-    // Cell membrane capacitances
     _cm=query.value(sIdx+45).toFloat(&ok);
     if(!ok){
         return(-47);
     }
-    // R extracellular
     _rext=query.value(sIdx+46).toFloat(&ok);
     if(!ok){
         return(-48);
     }
-    // R intracellular
     _rint=query.value(sIdx+47).toFloat(&ok);
     if(!ok){
         return(-49);
     }
-    // Characteristic frequency
     _fc=query.value(sIdx+48).toFloat(&ok);
     if(!ok){
         return(-50);
     }
-    // 相位角
     _alpha=query.value(sIdx+49).toFloat(&ok);
     if(!ok){
         return(-51);
     }
-    // 主题ID
     if(query.value(sIdx+50).isNull()){
         _subjId.clear();
     }else{
         _subjId=query.value(sIdx+50).toString();
     }
-    // 如果非法
     if(isValid()<0){
         return(-52);
     }
-    // 返回
     return(0);
 }
 
 int TestData::push(QSqlQuery &query){
-    // 数据非法
     if(isValid()<0){
         return(-1);
     }
-    // 形成SQL
     QString subjId="null";
     if(!getSubjId().isEmpty()){
         subjId=QString("'%1'").arg(getSubjId());
@@ -498,12 +426,30 @@ int TestData::push(QSqlQuery &query){
         .arg(getWellness()).arg(getEcwLegacy()).arg(getTbwLegacy())
         .arg(getOhy()).arg(getSkMuscle()).arg(getCm()).arg(getRext())
         .arg(getRint()).arg(getFc()).arg(getAlpha()).arg(subjId);
-    // 执行SQL
     if(!query.exec(sql)){
         return(-1);
     }
-    // 返回
     return(0);
+}
+
+int TestData::isValid() const{
+    if(0==_devModel){
+        return(-1);
+    }else if(0==_devSeriNum){
+        return(-2);
+    }else if(!_testDateTime.isValid()){
+        return(-3);
+    }else if(SEX_UNKNOWN==_sex){
+        return(-4);
+    }else{
+        return(0);
+    }
+}
+
+bool TestData::same(const unsigned int devModel,
+    const unsigned int devSeriNum,const QDateTime &testDateTime) const{
+    return(devModel==getDevModel()&&devSeriNum==getDevSeriNum()&&
+        testDateTime==getTestDateTime());
 }
 
 void TestData::setDevModel(const unsigned int model){

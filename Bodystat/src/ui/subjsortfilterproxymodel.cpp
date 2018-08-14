@@ -31,13 +31,12 @@ bool SubjSortFilterProxyModel::filterAcceptsRow(
     }else{
         const QModelIndex srcIndex=sourceModel()->
             index(source_row,0,source_parent);
-        SubjPool::PtrCSubj subj=SubjPool::instance()
-            ->get(srcIndex.row());
-        if(subj.isNull()){
+        SubjInfo subjInfo;
+        if(SubjPool::instance()->getSubjInfo(
+            srcIndex.row(),subjInfo)<0){
             return(false);
         }else{
-            return(((subj->getSubjInfo()).getBrief())
-                .contains(_matchString));
+            return(subjInfo.getBrief().contains(_matchString));
         }
     }
 }

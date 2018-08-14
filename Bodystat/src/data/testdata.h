@@ -26,9 +26,12 @@ public:
     explicit TestData(const TestData &src);
     ~TestData();
 public:
-    int isValid() const;
     int pull(QSqlQuery &query,const unsigned long sIdx=0);
     int push(QSqlQuery &query);
+    int isValid() const;
+    bool same(const unsigned int devModel,
+        const unsigned int devSeriNum,
+        const QDateTime &testDateTime) const;
     void setDevModel(const unsigned int model);
     unsigned int getDevModel() const;
     QString getDevModelText() const;

@@ -51,8 +51,7 @@ int SubjInfo::pull(QSqlQuery &query){
     if(!ok){
         return(-2);
     }
-    if(SEX_UNKNOWN!=uInt&&SEX_MALE!=uInt&&
-        SEX_FEMALE!=uInt&&SEX_OTHER!=uInt){
+    if(uInt<SEX_UNKNOWN||uInt>SEX_OTHER){
         return(-3);
     }
     _sex=static_cast<Sex>(uInt);
@@ -146,56 +145,37 @@ int SubjInfo::erase(QSqlQuery &query) const{
 }
 
 int SubjInfo::isValid(QString *msg/*=0*/) const{
-    // ID
     if(_id.isEmpty()){
         if(0!=msg){
             *msg=QObject::tr("【ID】不能为空！");
         }
         return(-1);
-    }
-    // 姓名
-    else if(_name.isEmpty()){
+    }else if(_name.isEmpty()){
         if(0!=msg){
             *msg=QObject::tr("【姓名】不能为空！");
         }
         return(-2);
-    }
-    // 生日
-    // 性别
-    else if(SEX_UNKNOWN==_sex){
+    }else if(SEX_UNKNOWN==_sex){
         if(0!=msg){
             *msg=QObject::tr("【性别】不能为空！");
         }
         return(-3);
-    }
-    // 联系方式
-    // 电话
-    // 手机
-    // 邮件
-    // 地址
-    // 访问信息
-    // 录入日期
-    else if(!_entrDt.isValid()){
+    }else if(!_entrDt.isValid()){
         if(0!=msg){
             *msg=QObject::tr("【录入时间】应是有效的日期时间！");
         }
         return(-4);
-    }
-    // 修改日期
-    else if(!_modiDt.isValid()){
+    }else if(!_modiDt.isValid()){
         if(0!=msg){
             *msg=QObject::tr("【修改时间】应是有效的日期时间！");
         }
         return(-5);
-    }
-    // 访问日期
-    else if(!_accsDt.isValid()){
+    }else if(!_accsDt.isValid()){
         if(0!=msg){
             *msg=QObject::tr("【访问时间】应是有效的日期时间！");
         }
         return(-6);
     }
-    // 返回
     return(0);
 }
 
@@ -317,7 +297,7 @@ QString SubjInfo::getAccsDtText() const{
 
 QString SubjInfo::getBrief() const{
     return(getId()+";"+getName()+";"+
-           getBirthdayText()+";"+getSexText());
+        getBirthdayText()+";"+getSexText());
 }
 
 SubjInfo &SubjInfo::operator=(const SubjInfo &src){

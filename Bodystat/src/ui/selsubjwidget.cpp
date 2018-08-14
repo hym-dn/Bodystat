@@ -36,17 +36,23 @@ void SelSubjWidget::onSubjListViewSelectionChanged(
         QModelIndex subjIndex=((SubjSortFilterProxyModel*)((
             _ui->_subjListView)->model()))->mapToSource(
             indexList.at(0));
-        showSubjInfo(SubjPool::instance()->
-            get(subjIndex.row())->getSubjInfo());
+        SubjInfo subjInfo;
+        SubjPool::instance()->getSubjInfo(
+            subjIndex.row(),subjInfo);
+        showSubjInfo(subjInfo);
     }
 }
 
 void SelSubjWidget::onSubjListViewDoubleClicked(
     const QModelIndex &index){
-    QModelIndex subjIndex=((SubjSortFilterProxyModel*)((
+    if(!index.isValid()){
+        return;
+    }
+    QModelIndex subjIdx=((SubjSortFilterProxyModel*)((
         _ui->_subjListView)->model()))->mapToSource(index);
-    updateCurSubjInfo(SubjPool::instance()->get(
-        subjIndex.row())->getSubjInfo());
+    SubjInfo subjInfo;
+    SubjPool::instance()->getSubjInfo(subjIdx.row(),subjInfo);
+    updateCurSubjInfo(subjInfo);
     close();
 }
 
@@ -66,8 +72,9 @@ void SelSubjWidget::onSelSubjPushButtonClicked(bool){
     QModelIndex subjIndex=((SubjSortFilterProxyModel*)((
         _ui->_subjListView)->model()))->mapToSource(
         indexList.at(0));
-    updateCurSubjInfo(SubjPool::instance()->get(
-        subjIndex.row())->getSubjInfo());
+    SubjInfo subjInfo;
+    SubjPool::instance()->getSubjInfo(subjIndex.row(),subjInfo);
+    updateCurSubjInfo(subjInfo);
     close();
 }
 
@@ -124,5 +131,5 @@ void SelSubjWidget::showSubjInfo(const SubjInfo &subjInfo){
 void SelSubjWidget::updateCurSubjInfo(const SubjInfo &subjInfo){
     SubjPool::instance()->push(
         DBManager::instance()->getDB(),subjInfo,false);
-    SubjPool::instance()->setCur(subjInfo.getId());
+    SubjPool::instance()->setCurSubj(subjInfo.getId());
 }
