@@ -1,22 +1,25 @@
-#ifndef CURTESTDATAWIDGET_H
-#define CURTESTDATAWIDGET_H
+﻿#ifndef CUR_TEST_DATA_WIDGET_H
+#define CUR_TEST_DATA_WIDGET_H
 
-#include <QWidget>
+#include<QWidget>
 
-namespace Ui {
-class CurTestDataWidget;
+namespace Ui{
+    class CurTestDataWidget;
 }
 
-class CurTestDataWidget : public QWidget
-{
+class CurTestDataWidget
+    :public QWidget{
     Q_OBJECT
-
 public:
-    explicit CurTestDataWidget(QWidget *parent = 0);
-    ~CurTestDataWidget();
-
+    explicit CurTestDataWidget(QWidget *parent=0);
+    virtual ~CurTestDataWidget();
+private slots:
+    void onCurTestDataChanged();
 private:
-    Ui::CurTestDataWidget *ui;
+    void initUi();
+    void updateUi();
+private:
+    Ui::CurTestDataWidget *_ui;
 };
 
-#endif // CURTESTDATAWIDGET_H
+#endif // CUR_TEST_DATA_WIDGET_H
