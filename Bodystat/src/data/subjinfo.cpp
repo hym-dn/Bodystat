@@ -144,6 +144,25 @@ int SubjInfo::erase(QSqlQuery &query) const{
     return(0);
 }
 
+int SubjInfo::updateAccsDt(
+    QSqlQuery &query,const QDateTime &dt){
+    if(!dt.isValid()){
+        return(-1);
+    }
+    if(isValid()<0){
+        return(-2);
+    }
+    QString sql=QString("UPDATE Subject SET "
+        "AccessDateTime='%1' WHERE ID='%2';")
+        .arg(dt.toString("yyyy-MM-dd hh:mm:ss"))
+        .arg(getId());
+    if(!query.exec(sql)){
+        return(-3);
+    }
+    setAccsDt(dt);
+    return(0);
+}
+
 int SubjInfo::isValid(QString *msg/*=0*/) const{
     if(_id.isEmpty()){
         if(0!=msg){

@@ -24,6 +24,8 @@ public:
     int push(QSqlQuery &query,
         const bool isAdd) const;
     int erase(QSqlQuery &query) const;
+    int updateAccsDt(QSqlQuery &query,
+        const QDateTime &dt);
     int isValid(QString *msg=0) const;
     void setId(const QString &id);
     const QString &getId() const;

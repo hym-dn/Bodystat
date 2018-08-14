@@ -2,15 +2,15 @@
 #include"../comm/singleton.h"
 #include"subjinfo.h"
 #include"subject.h"
+#include"../db/dbmanager.h"
 #include<QMutexLocker>
 #include<QSqlQuery>
 #include<QtAlgorithms>
 
-static bool subjLessThan(
-    const SubjPool::PtrSubj &l,
+static bool subjLessThan(const SubjPool::PtrSubj &l,
     const SubjPool::PtrSubj &r){
-    return(l->getSubjInfo().getAccsDt()<
-           r->getSubjInfo().getAccsDt());
+    return(l->getSubjInfo().getAccsDt()>r->
+        getSubjInfo().getAccsDt());
 }
 
 SubjPool::~SubjPool(){
@@ -41,7 +41,7 @@ int SubjPool::pull(QSqlDatabase &db){
         "TestData.ECWLegacy,TestData.TBWLegacy,TestData.OHY,TestData.SkMuscle,"
         "TestData.Cm,TestData.Rext,TestData.Rint,TestData.FC,TestData.Alpha,"
         "TestData.SubjectID FROM Subject LEFT JOIN TestData ON "
-        "Subject.ID=TestData.SubjectID ORDER BY Subject.AccessDateTime ASC,"
+        "Subject.ID=TestData.SubjectID ORDER BY Subject.AccessDateTime DESC,"
         "Subject.ID ASC,TestData.DevModel ASC,TestData.DevSeriNum ASC,"
         "TestData.TestDateTime ASC;");
     QSqlQuery query(db);
@@ -159,18 +159,40 @@ int SubjPool::getSubjInfo(const int idx,
 }
 
 void SubjPool::setCurSubj(const int subjIdx){
+    QString subjId;
     {
         QMutexLocker locker(&_lock);
-        _curSubj=subjIdx;
-        _curTestData=-1;
+        if(subjIdx>=0&&subjIdx<_subjV.count()){
+            subjId=_subjV[subjIdx]->getSubjInfo().getId();
+        }
     }
-    emit curSubjChanged();
-    emit curTestDataChanged();
+    setCurSubj(subjId);
 }
 
 void SubjPool::setCurSubj(const QString &subjId){
+    if(subjId.isEmpty()){
+        {
+            QMutexLocker locker(&_lock);
+            _curSubj=-1;
+            _curTestData=-1;
+        }
+        emit curSubjChanged();
+        emit curTestDataChanged();
+        return;
+    }
     {
         QMutexLocker locker(&_lock);
+        PtrSubj subj=findSubj(subjId);
+        if(subj.isNull()){
+            _curSubj=-1;
+            _curTestData=-1;
+            emit curSubjChanged();
+            emit curTestDataChanged();
+            return;
+        }
+        QSqlQuery query(DBManager::instance()->getDB());
+        subj->updateAccsDt(query,QDateTime::currentDateTime());
+        qSort(_subjV.begin(),_subjV.end(),subjLessThan);
         for(int i=0;i<_subjV.count();++i){
             if(subjId==_subjV.at(i)->getSubjInfo().getId()){
                 _curSubj=i;

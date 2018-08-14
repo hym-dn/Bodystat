@@ -15,7 +15,7 @@ void TestDataListModel::update(){
 }
 
 int TestDataListModel::rowCount(const QModelIndex &/*parent*/) const{
-    return(SubjPool::instance()->getCurTestDataCount());
+    return(SubjPool::instance()->curTestDataCount());
 }
 
 QVariant TestDataListModel::data(const QModelIndex &index,int role) const{

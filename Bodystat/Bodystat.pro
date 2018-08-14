@@ -21,7 +21,8 @@ FORMS    += \
     ui/downloaddatawidget.ui \
     ui/startdialog.ui \
     ui/assigndownloadwidget.ui \
-    ui/curtestdatawidget.ui
+    ui/curtestdatawidget.ui \
+    ui/recentsubjwidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -59,9 +60,8 @@ SOURCES += \
     src/data/subjinfo.cpp \
     src/ui/assigndownloadwidget.cpp \
     src/ui/testdatalistmodel.cpp \
-    src/ui/curtestdatawidget.cpp
     src/ui/curtestdatawidget.cpp \
-    src/ui/testdatalistmodel.cpp
+    src/ui/recentsubjwidget.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -99,9 +99,8 @@ HEADERS += \
     src/data/subjinfo.h \
     src/ui/assigndownloadwidget.h \
     src/ui/testdatalistmodel.h \
-    src/ui/curtestdatawidget.h
     src/ui/curtestdatawidget.h \
-    src/ui/testdatalistmodel.h
+    src/ui/recentsubjwidget.h
 
 DESTDIR += ../bin
 

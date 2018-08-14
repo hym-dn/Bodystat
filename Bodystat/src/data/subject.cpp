@@ -88,6 +88,11 @@ int Subject::erase(QSqlQuery &query) const{
     return(_subjInfo->erase(query));
 }
 
+int Subject::updateAccsDt(QSqlQuery &query,
+    const QDateTime &dt){
+    return(_subjInfo->updateAccsDt(query,dt));
+}
+
 int Subject::assign(QSqlQuery &query,const TestDataV &testDataV){
     if(testDataV.isEmpty()){
         return(-1);

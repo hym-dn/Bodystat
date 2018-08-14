@@ -27,6 +27,8 @@ public:
         const SubjInfo &subjInfo,const bool isAdd);
     int erase(QSqlQuery &query) const;
     int assign(QSqlQuery &query,const TestDataV &testDataV);
+    int updateAccsDt(QSqlQuery &query,
+        const QDateTime &dt);
     int isValid(QString *msg=0) const;
     void setSubjInfo(const SubjInfo &subjInfo);
     const SubjInfo &getSubjInfo() const;

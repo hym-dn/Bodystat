@@ -7,6 +7,7 @@ namespace Ui{
     class MainDlg;
 }
 class QWidget;
+class QMenu;
 
 class MainDlg
     :public QDialog{
@@ -30,6 +31,8 @@ private slots:
     void onSelSubjToolButtonClicked(bool);
     void onDelSubjToolButtonClicked(bool);
     void onEdtSubjToolButtonClicked(bool);
+    void onRecSubjToolButtonPressed();
+    void onRecSubjActionTriggered(bool);
     void onAssignDownloadToolButtonClicked(bool);
     void onDownloadDataToolButtonClicked(bool);
     void onDevInfoToolButtonClicked(bool);
@@ -44,6 +47,7 @@ private:
 private:
     Ui::MainDlg *_ui;
     QWidget *_subWidget;
+    QMenu *_recSubjMenu;
 };
 
 #endif // MAIN_DLG_H

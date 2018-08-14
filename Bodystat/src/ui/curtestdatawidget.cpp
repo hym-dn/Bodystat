@@ -20,9 +20,8 @@ void CurTestDataWidget::onCurTestDataChanged(){
 }
 
 void CurTestDataWidget::initUi(){
-    connect(SubjPool::instance(),
-        SIGNAL(curTestDataChanged()),
-        this,SLOT(onCurTestDataChanged()));
+    connect(SubjPool::instance(),SIGNAL(
+        curTestDataChanged()),this,SLOT(onCurTestDataChanged()));
 }
 
 void CurTestDataWidget::updateUi(){

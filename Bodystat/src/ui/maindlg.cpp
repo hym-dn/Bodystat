@@ -16,11 +16,13 @@
 #include"../data/subjinfo.h"
 #include<QSharedPointer>
 #include<QMessageBox>
+#include<QMenu>
 
 MainDlg::MainDlg(QWidget *parent/*=0*/)
     :QDialog(parent)
     ,_ui(new Ui::MainDlg)
-    ,_subWidget(0){
+    ,_subWidget(0)
+    ,_recSubjMenu(){
     _ui->setupUi(this);
     customUi();
     initUi();
@@ -71,6 +73,29 @@ void MainDlg::onEdtSubjToolButtonClicked(bool){
         return;
     }
     creat(SUB_WIDGET_ID_EDT_SUBJ);
+}
+
+void MainDlg::onRecSubjToolButtonPressed(){
+    _recSubjMenu->clear();
+    int subjCount=SubjPool::instance()->count();
+    if(subjCount>20){subjCount=20;}
+    for(int i=0;i<subjCount;++i){
+        SubjInfo subjInfo;
+        SubjPool::instance()->getSubjInfo(i,subjInfo);
+        QAction *action=_recSubjMenu->addAction(
+            subjInfo.getName());
+        action->setData(i);
+        connect(action,SIGNAL(triggered(bool)),
+            this,SLOT(onRecSubjActionTriggered(bool)));
+    }
+}
+
+void MainDlg::onRecSubjActionTriggered(bool){
+    QAction *action=dynamic_cast<QAction*>(sender());
+    if(0==action){
+        return;
+    }
+    SubjPool::instance()->setCurSubj(action->data().toInt());
 }
 
 void MainDlg::onAssignDownloadToolButtonClicked(bool){
@@ -159,6 +184,21 @@ void MainDlg::initUi(){
         this,SLOT(onDelSubjToolButtonClicked(bool)));
     connect(_ui->_edtSubjToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onEdtSubjToolButtonClicked(bool)));
+    _recSubjMenu=new QMenu(_ui->_recSubjToolButton);
+    _ui->_recSubjToolButton->setMenu(_recSubjMenu);
+    int subjCount=SubjPool::instance()->count();
+    if(subjCount>20){subjCount=20;}
+    for(int i=0;i<subjCount;++i){
+        SubjInfo subjInfo;
+        SubjPool::instance()->getSubjInfo(i,subjInfo);
+        QAction *action=_recSubjMenu->addAction(
+            subjInfo.getName());
+        action->setData(i);
+        connect(action,SIGNAL(triggered(bool)),
+            this,SLOT(onRecSubjActionTriggered(bool)));
+    }
+    connect(_ui->_recSubjToolButton,SIGNAL(pressed()),
+        this,SLOT(onRecSubjToolButtonPressed()));
     connect(_ui->_assignDownloadToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onAssignDownloadToolButtonClicked(bool)));
     connect(_ui->_downloadDataToolButton,SIGNAL(clicked(bool)),

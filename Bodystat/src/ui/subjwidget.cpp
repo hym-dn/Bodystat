@@ -242,8 +242,8 @@ int SubjWidget::toSubjInfo(SubjInfo &subjInfo) const{
         subjInfo.setAccsDt(curDt);
     }else{
         const QDateTime curDt=QDateTime::currentDateTime();
-        subjInfo.setModiDt(curDt);
-        subjInfo.setAccsDt(curDt);
+        subjInfo.setModiDt(curDt); // 更新修改时间
+        //subjInfo.setAccsDt(curDt);
     }
     QString errMsg;
     const int res=subjInfo.isValid(&errMsg);
