@@ -32,6 +32,7 @@ private slots:
     void onSelSubjToolButtonClicked(bool);
     void onDelSubjToolButtonClicked(bool);
     void onEdtSubjToolButtonClicked(bool);
+    void onDelUnasActionTriggered(bool);
     void onRecSubjMenuAboutToShow();
     void onRecSubjActionTriggered(bool);
     void onAssignDownloadToolButtonClicked(bool);
@@ -48,6 +49,7 @@ private:
 private:
     Ui::MainDlg *_ui;
     QWidget *_subWidget;
+    QMenu *_delUnasMenu;
     QMenu *_recSubjMenu;
 };
 

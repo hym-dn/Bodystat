@@ -15,6 +15,7 @@
 #include"curtestdatawidget.h"
 #include"../data/subjinfo.h"
 #include"recentsubjwidget.h"
+#include"../db/dbmanager.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 #include<QMenu>
@@ -23,7 +24,8 @@ MainDlg::MainDlg(QWidget *parent/*=0*/)
     :QDialog(parent)
     ,_ui(new Ui::MainDlg)
     ,_subWidget(0)
-    ,_recSubjMenu(){
+    ,_delUnasMenu(0)
+    ,_recSubjMenu(0){
     _ui->setupUi(this);
     customUi();
     initUi();
@@ -74,6 +76,49 @@ void MainDlg::onEdtSubjToolButtonClicked(bool){
         return;
     }
     creat(SUB_WIDGET_ID_EDT_SUBJ);
+}
+
+void MainDlg::onDelUnasActionTriggered(bool){
+    QAction *action=dynamic_cast<QAction*>(sender());
+    if(0==action){
+        return;
+    }
+    SubjInfo subjInfo;
+    if(SubjPool::instance()->getCurSubjInfo(subjInfo)<0){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("报警"),tr("没有主题被选择！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
+    if(1==action->data().toInt()){
+        QMessageBox msgBox(QMessageBox::Question,
+            tr("询问"),tr("继续将彻底从数据库删除当前主题，是否继续？"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Yes);
+        msgBox.addButton(QMessageBox::No);
+        msgBox.setButtonText(QMessageBox::Yes,tr("是"));
+        msgBox.setButtonText(QMessageBox::No,tr("否"));
+        int result=msgBox.exec();
+        if(QMessageBox::No==result){ // 否
+            return;
+        }
+        if(SubjPool::instance()->erase(DBManager::instance()->
+            getDB(),subjInfo.getId())<0){
+            QMessageBox msgBox(QMessageBox::Warning,
+                tr("警报"),tr("对不起删除失败，请重试！"));
+            msgBox.setFont(font());
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+            msgBox.exec();
+            return;
+        }
+        SubjPool::instance()->setCurSubj(-1);
+    }else{
+
+    }
 }
 
 void MainDlg::onRecSubjMenuAboutToShow(){
@@ -127,6 +172,7 @@ void MainDlg::onBtTaskStart(const unsigned int /*id*/){
     _ui->_selSubjToolButton->setDisabled(true);
     _ui->_delSubjToolButton->setDisabled(true);
     _ui->_edtSubjToolButton->setDisabled(true);
+    _ui->_delUnasToolButton->setDisabled(true);
     _ui->_recSubjToolButton->setDisabled(true);
     _ui->_assignDownloadToolButton->setDisabled(true);
     _ui->_downloadDataToolButton->setDisabled(true);
@@ -139,6 +185,7 @@ void MainDlg::onBtTaskDone(
     _ui->_selSubjToolButton->setDisabled(false);
     _ui->_delSubjToolButton->setDisabled(false);
     _ui->_edtSubjToolButton->setDisabled(false);
+    _ui->_delUnasToolButton->setDisabled(false);
     _ui->_recSubjToolButton->setDisabled(false);
     _ui->_assignDownloadToolButton->setDisabled(false);
     _ui->_downloadDataToolButton->setDisabled(false);
@@ -156,6 +203,9 @@ void MainDlg::customUi(){
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
     _ui->_edtSubjToolButton->setStyleSheet(
+        ThemeManager::instance()->styleSheet(
+        ":rc/toolbutton.qss"));
+    _ui->_delUnasToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
     _ui->_recSubjToolButton->setStyleSheet(
@@ -186,6 +236,16 @@ void MainDlg::initUi(){
         this,SLOT(onDelSubjToolButtonClicked(bool)));
     connect(_ui->_edtSubjToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onEdtSubjToolButtonClicked(bool)));
+    _delUnasMenu=new QMenu(_ui->_delUnasToolButton);
+    QAction *action=_delUnasMenu->addAction(tr("删除"));
+    action->setData(1);
+    connect(action,SIGNAL(triggered(bool)),this,SLOT(
+        onDelUnasActionTriggered(bool)));
+    action=_delUnasMenu->addAction(tr("取消分配"));
+    action->setData(2);
+    connect(action,SIGNAL(triggered(bool)),this,SLOT(
+        onDelUnasActionTriggered(bool)));
+    _ui->_delUnasToolButton->setMenu(_delUnasMenu);
     _recSubjMenu=new QMenu(_ui->_recSubjToolButton);
     _ui->_recSubjToolButton->setMenu(_recSubjMenu);
     connect(_recSubjMenu,SIGNAL(aboutToShow()),
