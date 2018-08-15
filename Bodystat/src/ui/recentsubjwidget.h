@@ -13,6 +13,11 @@ class RecentSubjWidget
 public:
     explicit RecentSubjWidget(QWidget *parent=0);
     virtual ~RecentSubjWidget();
+private slots:
+    void onCurSubjTestDataChanged();
+private:
+    void initUi();
+    void updateUi();
 private:
     Ui::RecentSubjWidget *_ui;
 };

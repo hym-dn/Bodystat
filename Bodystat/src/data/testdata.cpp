@@ -555,6 +555,10 @@ int TestData::getActivity() const{
     return(_activity);
 }
 
+QString TestData::getActivityText() const{
+    return(QString("%1").arg(getActivity()));
+}
+
 void TestData::setWaist(const int waist){
     _waist=waist;
 }
@@ -587,12 +591,20 @@ int TestData::getIz5kHz() const{
     return(_iz5kHz);
 }
 
+QString TestData::getIz5kHzText() const{
+    return(QString("%1").arg(getIz5kHz()));
+}
+
 void TestData::setIz50kHz(const int iz50kHz){
     _iz50kHz=iz50kHz;
 }
 
 int TestData::getIz50kHz() const{
     return(_iz50kHz);
+}
+
+QString TestData::getIz50kHzText() const{
+    return(QString("%1").arg(getIz50kHz()));
 }
 
 void TestData::setIz100kHz(const int iz100kHz){
@@ -603,12 +615,20 @@ int TestData::getIz100kHz() const{
     return(_iz100kHz);
 }
 
+QString TestData::getIz100kHzText() const{
+    return(QString("%1").arg(getIz100kHz()));
+}
+
 void TestData::setIz200kHz(const int iz200kHz){
     _iz200kHz=iz200kHz;
 }
 
 int TestData::getIz200kHz() const{
     return(_iz200kHz);
+}
+
+QString TestData::getIz200kHzText() const{
+    return(QString("%1").arg(getIz200kHz()));
 }
 
 void TestData::setIr50kHz(const int ir50kHz){
@@ -619,6 +639,10 @@ int TestData::getIr50kHz() const{
     return(_ir50kHz);
 }
 
+QString TestData::getIr50kHzText() const{
+    return(QString("%1").arg(getIr50kHz()));
+}
+
 void TestData::setFx50kHz(const float fx50kHz){
     _fx50kHz=fx50kHz;
 }
@@ -627,12 +651,22 @@ float TestData::getFx50kHz() const{
     return(_fx50kHz);
 }
 
+QString TestData::getFx50kHzText() const{
+    return(QString("%1").arg(getFx50kHz(),
+        0,'f',PREC_LIMIT));
+}
+
 void TestData::setFpa50kHz(const float fpa50kHz){
     _fpa50kHz=fpa50kHz;
 }
 
 float TestData::getFpa50kHz() const{
     return(_fpa50kHz);
+}
+
+QString TestData::getFpa50kHzText() const{
+    return(QString("%1").arg(getFpa50kHz(),
+        0,'f',PREC_LIMIT));
 }
 
 void TestData::setFatPerc(const float fatPerc){

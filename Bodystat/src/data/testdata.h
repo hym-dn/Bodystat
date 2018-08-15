@@ -55,6 +55,7 @@ public:
     QString getWeightText() const;
     void setActivity(const int activity);
     int getActivity() const;
+    QString getActivityText() const;
     void setWaist(const int waist);
     int getWaist() const;
     QString getWaistText() const;
@@ -63,18 +64,25 @@ public:
     QString getHipText() const;
     void setIz5kHz(const int iz5kHz);
     int getIz5kHz() const;
+    QString getIz5kHzText() const;
     void setIz50kHz(const int iz5kHz);
     int getIz50kHz() const;
+    QString getIz50kHzText() const;
     void setIz100kHz(const int iz100kHz);
     int getIz100kHz() const;
+    QString getIz100kHzText() const;
     void setIz200kHz(const int iz200kHz);
     int getIz200kHz() const;
+    QString getIz200kHzText() const;
     void setIr50kHz(const int ir50kHz);
     int getIr50kHz() const;
+    QString getIr50kHzText() const;
     void setFx50kHz(const float fx50kHz);
     float getFx50kHz() const;
+    QString getFx50kHzText() const;
     void setFpa50kHz(const float fpa50kHz);
     float getFpa50kHz() const;
+    QString getFpa50kHzText() const;
     void setFatPerc(const float fatPerc);
     float getFatPerc() const;
     QString getFatPercText() const;
@@ -195,7 +203,7 @@ private:
     int _iz200kHz;
     int _ir50kHz;
     float _fx50kHz;
-    float _fpa50kHz;
+    float _fpa50kHz; // 相位角
     float _fatPerc; // 脂肪（%）
     float _fatKg; // 脂肪（kg）
     float _leanPerc; // 瘦肉（%）
@@ -228,7 +236,7 @@ private:
     float _rext; // R extracellular
     float _rint; // R intracellular
     float _fc; // Characteristic frequency
-    float _alpha; // 相位角
+    float _alpha;
     QString _subjId;
 };
 

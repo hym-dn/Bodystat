@@ -14,6 +14,7 @@
 #include"downloaddatawidget.h"
 #include"curtestdatawidget.h"
 #include"../data/subjinfo.h"
+#include"recentsubjwidget.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 #include<QMenu>
@@ -75,7 +76,7 @@ void MainDlg::onEdtSubjToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_EDT_SUBJ);
 }
 
-void MainDlg::onRecSubjToolButtonPressed(){
+void MainDlg::onRecSubjMenuAboutToShow(){
     _recSubjMenu->clear();
     int subjCount=SubjPool::instance()->count();
     if(subjCount>20){subjCount=20;}
@@ -96,6 +97,7 @@ void MainDlg::onRecSubjActionTriggered(bool){
         return;
     }
     SubjPool::instance()->setCurSubj(action->data().toInt());
+    creat(SUB_WIDGET_ID_REC_SUBJ);
 }
 
 void MainDlg::onAssignDownloadToolButtonClicked(bool){
@@ -186,19 +188,8 @@ void MainDlg::initUi(){
         this,SLOT(onEdtSubjToolButtonClicked(bool)));
     _recSubjMenu=new QMenu(_ui->_recSubjToolButton);
     _ui->_recSubjToolButton->setMenu(_recSubjMenu);
-    int subjCount=SubjPool::instance()->count();
-    if(subjCount>20){subjCount=20;}
-    for(int i=0;i<subjCount;++i){
-        SubjInfo subjInfo;
-        SubjPool::instance()->getSubjInfo(i,subjInfo);
-        QAction *action=_recSubjMenu->addAction(
-            subjInfo.getName());
-        action->setData(i);
-        connect(action,SIGNAL(triggered(bool)),
-            this,SLOT(onRecSubjActionTriggered(bool)));
-    }
-    connect(_ui->_recSubjToolButton,SIGNAL(pressed()),
-        this,SLOT(onRecSubjToolButtonPressed()));
+    connect(_recSubjMenu,SIGNAL(aboutToShow()),
+        this,SLOT(onRecSubjMenuAboutToShow()));
     connect(_ui->_assignDownloadToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onAssignDownloadToolButtonClicked(bool)));
     connect(_ui->_downloadDataToolButton,SIGNAL(clicked(bool)),
@@ -235,6 +226,9 @@ void MainDlg::creat(const SubWidgetID widgetId){
         SubjInfo subjInfo;
         SubjPool::instance()->getCurSubjInfo(subjInfo);
         _subWidget=new SubjWidget(SubjWidget::MODE_EDIT,&subjInfo);
+        Q_ASSERT(0!=_subWidget);
+    }else if(SUB_WIDGET_ID_REC_SUBJ==widgetId){
+        _subWidget=new RecentSubjWidget;
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_ASN_DWLD==widgetId){
         _subWidget=new AssignDownloadWidget;

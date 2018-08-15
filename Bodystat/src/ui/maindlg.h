@@ -21,9 +21,10 @@ private:
         SUB_WIDGET_ID_SEL_SUBJ=2,
         SUB_WIDGET_ID_DEL_SUBJ=3,
         SUB_WIDGET_ID_EDT_SUBJ=4,
-        SUB_WIDGET_ID_ASN_DWLD=5,
-        SUB_WIDGET_ID_DWL_DATA=6,
-        SUB_WIDGET_ID_DEV_INFO=7,
+        SUB_WIDGET_ID_REC_SUBJ=5,
+        SUB_WIDGET_ID_ASN_DWLD=6,
+        SUB_WIDGET_ID_DWL_DATA=7,
+        SUB_WIDGET_ID_DEV_INFO=8,
     }SubWidgetID;
 private slots:
     void onSubWidgetClose();
@@ -31,7 +32,7 @@ private slots:
     void onSelSubjToolButtonClicked(bool);
     void onDelSubjToolButtonClicked(bool);
     void onEdtSubjToolButtonClicked(bool);
-    void onRecSubjToolButtonPressed();
+    void onRecSubjMenuAboutToShow();
     void onRecSubjActionTriggered(bool);
     void onAssignDownloadToolButtonClicked(bool);
     void onDownloadDataToolButtonClicked(bool);
