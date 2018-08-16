@@ -136,6 +136,7 @@ int Subject::unassign(QSqlQuery &query,const int idx){
         return(-2);
     }
     TestDataPool::instance()->add(_testDataV[idx]);
+    _testDataV.removeAt(idx);
     TestDataPool::instance()->sort();
     return(0);
 }

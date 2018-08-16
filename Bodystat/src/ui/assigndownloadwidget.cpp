@@ -5,6 +5,7 @@
 #include"subjsortfilterproxymodel.h"
 #include"../data/testdatapool.h"
 #include"../db/dbmanager.h"
+#include"../data/subjpool.h"
 #include<QMessageBox>
 #include<QSet>
 
@@ -81,6 +82,8 @@ void AssignDownloadWidget::onAssignTestPushButtonClicked(bool){
     }
     dynamic_cast<TestDataTableModel*>(_ui->
         _testDataTableView->model())->update();
+    SubjPool::instance()->setCurSubj(
+        SubjPool::instance()->getCurSubjIdx());
 }
 
 void AssignDownloadWidget::initUi(){
