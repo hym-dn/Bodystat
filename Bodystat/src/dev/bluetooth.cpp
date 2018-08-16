@@ -253,6 +253,8 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
             TestDataPool::instance()->add(
                 DBManager::instance()->getDB(),rawData.record[i]);
         }
+        // 测试数据排序
+        TestDataPool::instance()->sort();
         // 如果无测试数据
         if(TestDataPool::instance()->count()<=0){
             emit taskDone(id,TASK_ERR_NO_NEW_TEST_DATA);

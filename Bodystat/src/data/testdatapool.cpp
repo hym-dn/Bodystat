@@ -10,6 +10,31 @@
 #include<QSqlQuery>
 #include<QMutexLocker>
 #include<QVariant>
+#include<QAlgorithms.h>
+
+static bool testDataLessThan(
+    const TestDataPool::PtrToData &l,
+    const TestDataPool::PtrToData &r){
+    if(l->getDevModel()<r->getDevModel()){
+        return(true);
+    }else if(l->getDevModel()==r->getDevModel()){
+
+        if(l->getDevSeriNum()<r->getDevSeriNum()){
+            return(true);
+        }else if(l->getDevSeriNum()==r->getDevSeriNum()){
+            if(l->getTestDateTime()<r->getTestDateTime()){
+                return(true);
+            }else{
+                return(false);
+            }
+        }else{
+            return(false);
+        }
+
+    }else{
+        return(false);
+    }
+}
 
 TestDataPool::~TestDataPool(){
 }
@@ -137,6 +162,17 @@ int TestDataPool::add(QSqlDatabase &db,
     return(0);
 }
 
+int TestDataPool::add(PtrToData &data){
+    if(data.isNull()){
+        return(-1);
+    }
+    if(data->isValid()<0){
+        return(-2);
+    }
+    add_(data);
+    return(0);
+}
+
 TestDataPool::PtrToCData
     TestDataPool::getData(const int idx){
     QMutexLocker locker(&_lock);
@@ -153,7 +189,7 @@ TestDataPool::TestDataPool(QObject *parent/*=0*/)
     ,_dataV(){
 }
 
-void TestDataPool::add(PtrToData &data){
+void TestDataPool::add_(PtrToData &data){
     QMutexLocker locker(&_lock);
     _dataV.push_back(data);
 }
@@ -172,4 +208,9 @@ bool TestDataPool::contain(const unsigned int devModel,
         }
     }
     return(false);
+}
+
+void TestDataPool::sort(){
+    QMutexLocker locker(&_lock);
+    qSort(_dataV.begin(),_dataV.end(),testDataLessThan);
 }

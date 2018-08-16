@@ -432,6 +432,21 @@ int TestData::push(QSqlQuery &query){
     return(0);
 }
 
+int TestData::unassign(QSqlQuery &query){
+    if(isValid()<0){
+        return(-1);
+    }
+    const QString sql(QString("UPDATE TestData SET SubjectID=%1 "
+        "WHERE DevModel=%2 AND DevSeriNum=%3 AND TestDateTime='%4';")
+        .arg("null").arg(getDevModel()).arg(getDevSeriNum()).arg(
+        getTestDateTimeText()));
+    if(!query.exec(sql)){
+        return(-2);
+    }
+    setSubjId("");
+    return(0);
+}
+
 int TestData::isValid() const{
     if(0==_devModel){
         return(-1);

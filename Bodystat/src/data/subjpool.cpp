@@ -142,6 +142,26 @@ int SubjPool::assign(QSqlDatabase &db,
     return(0);
 }
 
+int SubjPool::unassign(QSqlDatabase &db){
+    return(unassign(db,getCurSubjIdx(),getCurTestDataIdx()));
+}
+
+int SubjPool::unassign(QSqlDatabase &db,
+    const int subjIdx,const int testDataIdx){
+    if(!db.isValid()||!db.isOpen()){
+        return(-1);
+    }
+    QMutexLocker locker(&_lock);
+    if(subjIdx<0||subjIdx>=_subjV.count()){
+        return(-2);
+    }
+    QSqlQuery query(db);
+    if(_subjV[subjIdx]->unassign(query,testDataIdx)<0){
+        return(-3);
+    }
+    return(0);
+}
+
 int SubjPool::count() const{
     QMutexLocker locker(&_lock);
     return(_subjV.count());
@@ -205,7 +225,7 @@ void SubjPool::setCurSubj(const QString &subjId){
     emit curTestDataChanged();
 }
 
-int SubjPool::getCurSubj() const{
+int SubjPool::getCurSubjIdx() const{
     QMutexLocker locker(&_lock);
     return(_curSubj);
 }
@@ -229,7 +249,7 @@ void SubjPool::setCurTestData(const int testDataIdx){
 }
 
 SubjPool::PtrCTestData SubjPool::getCurTestData() const{
-    return(getCurTestData(_curTestData));
+    return(getCurTestData(getCurTestDataIdx()));
 }
 
 bool SubjPool::containTestData(const unsigned int devModel,
@@ -250,6 +270,11 @@ int SubjPool::curTestDataCount() const{
     }else{
         return(_subjV.at(_curSubj)->testDataCount());
     }
+}
+
+int SubjPool::getCurTestDataIdx() const{
+    QMutexLocker locker(&_lock);
+    return(_curTestData);
 }
 
 SubjPool::PtrCTestData SubjPool::getCurTestData(const int idx) const{

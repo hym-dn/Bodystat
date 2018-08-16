@@ -28,6 +28,7 @@ public:
 public:
     int pull(QSqlQuery &query,const unsigned long sIdx=0);
     int push(QSqlQuery &query);
+    int unassign(QSqlQuery &query);
     int isValid() const;
     bool same(const unsigned int devModel,
         const unsigned int devSeriNum,

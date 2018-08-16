@@ -1,6 +1,7 @@
 ﻿#include"subject.h"
 #include"subjinfo.h"
 #include"testdata.h"
+#include"../data/testdatapool.h"
 #include<QObject>
 #include<QSqlQuery>
 #include<QVariant>
@@ -124,6 +125,18 @@ int Subject::assign(QSqlQuery &query,const TestDataV &testDataV){
     }
     _testDataV.append(testDataV);
     qSort(_testDataV.begin(),_testDataV.end(),testDataLessThan);
+    return(0);
+}
+
+int Subject::unassign(QSqlQuery &query,const int idx){
+    if(idx<0||idx>=_testDataV.count()){
+        return(-1);
+    }
+    if(_testDataV[idx]->unassign(query)<0){
+        return(-2);
+    }
+    TestDataPool::instance()->add(_testDataV[idx]);
+    TestDataPool::instance()->sort();
     return(0);
 }
 

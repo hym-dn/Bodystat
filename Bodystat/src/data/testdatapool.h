@@ -19,6 +19,7 @@ class TestDataPool
     :public QObject{
     Q_OBJECT
 public:
+    typedef QSharedPointer<TestData> PtrToData;
     typedef QSharedPointer<const TestData> PtrToCData;
 public:
     virtual ~TestDataPool();
@@ -32,15 +33,16 @@ public:
     int count() const;
     int add(QSqlDatabase &db,
         const Bodystat::BSMeasurement &mData);
+    int add(PtrToData &data);
     PtrToCData getData(const int idx);
+    void sort();
 private:
-    typedef QSharedPointer<TestData> PtrToData;
     typedef QVector<PtrToData> DataV;
     friend class Singleton<TestDataPool>;
 private:
     explicit TestDataPool(QObject *parent=0);
 private:
-    void add(PtrToData &data);
+    void add_(PtrToData &data);
     void swap(DataV &dataV);
     bool contain(const unsigned int devModel,
         const unsigned int devSeriNum,

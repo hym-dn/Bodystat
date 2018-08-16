@@ -53,7 +53,7 @@ void MainDlg::onSelSubjToolButtonClicked(bool){
 }
 
 void MainDlg::onDelSubjToolButtonClicked(bool){
-    if(SubjPool::instance()->getCurSubj()<0){
+    if(SubjPool::instance()->getCurSubjIdx()<0){
         QMessageBox msgBox(QMessageBox::Warning,
             tr("报警"),tr("没有主题被选择！"));
         msgBox.setFont(font());
@@ -66,7 +66,7 @@ void MainDlg::onDelSubjToolButtonClicked(bool){
 }
 
 void MainDlg::onEdtSubjToolButtonClicked(bool){
-    if(SubjPool::instance()->getCurSubj()<0){
+    if(SubjPool::instance()->getCurSubjIdx()<0){
         QMessageBox msgBox(QMessageBox::Warning,
             tr("报警"),tr("没有主题被选择！"));
         msgBox.setFont(font());
@@ -117,7 +117,37 @@ void MainDlg::onDelUnasActionTriggered(bool){
         }
         SubjPool::instance()->setCurSubj(-1);
     }else{
-
+        if(SubjPool::instance()->getCurTestDataIdx()<0){
+            QMessageBox msgBox(QMessageBox::Warning,
+                tr("报警"),tr("没有测试被选择！"));
+            msgBox.setFont(font());
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+            msgBox.exec();
+            return;
+        }
+        QMessageBox msgBox(QMessageBox::Question,
+            tr("询问"),tr("继续将取消当前测试的分配，是否继续？"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Yes);
+        msgBox.addButton(QMessageBox::No);
+        msgBox.setButtonText(QMessageBox::Yes,tr("是"));
+        msgBox.setButtonText(QMessageBox::No,tr("否"));
+        int result=msgBox.exec();
+        if(QMessageBox::No==result){ // 否
+            return;
+        }
+        if(SubjPool::instance()->unassign(
+            DBManager::instance()->getDB())<0){
+            QMessageBox msgBox(QMessageBox::Warning,
+                tr("警报"),tr("取消测试分配失败，请重试！"));
+            msgBox.setFont(font());
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+            msgBox.exec();
+            return;
+        }
+        SubjPool::instance()->setCurSubj(subjInfo.getId());
     }
 }
 

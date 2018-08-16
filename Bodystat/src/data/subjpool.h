@@ -36,15 +36,19 @@ public:
     int erase(QSqlDatabase &db,const QString &subjId);
     int assign(QSqlDatabase &db,const int subjIdx,
         const TestDataV &testDataV);
+    int unassign(QSqlDatabase &db);
+    int unassign(QSqlDatabase &db,const int subjIdx,
+        const int testDataIdx);
     int count() const;
     int getSubjInfo(const int idx,SubjInfo &subjInfo) const;
     void setCurSubj(const int subjIdx);
     void setCurSubj(const QString &subjId);
-    int getCurSubj() const;
+    int getCurSubjIdx() const;
     int getCurSubjInfo(SubjInfo &subjInfo) const;
     void setCurTestData(const int testDataIdx);
     PtrCTestData getCurTestData() const;
     int curTestDataCount() const;
+    int getCurTestDataIdx() const;
     PtrCTestData getCurTestData(const int idx) const;
     bool containTestData(
         const unsigned int devModel,
