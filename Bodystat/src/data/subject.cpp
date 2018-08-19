@@ -13,11 +13,10 @@ static bool testDataLessThan(
     if(l->getDevModel()<r->getDevModel()){
         return(true);
     }else if(l->getDevModel()==r->getDevModel()){
-
         if(l->getDevSeriNum()<r->getDevSeriNum()){
             return(true);
         }else if(l->getDevSeriNum()==r->getDevSeriNum()){
-            if(l->getTestDateTime()<r->getTestDateTime()){
+            if(l->getTestDateTime()>r->getTestDateTime()){
                 return(true);
             }else{
                 return(false);

@@ -2,43 +2,29 @@
 #define WORD_ENGINE_H
 
 #include<QAxObject>
-#include<QAxWidget>
-#include<QMutex>
+//#include<QAxWidget>
 
-template<typename T>
-class Singleton;
-
-/**
- * @brief word操作引擎
- */
 class WordEngine{
 public:
+    WordEngine();
     ~WordEngine();
 public:
-    static WordEngine *instance();
-public:
-    bool isOpen() const;
-    int open(
-        const QString &tmplFile,
-        const bool isVisible);
+    bool getOpened() const;
+    int open(const QString &tmplFile,
+        const bool isVisible=false);
     void close();
-    int bmToTxt(
-        const QString &bm,
+    int bmToTxt(const QString &bm,
         const QString &txt);
     int saveAs(const QString &file);
-private:
-    friend class Singleton<WordEngine>;
-private:
-    WordEngine();
+    int toPDF(const QString &file);
 private:
     WordEngine(const WordEngine &);
     WordEngine &operator=(const WordEngine &);
 private:
-    mutable QMutex _lock; // 锁
-    bool _isOpen; // 打开标志
-    QAxWidget *_word; // word 应用程序
-    QAxObject *_docSet; // 文档集
-    QAxObject *_curDoc; // 当前操作文档
+    bool _opened;
+    QAxObject *_word;
+    QAxObject *_docSet;
+    QAxObject *_curDoc;
 };
 
 #endif // WORD_ENGINE_H

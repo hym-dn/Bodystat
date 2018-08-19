@@ -43,7 +43,7 @@ int SubjPool::pull(QSqlDatabase &db){
         "TestData.SubjectID FROM Subject LEFT JOIN TestData ON "
         "Subject.ID=TestData.SubjectID ORDER BY Subject.AccessDateTime DESC,"
         "Subject.ID ASC,TestData.DevModel ASC,TestData.DevSeriNum ASC,"
-        "TestData.TestDateTime ASC;");
+        "TestData.TestDateTime DESC;");
     QSqlQuery query(db);
     if(!query.exec(sql)){
         return(-2);

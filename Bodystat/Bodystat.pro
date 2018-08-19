@@ -22,7 +22,9 @@ FORMS    += \
     ui/startdialog.ui \
     ui/assigndownloadwidget.ui \
     ui/curtestdatawidget.ui \
-    ui/recentsubjwidget.ui
+    ui/recentsubjwidget.ui \
+    ui/selreportwidget.ui \
+    ui/printpreviewwidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -38,7 +40,6 @@ SOURCES += \
     src/ui/cursubjwidget.cpp \
     src/task/taskproc.cpp \
     src/task/task.cpp \
-    src/task/pullsubjvtask.cpp \
     src/ui/waitdialog.cpp \
     src/ui/subjlistmodel.cpp \
     src/ui/subjsortfilterproxymodel.cpp \
@@ -61,7 +62,11 @@ SOURCES += \
     src/ui/assigndownloadwidget.cpp \
     src/ui/testdatalistmodel.cpp \
     src/ui/curtestdatawidget.cpp \
-    src/ui/recentsubjwidget.cpp
+    src/ui/recentsubjwidget.cpp \
+    src/ui/selreportwidget.cpp \
+    src/report/reportcreater.cpp \
+    src/task/reporttask.cpp \
+    src/ui/printpreviewwidget.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -77,7 +82,6 @@ HEADERS += \
     src/data/subjpool.h \
     src/task/taskproc.h \
     src/task/task.h \
-    src/task/pullsubjvtask.h \
     src/ui/waitdialog.h \
     src/ui/subjlistmodel.h \
     src/ui/subjsortfilterproxymodel.h \
@@ -100,7 +104,11 @@ HEADERS += \
     src/ui/assigndownloadwidget.h \
     src/ui/testdatalistmodel.h \
     src/ui/curtestdatawidget.h \
-    src/ui/recentsubjwidget.h
+    src/ui/recentsubjwidget.h \
+    src/ui/selreportwidget.h \
+    src/report/reportcreater.h \
+    src/task/reporttask.h \
+    src/ui/printpreviewwidget.h
 
 DESTDIR += ../bin
 

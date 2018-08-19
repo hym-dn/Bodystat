@@ -45,17 +45,12 @@ void WaitDialog::initUi(){
     movie->start();
     // 信号、槽
     connect(TaskPool::instance(),
-        SIGNAL(taskFinished(unsigned int,int)),
-        this,SLOT(onTaskFinished(unsigned int,int)));
+        SIGNAL(taskDone(unsigned int,int)),
+        this,SLOT(onTaskDone(unsigned int,int)));
 }
 
-void WaitDialog::onTaskFinished(
-    const unsigned int id,int res){
+void WaitDialog::onTaskDone(const unsigned int id,int res){
     if(id==_task->getId()){
-        if(res<0){
-            done(0);
-        }else{
-            done(1);
-        }
+        done(res);
     }
 }

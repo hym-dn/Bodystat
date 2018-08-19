@@ -16,6 +16,8 @@
 #include"../data/subjinfo.h"
 #include"recentsubjwidget.h"
 #include"../db/dbmanager.h"
+#include"selreportwidget.h"
+#include"printpreviewwidget.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 #include<QMenu>
@@ -197,6 +199,23 @@ void MainDlg::onDevInfoToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_DEV_INFO);
 }
 
+void MainDlg::onBodyCompToolButtonClicked(bool){
+    if(SubjPool::instance()->getCurSubjIdx()<0){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("报警"),tr("没有主题被选择！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
+    creat(SUB_WIDGET_ID_SEL_REPT);
+}
+
+void MainDlg::onPrintPreview(){
+    creat(SUB_WIDGET_ID_PRI_PREV);
+}
+
 void MainDlg::onBtTaskStart(const unsigned int /*id*/){
     _ui->_newSubjToolButton->setDisabled(true);
     _ui->_selSubjToolButton->setDisabled(true);
@@ -291,6 +310,8 @@ void MainDlg::initUi(){
         this,SLOT(onDownloadDataToolButtonClicked(bool)));
     connect(_ui->_devInfoToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onDevInfoToolButtonClicked(bool)));
+    connect(_ui->_bodyCompToolButton,SIGNAL(clicked(bool)),
+        this,SLOT(onBodyCompToolButtonClicked(bool)));
     connect(DevPool::instance()->getBluetooth(),
         SIGNAL(taskStart(const unsigned int)),this,
         SLOT(onBtTaskStart(const unsigned int)));
@@ -330,11 +351,19 @@ void MainDlg::creat(const SubWidgetID widgetId){
         Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DWL_DATA==widgetId){
         _subWidget=new DownloadDataWidget;
+        Q_ASSERT(0!=_subWidget);
         connect(_subWidget,SIGNAL(showAssignDownloadWidget(bool)),
             this,SLOT(onAssignDownloadToolButtonClicked(bool)));
-        Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DEV_INFO==widgetId){
         _subWidget=new DevInfoWidget;
+        Q_ASSERT(0!=_subWidget);
+    }else if(SUB_WIDGET_ID_SEL_REPT==widgetId){
+        _subWidget=new SelReportWidget;
+        Q_ASSERT(0!=_subWidget);
+        connect(_subWidget,SIGNAL(printPreview()),
+            this,SLOT(onPrintPreview()));
+    }else if(SUB_WIDGET_ID_PRI_PREV==widgetId){
+        _subWidget=new PrintPreviewWidget;
         Q_ASSERT(0!=_subWidget);
     }
     _subWidget->setAttribute(Qt::WA_DeleteOnClose); // 关闭即销毁

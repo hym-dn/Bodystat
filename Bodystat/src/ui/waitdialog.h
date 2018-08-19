@@ -23,7 +23,7 @@ protected:
     virtual void keyPressEvent(
         QKeyEvent *event);
 private slots:
-    void onTaskFinished(
+    void onTaskDone(
         const unsigned int id,int res);
 private:
     void initUi();

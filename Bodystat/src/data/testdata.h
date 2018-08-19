@@ -125,7 +125,7 @@ public:
     QString getBcmText() const;
     void setThirdSpace(const float thirdSpace);
     float getThirdSpace() const;
-    QString gethirdSpaceText() const;
+    QString getThirdSpaceText() const;
     void setNutrition(const float nutrition);
     float getNutrition() const;
     QString getNutritionText() const;
@@ -222,7 +222,7 @@ private:
     float _nutrition; // 营养指数
     float _illness; // 预测指数
     float _bmr; // 基础代谢率（kcal）
-    float _bmrKg; // Basal Metabolic Rate per kilogram in (kcal/kg)
+    float _bmrKg; // 体重平均代谢 Basal Metabolic Rate per kilogram in (kcal/kg)
     float _estAvg; // 基础需能量 (kcal)
     float _bmi; // 身体质量指数
     float _bfmi; // 身体脂肪质量指数

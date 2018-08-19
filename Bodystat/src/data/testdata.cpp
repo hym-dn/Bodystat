@@ -861,7 +861,7 @@ float TestData::getThirdSpace() const{
     return(_thirdSpace);
 }
 
-QString TestData::gethirdSpaceText() const{
+QString TestData::getThirdSpaceText() const{
     return(QString("%1").arg(getThirdSpace(),
         0,'f',PREC_LIMIT));
 }

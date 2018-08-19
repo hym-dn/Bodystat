@@ -22,7 +22,7 @@ static bool testDataLessThan(
         if(l->getDevSeriNum()<r->getDevSeriNum()){
             return(true);
         }else if(l->getDevSeriNum()==r->getDevSeriNum()){
-            if(l->getTestDateTime()<r->getTestDateTime()){
+            if(l->getTestDateTime()>r->getTestDateTime()){
                 return(true);
             }else{
                 return(false);
@@ -55,8 +55,8 @@ int TestDataPool::pull(QSqlDatabase &db){
         "Nutrition,Illness,BMR,BMRKg,EstAvg,BMI,BFMI,FFMI,"
         "WaistHip,Wellness,ECWLegacy,TBWLegacy,OHY,SkMuscle,"
         "Cm,Rext,Rint,FC,Alpha,SubjectID FROM TestData WHERE "
-        "SubjectID IS null ORDER BY DevModel,DevSeriNum,"
-        "TestDateTime ASC;");
+        "SubjectID IS null ORDER BY DevModel ASC,DevSeriNum ASC,"
+        "TestDateTime DESC;");
     QSqlQuery query(db);
     if(!query.exec(sql)){
         return(-2);
