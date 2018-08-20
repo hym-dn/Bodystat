@@ -64,7 +64,6 @@ SOURCES += \
     src/ui/curtestdatawidget.cpp \
     src/ui/recentsubjwidget.cpp \
     src/ui/selreportwidget.cpp \
-    src/report/reportcreater.cpp \
     src/task/reporttask.cpp \
     src/ui/printpreviewwidget.cpp
 
@@ -106,7 +105,6 @@ HEADERS += \
     src/ui/curtestdatawidget.h \
     src/ui/recentsubjwidget.h \
     src/ui/selreportwidget.h \
-    src/report/reportcreater.h \
     src/task/reporttask.h \
     src/ui/printpreviewwidget.h
 
