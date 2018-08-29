@@ -6,6 +6,7 @@
 #include"../data/testdatapool.h"
 #include"../db/dbmanager.h"
 #include"../data/subjpool.h"
+#include"newsubjdlg.h"
 #include<QMessageBox>
 #include<QSet>
 
@@ -25,6 +26,11 @@ void AssignDownloadWidget::
     onFilterLineEditTextChanged(const QString &text){
     dynamic_cast<SubjSortFilterProxyModel*>(
         _ui->_subjListView->model())->setMatchString(text);
+}
+
+void AssignDownloadWidget::onNewSubjPushButtonClicked(bool){
+    NewSubjDlg dlg;
+    dlg.exec();
 }
 
 void AssignDownloadWidget::onAssignTestPushButtonClicked(bool){
@@ -104,6 +110,8 @@ void AssignDownloadWidget::initUi(){
     Q_ASSERT(0!=filterModel);
     filterModel->setSourceModel(listModel);
     _ui->_subjListView->setModel(filterModel);
+    connect(_ui->_newSubjPushButton,SIGNAL(clicked(bool)),
+        this,SLOT(onNewSubjPushButtonClicked(bool)));
     connect(_ui->_assignTestPushButton,SIGNAL(clicked(bool)),
         this,SLOT(onAssignTestPushButtonClicked(bool)));
 }

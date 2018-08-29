@@ -24,7 +24,8 @@ FORMS    += \
     ui/curtestdatawidget.ui \
     ui/recentsubjwidget.ui \
     ui/selreportwidget.ui \
-    ui/printpreviewwidget.ui
+    ui/printpreviewwidget.ui \
+    ui/newsubjdlg.ui
 
 SOURCES += \
     src/main.cpp \
@@ -65,7 +66,8 @@ SOURCES += \
     src/ui/recentsubjwidget.cpp \
     src/ui/selreportwidget.cpp \
     src/task/reporttask.cpp \
-    src/ui/printpreviewwidget.cpp
+    src/ui/printpreviewwidget.cpp \
+    src/ui/newsubjdlg.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -106,7 +108,8 @@ HEADERS += \
     src/ui/recentsubjwidget.h \
     src/ui/selreportwidget.h \
     src/task/reporttask.h \
-    src/ui/printpreviewwidget.h
+    src/ui/printpreviewwidget.h \
+    src/ui/newsubjdlg.h
 
 DESTDIR += ../bin
 

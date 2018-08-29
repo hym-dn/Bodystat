@@ -16,6 +16,7 @@ public:
     virtual ~AssignDownloadWidget();
 private slots:
     void onFilterLineEditTextChanged(const QString &text);
+    void onNewSubjPushButtonClicked(bool);
     void onAssignTestPushButtonClicked(bool);
 private:
     void initUi();

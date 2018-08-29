@@ -16,6 +16,7 @@ public:
     typedef enum{MODE_NEW=1,
         MODE_EDIT=2,MODE_DELETE=3,}Mode;
 public:
+    explicit SubjWidget(QWidget *parent);
     explicit SubjWidget(
         const Mode mode=MODE_NEW,
         const SubjInfo *subjInfo=0,

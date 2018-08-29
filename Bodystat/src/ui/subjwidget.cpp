@@ -5,6 +5,18 @@
 #include"../data/subjpool.h"
 #include<QMessageBox>
 
+SubjWidget::SubjWidget(QWidget *parent)
+    :MdiSubWidget(parent)
+    ,_mode(MODE_NEW)
+    ,_subjInfo(0)
+    ,_ui(new Ui::SubjWidget){
+    _subjInfo.reset(new SubjInfo);
+    Q_ASSERT(!_subjInfo.isNull());
+    _ui->setupUi(this);
+    initUi();
+    toUi();
+}
+
 SubjWidget::SubjWidget(const Mode mode/*=MODE_NEW*/,
     const SubjInfo *subjInfo/*=0*/,QWidget *parent/*=0*/)
     :MdiSubWidget(parent)

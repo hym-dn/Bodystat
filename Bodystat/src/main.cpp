@@ -3,7 +3,7 @@
 #include"ui/startdialog.h"
 #include<QApplication>
 #include<QMessageBox>
-//#include<vld.h>
+#include<vld.h>
 
 int main(int argc,char *argv[]){
     QApplication a(argc,argv);
