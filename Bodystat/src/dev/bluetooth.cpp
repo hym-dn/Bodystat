@@ -104,26 +104,26 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
             reset();
         }
         bodyStat->reset();
+        // 蓝牙驱动尚未安装
+        if(Bodystat::BSIsDeviceInstallInProgress(0)){
+            emit taskDone(id,TASK_ERR_DIRV_INVAL);
+            return;
+        }
+        // 蓝牙设备无效
+        if(!Bodystat::BSIsBTAvailable()){
+            emit taskDone(id,TASK_ERR_DEV_INVAL);
+            return;
+        }
+        // 蓝牙驱动信息
+        setDrivInfo("");
+        TCHAR dirvInfo[1024]={0};
+        if(!Bodystat::BSGetBTStackInfo(dirvInfo,1024)){
+            emit taskDone(id,TASK_ERR_GET_DIRV_INFO_FAILED);
+            return;
+        }
+        setDrivInfo(QString::fromUtf16((ushort*)dirvInfo));
         // 扫描设备
         if(TASK_ID_SCAN_DEV==id){
-            // 蓝牙驱动尚未安装
-            if(Bodystat::BSIsDeviceInstallInProgress(0)){
-                emit taskDone(id,TASK_ERR_DIRV_INVAL);
-                return;
-            }
-            // 蓝牙设备无效
-            if(!Bodystat::BSIsBTAvailable()){
-                emit taskDone(id,TASK_ERR_DEV_INVAL);
-                return;
-            }
-            // 蓝牙驱动信息
-            setDrivInfo("");
-            TCHAR dirvInfo[1024]={0};
-            if(!Bodystat::BSGetBTStackInfo(dirvInfo,1024)){
-                emit taskDone(id,TASK_ERR_GET_DIRV_INFO_FAILED);
-                return;
-            }
-            setDrivInfo(QString::fromUtf16((ushort*)dirvInfo));
             // 断开连接
             Bodystat::BSCloseComport();
             // 擦除配对
