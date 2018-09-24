@@ -102,6 +102,8 @@ public:
     void setDryLW(const float dryLW);
     float getDryLW() const;
     QString getDryLWText() const;
+    float getDryLWPerc() const;
+    QString getDryLWPercText() const;
     void setTbwPerc(const float tbwPerc);
     float getTbwPerc() const;
     QString getTbwPercText() const;
@@ -126,6 +128,8 @@ public:
     void setThirdSpace(const float thirdSpace);
     float getThirdSpace() const;
     QString getThirdSpaceText() const;
+    float getThirdSpacePerc() const;
+    QString getThirdSpacePercText() const;
     void setNutrition(const float nutrition);
     float getNutrition() const;
     QString getNutritionText() const;
@@ -168,6 +172,8 @@ public:
     void setSkMuscle(const float skMuscle);
     float getSkMuscle() const;
     QString getSkMuscleText() const;
+    float calSkMuscle() const;
+    QString calSkMuscleText() const;
     void setCm(const float cm);
     float getCm() const;
     QString getCmText() const;

@@ -96,6 +96,36 @@ int WordEngine::bmToTxt(const QString &bm,
     }
 }
 
+int WordEngine::bmToImg(const QString &bm,
+    const QString &img){
+    if(bm.isEmpty()){
+        return(-1);
+    }
+    if(img.isEmpty()){
+        return(-2);
+    }
+    if(!_opened){
+        return(-3);
+    }
+    QAxObject *bookmark=_curDoc->
+        querySubObject("Bookmarks(QString)",bm);
+    if(bookmark){
+        bookmark->dynamicCall("Select(void)");
+        QList<QVariant> list;
+        list<<QVariant(img);
+        list<<QVariant(false);
+        list<<QVariant(true);
+        list<<bookmark->querySubObject("Range")->asVariant();
+        _curDoc->querySubObject("InlineShapes")->dynamicCall(
+            "AddPicture(const QString&,QVariant,QVariant,QVariant)",
+             list);
+        delete bookmark;
+        return(0);
+    }else{
+        return(-4);
+    }
+}
+
 int WordEngine::saveAs(const QString &file){
     if(file.isEmpty()){
         return(-1);

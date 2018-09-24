@@ -18,6 +18,7 @@
 #include"../db/dbmanager.h"
 #include"selreportwidget.h"
 #include"printpreviewwidget.h"
+#include"sysconfigwidget.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 #include<QMenu>
@@ -212,6 +213,10 @@ void MainDlg::onBodyCompToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_SEL_REPT);
 }
 
+void MainDlg::onSysConfigToolButtonClicked(bool){
+    creat(SUB_WIDGET_ID_SYS_CONF);
+}
+
 void MainDlg::onPrintPreview(){
     creat(SUB_WIDGET_ID_PRI_PREV);
 }
@@ -274,6 +279,9 @@ void MainDlg::customUi(){
     _ui->_bodyCompToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
+    _ui->_sysConfigToolButton->setStyleSheet(
+        ThemeManager::instance()->styleSheet(
+        ":rc/toolbutton.qss"));
 }
 
 void MainDlg::initUi(){
@@ -312,6 +320,8 @@ void MainDlg::initUi(){
         this,SLOT(onDevInfoToolButtonClicked(bool)));
     connect(_ui->_bodyCompToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onBodyCompToolButtonClicked(bool)));
+    connect(_ui->_sysConfigToolButton,SIGNAL(clicked(bool)),
+        this,SLOT(onSysConfigToolButtonClicked(bool)));
     connect(DevPool::instance()->getBluetooth(),
         SIGNAL(taskStart(const unsigned int)),this,
         SLOT(onBtTaskStart(const unsigned int)));
@@ -364,6 +374,9 @@ void MainDlg::creat(const SubWidgetID widgetId){
             this,SLOT(onPrintPreview()));
     }else if(SUB_WIDGET_ID_PRI_PREV==widgetId){
         _subWidget=new PrintPreviewWidget;
+        Q_ASSERT(0!=_subWidget);
+    }else if(SUB_WIDGET_ID_SYS_CONF==widgetId){
+        _subWidget=new SysConfigWidget;
         Q_ASSERT(0!=_subWidget);
     }
     _subWidget->setAttribute(Qt::WA_DeleteOnClose); // 关闭即销毁

@@ -15,6 +15,8 @@ public:
     void close();
     int bmToTxt(const QString &bm,
         const QString &txt);
+    int bmToImg(const QString &bm,
+        const QString &Img);
     int saveAs(const QString &file);
     int toPDF(const QString &file);
 private:

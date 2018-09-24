@@ -27,6 +27,7 @@ private:
         SUB_WIDGET_ID_DEV_INFO=8,
         SUB_WIDGET_ID_SEL_REPT=9,
         SUB_WIDGET_ID_PRI_PREV=10,
+        SUB_WIDGET_ID_SYS_CONF=11,
     }SubWidgetID;
 private slots:
     void onSubWidgetClose();
@@ -41,6 +42,7 @@ private slots:
     void onDownloadDataToolButtonClicked(bool);
     void onDevInfoToolButtonClicked(bool);
     void onBodyCompToolButtonClicked(bool);
+    void onSysConfigToolButtonClicked(bool);
     void onPrintPreview();
     void onBtTaskStart(const unsigned int id);
     void onBtTaskDone(const unsigned int id,

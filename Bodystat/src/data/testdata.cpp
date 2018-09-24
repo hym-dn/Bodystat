@@ -762,6 +762,19 @@ QString TestData::getDryLWText() const{
         0,'f',PREC_LIMIT));
 }
 
+float TestData::getDryLWPerc() const{
+    if(fabs(0.0-getWeight())<0.001){
+        return(0.0);
+    }else{
+        return(getDryLW()/getWeight()*100.0);
+    }
+}
+
+QString TestData::getDryLWPercText() const{
+    return(QString("%1").arg(getDryLWPerc(),
+        0,'f',PREC_LIMIT));
+}
+
 void TestData::setTbwPerc(const float tbwPerc){
     _tbwPerc=tbwPerc;
 }
@@ -863,6 +876,19 @@ float TestData::getThirdSpace() const{
 
 QString TestData::getThirdSpaceText() const{
     return(QString("%1").arg(getThirdSpace(),
+        0,'f',PREC_LIMIT));
+}
+
+float TestData::getThirdSpacePerc() const{
+    if(fabs(0.0-getWeight())<0.001){
+        return(0.0);
+    }else{
+        return(getThirdSpace()/getWeight()*100.0);
+    }
+}
+
+QString TestData::getThirdSpacePercText() const{
+    return(QString("%1").arg(getThirdSpacePerc(),
         0,'f',PREC_LIMIT));
 }
 
@@ -1045,6 +1071,16 @@ float TestData::getSkMuscle() const{
 
 QString TestData::getSkMuscleText() const{
     return(QString("%1").arg(getSkMuscle(),
+        0,'f',PREC_LIMIT));
+}
+
+float TestData::calSkMuscle() const{
+    return((0.401*getHeight()*getHeight()/getIz50kHz())+
+        (3.825*(SEX_MALE==getSex()?1.0:0.0))-(0.071*getAge())+5.102);
+}
+
+QString TestData::calSkMuscleText() const{
+    return(QString("%1").arg(calSkMuscle(),
         0,'f',PREC_LIMIT));
 }
 

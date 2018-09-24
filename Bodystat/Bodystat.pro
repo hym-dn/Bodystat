@@ -25,7 +25,8 @@ FORMS    += \
     ui/recentsubjwidget.ui \
     ui/selreportwidget.ui \
     ui/printpreviewwidget.ui \
-    ui/newsubjdlg.ui
+    ui/newsubjdlg.ui \
+    ui/sysconfigwidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -67,7 +68,18 @@ SOURCES += \
     src/ui/selreportwidget.cpp \
     src/task/reporttask.cpp \
     src/ui/printpreviewwidget.cpp \
-    src/ui/newsubjdlg.cpp
+    src/ui/newsubjdlg.cpp \
+    src/ui/sysconfigwidget.cpp \
+    src/data/hispinfo.cpp \
+    src/data/sysinfopool.cpp \
+    src/data/fatrange.cpp \
+    src/data/fatparam.cpp \
+    src/data/tbwparam.cpp \
+    src/data/tbwrange.cpp \
+    src/data/leanparam.cpp \
+    src/data/leanrange.cpp \
+    src/data/bmirange.cpp \
+    src/data/bmiparam.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -109,7 +121,18 @@ HEADERS += \
     src/ui/selreportwidget.h \
     src/task/reporttask.h \
     src/ui/printpreviewwidget.h \
-    src/ui/newsubjdlg.h
+    src/ui/newsubjdlg.h \
+    src/ui/sysconfigwidget.h \
+    src/data/hispinfo.h \
+    src/data/sysinfopool.h \
+    src/data/fatrange.h \
+    src/data/fatparam.h \
+    src/data/tbwparam.h \
+    src/data/tbwrange.h \
+    src/data/leanparam.h \
+    src/data/leanrange.h \
+    src/data/bmirange.h \
+    src/data/bmiparam.h
 
 DESTDIR += ../bin
 

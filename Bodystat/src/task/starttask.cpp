@@ -1,6 +1,7 @@
 ﻿#include"starttask.h"
 #include"../data/subjpool.h"
 #include"../data/testdatapool.h"
+#include"../data/sysinfopool.h"
 #include<QTime>
 #include<QThread>
 
@@ -24,11 +25,14 @@ int StartTask::exec(QSqlDatabase &db){
     }
     QTime tm;
     tm.start();
-    if(SubjPool::instance()->pull(db)<0){
+    if(SysInfoPool::instance()->pull(db)<0){
         return(-3);
     }
-    if(TestDataPool::instance()->pull(db)<0){
+    if(SubjPool::instance()->pull(db)<0){
         return(-4);
+    }
+    if(TestDataPool::instance()->pull(db)<0){
+        return(-5);
     }
     const int ms=tm.elapsed();
     if(ms<2000){

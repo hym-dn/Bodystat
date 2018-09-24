@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>753</width>
-    <height>377</height>
+    <width>887</width>
+    <height>529</height>
    </rect>
   </property>
   <property name="font">
@@ -451,6 +451,59 @@
         <widget class="QLabel" name="_reportLabel">
          <property name="text">
           <string>报告</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line_4">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QToolButton" name="_sysConfigToolButton">
+           <property name="minimumSize">
+            <size>
+             <width>63</width>
+             <height>63</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>系统配置</string>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextUnderIcon</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="_sysLabel">
+         <property name="text">
+          <string>系统</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

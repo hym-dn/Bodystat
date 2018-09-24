@@ -4,6 +4,8 @@
 #include"../data/subjpool.h"
 #include"../data/testdata.h"
 #include"../report/word/wordengine.h"
+#include"../data/hispinfo.h"
+#include"../data/sysinfopool.h"
 #include<QTime>
 #include<QThread>
 #include<QDir>
@@ -53,6 +55,10 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     if(word.open(templPath+templName)<0){
         return(-3);
     }
+    word.bmToTxt("HispInfo",SysInfoPool::
+        instance()->getHispInfo()->getHispName()+
+        SysInfoPool::instance()->getHispInfo()->
+        getSectName());
     SubjInfo subjInfo;
     if(SubjPool::instance()->getCurSubjInfo(subjInfo)<0){
         return(-4);
@@ -71,16 +77,22 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("Ecw",testData->getEcwText());
     word.bmToTxt("Icw",testData->getIcwText());
     word.bmToTxt("ThirdSpace",testData->getThirdSpaceText());
-    word.bmToTxt("DryLW",testData->getDryLWText());
-    word.bmToTxt("FatKg",testData->getFatKgText());
     word.bmToTxt("Tbw",testData->getTbwText());
+    word.bmToTxt("DryLW",testData->getDryLWText());
     word.bmToTxt("LeanKg",testData->getLeanKgText());
+    word.bmToTxt("FatKg",testData->getFatKgText());
     word.bmToTxt("WeightKg",testData->getWeightText());
     word.bmToTxt("EcwPerc",testData->getEcwPercText());
     word.bmToTxt("IcwPerc",testData->getIcwPercText());
-    word.bmToTxt("FatPerc",testData->getFatPercText());
+    word.bmToTxt("ThirdSpacePerc",testData->getThirdSpacePercText());
     word.bmToTxt("TbwPerc",testData->getTbwPercText());
+    word.bmToTxt("TbwPercRange",SysInfoPool::instance()->
+        getTbwRangeText(testData->getAge(),testData->getSex()));
+    word.bmToTxt("DryLWPerc",testData->getDryLWPercText());
+    word.bmToTxt("FatPerc",testData->getFatPercText());
     word.bmToTxt("LeanPerc",testData->getLeanPercText());
+    word.bmToTxt("LeanPercRange",SysInfoPool::instance()->
+        getLeanRangeText(testData->getAge(),testData->getSex()));
     word.bmToTxt("Iz5kHz",testData->getIz5kHzText());
     word.bmToTxt("Iz50kHz",testData->getIz50kHzText());
     word.bmToTxt("Iz100kHz",testData->getIz100kHzText());
@@ -91,13 +103,16 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("EstAvg",testData->getEstAvgText());
     word.bmToTxt("WaistHip",testData->getWaistHipText());
     word.bmToTxt("Bmi",testData->getBmiText());
+    //word.bmToTxt("BmiRange",SysInfoPool::instance()->
+        //getBmiRangeText(testData->getAge(),testData->getSex()));
     word.bmToTxt("Bfmi",testData->getBfmiText());
     word.bmToTxt("Ffmi",testData->getFfmiText());
     word.bmToTxt("Bcm",testData->getBcmText());
     word.bmToTxt("Nutrition",testData->getNutritionText());
-    word.bmToTxt("SkMuscle",testData->getSkMuscleText());
+    word.bmToTxt("SkMuscle",testData->calSkMuscleText());
     word.bmToTxt("Fpa50kHz",testData->getFpa50kHzText());
     word.bmToTxt("WeightRight",testData->getWeightText());
+
     word.bmToTxt("Height01",testData->getHeightText());
     word.bmToTxt("Weight01",testData->getWeightText());
     word.bmToTxt("FatPerc01",testData->getFatPercText());
@@ -140,6 +155,11 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
         word.bmToTxt("Fpa50kHz04",testData->getFpa50kHzText());
         word.bmToTxt("TestDateTime04",testData->getTestDateTimeText());
     }
+
+
+
+
+
     if(word.toPDF(tempPath+pdfName)<0){
         return(-9);
     }
