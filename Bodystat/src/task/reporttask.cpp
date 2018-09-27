@@ -4,6 +4,7 @@
 #include"../data/subjpool.h"
 #include"../data/testdata.h"
 #include"../report/word/wordengine.h"
+#include"../report/graphic/chart.h"
 #include"../data/hispinfo.h"
 #include"../data/sysinfopool.h"
 #include<QTime>
@@ -112,54 +113,84 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("SkMuscle",testData->calSkMuscleText());
     word.bmToTxt("Fpa50kHz",testData->getFpa50kHzText());
     word.bmToTxt("WeightRight",testData->getWeightText());
-
-    word.bmToTxt("Height01",testData->getHeightText());
-    word.bmToTxt("Weight01",testData->getWeightText());
-    word.bmToTxt("FatPerc01",testData->getFatPercText());
-    word.bmToTxt("Illness01",testData->getIllnessText());
-    word.bmToTxt("Fpa50kHz01",testData->getFpa50kHzText());
-    word.bmToTxt("TestDateTime01",testData->getTestDateTimeText());
+    Chart::Points heightPoints;
+    Chart::Points weightPoints;
+    Chart::Points fatPercPoints;
+    Chart::Points tclPoints;
+    Chart::Points illnessPoints;
+    Chart::Points fpa50kHzPoints;
+    heightPoints.push_back(testData->getHeight());
+    weightPoints.push_back(testData->getWeight());
+    fatPercPoints.push_back(testData->getFatPerc());
+    tclPoints.push_back((testData->getEcw()+
+        testData->getIcw()+testData->getThirdSpace())/
+        testData->getWeight()*100.0);
+    illnessPoints.push_back(testData->getIllness());
+    fpa50kHzPoints.push_back(testData->getFpa50kHz());
+    word.bmToTxt("TestDateTime01",testData->getTestDateText());
     if(_tdIdxV.count()>=2){
         testData=SubjPool::instance()->getCurTestData(_tdIdxV.at(1));
         if(testData.isNull()){
             return(-6);
         }
-        word.bmToTxt("Height02",testData->getHeightText());
-        word.bmToTxt("Weight02",testData->getWeightText());
-        word.bmToTxt("FatPerc02",testData->getFatPercText());
-        word.bmToTxt("Illness02",testData->getIllnessText());
-        word.bmToTxt("Fpa50kHz02",testData->getFpa50kHzText());
-        word.bmToTxt("TestDateTime02",testData->getTestDateTimeText());
+        heightPoints.push_back(testData->getHeight());
+        weightPoints.push_back(testData->getWeight());
+        fatPercPoints.push_back(testData->getFatPerc());
+        illnessPoints.push_back(testData->getIllness());
+        tclPoints.push_back((testData->getEcw()+
+            testData->getIcw()+testData->getThirdSpace())/
+            testData->getWeight()*100.0);
+        fpa50kHzPoints.push_back(testData->getFpa50kHz());
+        word.bmToTxt("TestDateTime02",testData->getTestDateText());
     }
     if(_tdIdxV.count()>=3){
         testData=SubjPool::instance()->getCurTestData(_tdIdxV.at(2));
         if(testData.isNull()){
             return(-7);
         }
-        word.bmToTxt("Height03",testData->getHeightText());
-        word.bmToTxt("Weight03",testData->getWeightText());
-        word.bmToTxt("FatPerc03",testData->getFatPercText());
-        word.bmToTxt("Illness03",testData->getIllnessText());
-        word.bmToTxt("Fpa50kHz03",testData->getFpa50kHzText());
-        word.bmToTxt("TestDateTime03",testData->getTestDateTimeText());
+        heightPoints.push_back(testData->getHeight());
+        weightPoints.push_back(testData->getWeight());
+        fatPercPoints.push_back(testData->getFatPerc());
+        illnessPoints.push_back(testData->getIllness());
+        tclPoints.push_back((testData->getEcw()+
+            testData->getIcw()+testData->getThirdSpace())/
+            testData->getWeight()*100.0);
+        fpa50kHzPoints.push_back(testData->getFpa50kHz());
+        word.bmToTxt("TestDateTime03",testData->getTestDateText());
     }
     if(_tdIdxV.count()>=4){
         testData=SubjPool::instance()->getCurTestData(_tdIdxV.at(3));
         if(testData.isNull()){
             return(-8);
         }
-        word.bmToTxt("Height04",testData->getHeightText());
-        word.bmToTxt("Weight04",testData->getWeightText());
-        word.bmToTxt("FatPerc04",testData->getFatPercText());
-        word.bmToTxt("Illness04",testData->getIllnessText());
-        word.bmToTxt("Fpa50kHz04",testData->getFpa50kHzText());
-        word.bmToTxt("TestDateTime04",testData->getTestDateTimeText());
+        heightPoints.push_back(testData->getHeight());
+        weightPoints.push_back(testData->getWeight());
+        fatPercPoints.push_back(testData->getFatPerc());
+        illnessPoints.push_back(testData->getIllness());
+        tclPoints.push_back((testData->getEcw()+
+            testData->getIcw()+testData->getThirdSpace())/
+            testData->getWeight()*100.0);
+        fpa50kHzPoints.push_back(testData->getFpa50kHz());
+        word.bmToTxt("TestDateTime04",testData->getTestDateText());
     }
-
-
-
-
-
+    Chart heightChart(heightPoints);
+    heightChart.save(QCoreApplication::applicationDirPath()+"/temp/height.png");
+    word.bmToImg("HeightCurve",QCoreApplication::applicationDirPath()+"/temp/height.png");
+    Chart weightChart(weightPoints);
+    weightChart.save(QCoreApplication::applicationDirPath()+"/temp/weight.png");
+    word.bmToImg("WeightCurve",QCoreApplication::applicationDirPath()+"/temp/weight.png");
+    Chart fatPercChart(fatPercPoints);
+    fatPercChart.save(QCoreApplication::applicationDirPath()+"/temp/fatperc.png");
+    word.bmToImg("FatPercCurve",QCoreApplication::applicationDirPath()+"/temp/fatperc.png");
+    Chart illnessChart(illnessPoints);
+    illnessChart.save(QCoreApplication::applicationDirPath()+"/temp/illness.png");
+    word.bmToImg("IllnessCurve",QCoreApplication::applicationDirPath()+"/temp/illness.png");
+    Chart tclChart(tclPoints);
+    tclChart.save(QCoreApplication::applicationDirPath()+"/temp/tcl.png");
+    word.bmToImg("TclCurve",QCoreApplication::applicationDirPath()+"/temp/tcl.png");
+    Chart fpa50kHzChart(fpa50kHzPoints);
+    fpa50kHzChart.save(QCoreApplication::applicationDirPath()+"/temp/fpa50kHz.png");
+    word.bmToImg("fpa50kHzCurve",QCoreApplication::applicationDirPath()+"/temp/fpa50kHz.png");
     if(word.toPDF(tempPath+pdfName)<0){
         return(-9);
     }

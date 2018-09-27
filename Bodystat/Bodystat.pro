@@ -79,7 +79,8 @@ SOURCES += \
     src/data/leanparam.cpp \
     src/data/leanrange.cpp \
     src/data/bmirange.cpp \
-    src/data/bmiparam.cpp
+    src/data/bmiparam.cpp \
+    src/report/graphic/chart.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -132,7 +133,8 @@ HEADERS += \
     src/data/leanparam.h \
     src/data/leanrange.h \
     src/data/bmirange.h \
-    src/data/bmiparam.h
+    src/data/bmiparam.h \
+    src/report/graphic/chart.h
 
 DESTDIR += ../bin
 

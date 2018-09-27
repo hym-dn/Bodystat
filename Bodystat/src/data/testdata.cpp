@@ -504,6 +504,10 @@ QString TestData::getTestDateTimeText() const{
         "yyyy-MM-dd hh:mm:ss"));
 }
 
+QString TestData::getTestDateText() const{
+    return(getTestDateTime().toString("yyyy-MM-dd"));
+}
+
 void TestData::setSex(const Sex sex){
     _sex=sex;
 }

@@ -42,6 +42,7 @@ public:
     void setTestDateTime(const QDateTime &dateTime);
     const QDateTime &getTestDateTime() const;
     QString getTestDateTimeText() const;
+    QString getTestDateText() const;
     void setSex(const Sex sex);
     Sex getSex() const;
     QString getSexText() const;
