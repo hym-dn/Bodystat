@@ -16,7 +16,7 @@ public:
 protected:
     virtual void closeEvent(QCloseEvent *event);
 private slots:
-    void onTestFilterLineEditTextChanged(const QString&);
+    void onTestFilterLineEditTextChanged(const QString &text);
     void onExportPushButtonClicked(bool);
 private:
     void initUi();

@@ -1,4 +1,4 @@
-#include"teststatsortfilterproxymodel.h"
+﻿#include"teststatsortfilterproxymodel.h"
 #include"../data/testdata.h"
 #include"../data/testdatapool.h"
 
@@ -30,8 +30,8 @@ bool TestStatSortFilterProxyModel::filterAcceptsRow(
     }else{
         const QModelIndex srcIndex=sourceModel()->
             index(source_row,0,source_parent);
-        TestDataPool::PtrToData test=
-            TestDataPool::instance()->getData(srcIndex.row());
+        TestDataPool::PtrToCData test=
+            TestDataPool::instance()->getData_t(srcIndex.row());
         if(test.isNull()){
             return(false);
         }else{

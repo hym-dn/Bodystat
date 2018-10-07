@@ -29,7 +29,11 @@
     </layout>
    </item>
    <item>
-    <widget class="QListView" name="_testStatListView"/>
+    <widget class="QListView" name="_testStatListView">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ContiguousSelection</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">

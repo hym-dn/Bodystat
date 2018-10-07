@@ -10,6 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Bodystat
 TEMPLATE = app
+RC_ICONS = Bodystat.ico
 
 FORMS    += \
     ui/maindlg.ui \

@@ -27,11 +27,11 @@ int DBManager::open(){
     close(_conn);
     const DWORD thrId=GetCurrentThreadId();
     _conn=QSqlDatabase::addDatabase(
-        "QODBC",QString("%1").arg(thrId));
-    const QString connText=QString("DRIVER={Microsoft "
+        /*"QODBC"*/"QSQLITE",QString("%1").arg(thrId));
+    const QString connText=QString(/*"DRIVER={Microsoft "
         "Access Driver (*.mdb, *.accdb)};FIL={MS Access};"
-        "DBQ=%1").arg(QCoreApplication::applicationDirPath()+
-        "/Bodystat.accdb");
+        "DBQ=%1"*/"%1").arg(QCoreApplication::applicationDirPath()+
+        /*"/Bodystat.accdb"*/"/Bodystat.db");
     _conn.setDatabaseName(connText);
     if(!_conn.open()){
         qDebug()<<_conn.lastError().text();

@@ -13,6 +13,7 @@ TestStatWidget::TestStatWidget(QWidget *parent/*=0*/)
     :MdiSubWidget(parent)
     ,_ui(new Ui::TestStatWidget){
     _ui->setupUi(this);
+    initUi();
 }
 
 TestStatWidget::~TestStatWidget(){
@@ -24,7 +25,7 @@ void TestStatWidget::closeEvent(QCloseEvent *event){
     MdiSubWidget::closeEvent(event);
 }
 
-void TestStatWidget::onTestFilterLineEditTextChanged(const QString &){
+void TestStatWidget::onTestFilterLineEditTextChanged(const QString &text){
     dynamic_cast<TestStatSortFilterProxyModel*>(
         _ui->_testStatListView->model())->setMatchString(text);
 }
@@ -63,14 +64,14 @@ void TestStatWidget::onExportPushButtonClicked(bool){
           <<","<<tr("体重")<<","<<tr("活跃度")<<","<<tr("胸围")
           <<","<<tr("臀围")<<","<<tr("iz5kHz")<<","<<tr("iz50kHz")
           <<","<<tr("iz100kHz")<<","<<tr("iz200kHz")<<","<<tr("ir50kHz")
-          <<","<<tr("fx50kHz")<<","<<tr("fpa50kHz")<<"\r\n";
+          <<","<<tr("fx50kHz")<<","<<tr("fpa50kHz")<<"\n";
         for(int i=0;i<indxList.count();++i){
             QModelIndex indx=indxList.at(i);
             indx=dynamic_cast<TestStatSortFilterProxyModel*>(
                 _ui->_testStatListView->model())->mapToSource(indx);
             TestDataPool::PtrToCData test=
-                TestDataPool::instance()->getData(indx.row());
-            out<<test->getBrief()<<"\r\n";
+                TestDataPool::instance()->getData_t(indx.row());
+            out<<test->getBrief()<<"\n";
         }
         file.close();
         QMessageBox msgBox(QMessageBox::Information,
