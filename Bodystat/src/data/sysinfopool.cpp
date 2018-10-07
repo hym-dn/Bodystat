@@ -131,6 +131,19 @@ QString SysInfoPool::getBmiRangeText(
     return(_bmiParam->getRangeText(age,sex));
 }
 
+int SysInfoPool::getFatRange(const unsigned int age,
+    const unsigned int sex,float &referLower,
+    float &referUpper) const{
+    QMutexLocker locker(&_lock);
+    return(_fatParam->getRange(age,sex,referLower,referUpper));
+}
+
+QString SysInfoPool::getFatRangeText(
+    const unsigned int age,const unsigned int sex) const{
+    QMutexLocker locker(&_lock);
+    return(_fatParam->getRangeText(age,sex));
+}
+
 SysInfoPool::SysInfoPool(QObject *parent)
     :QObject(parent)
     ,_lock()

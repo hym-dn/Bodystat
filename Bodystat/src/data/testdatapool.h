@@ -27,14 +27,18 @@ public:
     static TestDataPool *instance();
 public:
     int pull(QSqlDatabase &db);
+    int pull_t(QSqlDatabase &db);
     int assign(QSqlDatabase &db,const int subjIdx,
         const QSet<int> &tdIdxS);
     void clear();
+    void clear_t();
     int count() const;
+    int count_t() const;
     int add(QSqlDatabase &db,
         const Bodystat::BSMeasurement &mData);
     int add(PtrToData &data);
     PtrToCData getData(const int idx);
+    PtrToCData getData_t(const int idx);
     void sort();
 private:
     typedef QVector<PtrToData> DataV;
@@ -44,6 +48,7 @@ private:
 private:
     void add_(PtrToData &data);
     void swap(DataV &dataV);
+    void swap_t(DataV &dataV);
     bool contain(const unsigned int devModel,
         const unsigned int devSeriNum,
         const QDateTime &testDateTime) const;
@@ -53,6 +58,7 @@ private:
 private:
     mutable QMutex _lock;
     DataV _dataV;
+    DataV _dataV_t;
 };
 
 #endif // TEST_DATA_POOL_H

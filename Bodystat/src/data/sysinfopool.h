@@ -34,6 +34,11 @@ public:
         const unsigned int sex) const;
     QString getBmiRangeText(const unsigned int age,
         const unsigned int sex) const;
+    int getFatRange(const unsigned int age,
+        const unsigned int sex,float &referLower,
+        float &referUpper) const;
+    QString getFatRangeText(const unsigned int age,
+        const unsigned int sex) const;
 private:
     friend Singleton<SysInfoPool>;
     typedef QSharedPointer<FatParam> PtrFatParam;

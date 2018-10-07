@@ -13,6 +13,11 @@ public:
     ~FatParam();
 public:
     int pull(QSqlQuery &query);
+    int getRange(const unsigned int age,
+        const unsigned int sex,float &referLower,
+        float &referUpper) const;
+    QString getRangeText(const unsigned int age,
+        const unsigned int sex) const;
 private:
     typedef QSharedPointer<FatRange> PtrFatRange;
     typedef QVector<PtrFatRange> FatRangePool;

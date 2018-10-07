@@ -85,6 +85,7 @@ public:
     void setFpa50kHz(const float fpa50kHz);
     float getFpa50kHz() const;
     QString getFpa50kHzText() const;
+    QString getBrief() const;
     void setFatPerc(const float fatPerc);
     float getFatPerc() const;
     QString getFatPercText() const;

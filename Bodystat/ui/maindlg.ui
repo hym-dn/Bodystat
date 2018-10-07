@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>887</width>
+    <width>904</width>
     <height>529</height>
    </rect>
   </property>
@@ -278,6 +278,25 @@
            </property>
            <property name="text">
             <string>分配下载</string>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextUnderIcon</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="_testStatToolButton">
+           <property name="minimumSize">
+            <size>
+             <width>63</width>
+             <height>63</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>测试统计</string>
            </property>
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextUnderIcon</enum>

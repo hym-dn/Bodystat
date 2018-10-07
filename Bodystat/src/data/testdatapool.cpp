@@ -76,6 +76,38 @@ int TestDataPool::pull(QSqlDatabase &db){
     return(0);
 }
 
+int TestDataPool::pull_t(QSqlDatabase &db){
+    if(!db.isValid()||!db.isOpen()){
+        return(-1);
+    }
+    QString sql("SELECT DevModel,DevSeriNum,TestDateTime,"
+        "Sex,Age,Height,Weight,Activity,Waist,Hip,Iz5kHz,"
+        "IZ50kHz,Iz100kHz,Iz200kHz,Ir50kHz,Fx50kHz,Fpa50kHz,"
+        "FatPerc,FatKg,LeanPerc,LeanKg,TotalWeight,DryLW,"
+        "TBWPerc,TBW,ECWPerc,ECW,ICWPerc,ICW,BCM,ThirdSpace,"
+        "Nutrition,Illness,BMR,BMRKg,EstAvg,BMI,BFMI,FFMI,"
+        "WaistHip,Wellness,ECWLegacy,TBWLegacy,OHY,SkMuscle,"
+        "Cm,Rext,Rint,FC,Alpha,SubjectID FROM TestData ORDER "
+        "BY DevModel ASC,DevSeriNum ASC,TestDateTime DESC;");
+    QSqlQuery query(db);
+    if(!query.exec(sql)){
+        return(-2);
+    }
+    DataV dataV;
+    while(query.next()){
+        PtrToData data(new TestData);
+        if(data.isNull()){
+            continue;
+        }
+        if(data->pull(query)<0){
+            continue;
+        }
+        dataV.push_back(data);
+    }
+    swap_t(dataV);
+    return(0);
+}
+
 int TestDataPool::assign(QSqlDatabase &db,
     const int subjIdx,const QSet<int> &tdIdxS){
     if(!db.isValid()||!db.isOpen()){
@@ -106,9 +138,19 @@ void TestDataPool::clear(){
     _dataV.clear();
 }
 
+void TestDataPool::clear_t(){
+    QMutexLocker locker(&_lock);
+    _dataV_t.swap(DataV());
+}
+
 int TestDataPool::count() const{
     QMutexLocker locker(&_lock);
-    return(_dataV.count());
+    return(_dataV_t.count());
+}
+
+int TestDataPool::count_t() const{
+    QMutexLocker locker(&_lock);
+    return(_dataV_t.count());
 }
 
 int TestDataPool::add(QSqlDatabase &db,
@@ -183,10 +225,21 @@ TestDataPool::PtrToCData
     }
 }
 
+TestDataPool::PtrToCData
+    TestDataPool::getData_t(const int idx){
+    QMutexLocker locker(&_lock);
+    if(idx<0||idx>=_dataV_t.count()){
+        return(PtrToCData());
+    }else{
+        return(_dataV_t.at(idx));
+    }
+}
+
 TestDataPool::TestDataPool(QObject *parent/*=0*/)
     :QObject(parent)
     ,_lock()
-    ,_dataV(){
+    ,_dataV()
+    ,_dataV_t(){
 }
 
 void TestDataPool::add_(PtrToData &data){
@@ -197,6 +250,11 @@ void TestDataPool::add_(PtrToData &data){
 void TestDataPool::swap(DataV &dataV){
     QMutexLocker locker(&_lock);
     _dataV.swap(dataV);
+}
+
+void TestDataPool::swap_t(DataV &dataV){
+    QMutexLocker locker(&_lock);
+    _dataV_t.swap(dataV);
 }
 
 bool TestDataPool::contain(const unsigned int devModel,

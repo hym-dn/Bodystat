@@ -83,6 +83,15 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("LeanKg",testData->getLeanKgText());
     word.bmToTxt("FatKg",testData->getFatKgText());
     word.bmToTxt("WeightKg",testData->getWeightText());
+    float lw=0.0,up=0.0;
+    SysInfoPool::instance()->getFatRange(
+        testData->getAge(),testData->getSex(),lw,up);
+    //float stLw=testData->getLeanKg()/(1-lw/100.0f);
+    float ndLw=20.0f*(testData->getHeight()/100.0f)*(testData->getHeight()/100.0f);
+    //float stUp=testData->getLeanKg()/(1-up/100.0f);
+    float ndUp=22.0f*(testData->getHeight()/100.0f)*(testData->getHeight()/100.0f);
+    word.bmToTxt("WeightRange",QString("%1-%2").arg(static_cast<int>(ndLw))
+        .arg(static_cast<int>(ndUp)));
     word.bmToTxt("EcwPerc",testData->getEcwPercText());
     word.bmToTxt("IcwPerc",testData->getIcwPercText());
     word.bmToTxt("ThirdSpacePerc",testData->getThirdSpacePercText());
@@ -113,6 +122,8 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("SkMuscle",testData->calSkMuscleText());
     word.bmToTxt("Fpa50kHz",testData->getFpa50kHzText());
     word.bmToTxt("WeightRight",testData->getWeightText());
+    word.bmToTxt("TargetWeight",QString("%1~%2").arg(
+        static_cast<int>(ndLw)).arg(static_cast<int>(ndUp)));
     Chart::Points heightPoints;
     Chart::Points weightPoints;
     Chart::Points fatPercPoints;

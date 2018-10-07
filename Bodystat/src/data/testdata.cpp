@@ -688,6 +688,16 @@ QString TestData::getFpa50kHzText() const{
         0,'f',PREC_LIMIT));
 }
 
+QString TestData::getBrief() const{
+    return(getDevModelText()+","+getDevSeriNumText()+","+
+        getTestDateText()+","+getSexText()+","+
+        getAgeText()+","+getHeightText()+","+getWeightText()
+        +","+getActivityText()+","+getWaistText()+","
+        +getHipText()+","+getIz5kHzText()+","+getIz50kHzText()+
+        ","+getIz100kHzText()+","+getIz200kHzText()+","+
+        getIr50kHzText()+","+getFx50kHzText()+","+getFpa50kHzText());
+}
+
 void TestData::setFatPerc(const float fatPerc){
     _fatPerc=fatPerc;
 }

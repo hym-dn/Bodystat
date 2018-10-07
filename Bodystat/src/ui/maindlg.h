@@ -39,6 +39,7 @@ private slots:
     void onRecSubjMenuAboutToShow();
     void onRecSubjActionTriggered(bool);
     void onAssignDownloadToolButtonClicked(bool);
+    void onTestStatToolButtonClicked(bool);
     void onDownloadDataToolButtonClicked(bool);
     void onDevInfoToolButtonClicked(bool);
     void onBodyCompToolButtonClicked(bool);

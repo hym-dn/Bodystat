@@ -26,7 +26,8 @@ FORMS    += \
     ui/selreportwidget.ui \
     ui/printpreviewwidget.ui \
     ui/newsubjdlg.ui \
-    ui/sysconfigwidget.ui
+    ui/sysconfigwidget.ui \
+    ui/teststatwidget.ui
 
 SOURCES += \
     src/main.cpp \
@@ -80,7 +81,8 @@ SOURCES += \
     src/data/leanrange.cpp \
     src/data/bmirange.cpp \
     src/data/bmiparam.cpp \
-    src/report/graphic/chart.cpp
+    src/report/graphic/chart.cpp \
+    src/ui/teststatwidget.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -134,7 +136,8 @@ HEADERS += \
     src/data/leanrange.h \
     src/data/bmirange.h \
     src/data/bmiparam.h \
-    src/report/graphic/chart.h
+    src/report/graphic/chart.h \
+    src/ui/teststatwidget.h
 
 DESTDIR += ../bin
 

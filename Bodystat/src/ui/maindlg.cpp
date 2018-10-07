@@ -182,6 +182,9 @@ void MainDlg::onAssignDownloadToolButtonClicked(bool){
     creat(SUB_WIDGET_ID_ASN_DWLD);
 }
 
+void MainDlg::onTestStatToolButtonClicked(bool){
+}
+
 void MainDlg::onDownloadDataToolButtonClicked(bool){
     if(!DevPool::instance()->getBodyStat()->getIsOpen()||
         !DevPool::instance()->getBodyStat()->getIsConnect()){
@@ -270,6 +273,9 @@ void MainDlg::customUi(){
     _ui->_assignDownloadToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
+    _ui->_testStatToolButton->setStyleSheet(
+        ThemeManager::instance()->styleSheet(
+        ":rc/toolbutton.qss"));
     _ui->_downloadDataToolButton->setStyleSheet(
         ThemeManager::instance()->styleSheet(
         ":rc/toolbutton.qss"));
@@ -314,6 +320,8 @@ void MainDlg::initUi(){
         this,SLOT(onRecSubjMenuAboutToShow()));
     connect(_ui->_assignDownloadToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onAssignDownloadToolButtonClicked(bool)));
+    connect(_ui->_testStatToolButton,SIGNAL(clicked(bool)),
+        this,SLOT(onTestStatToolButtonClicked(bool)));
     connect(_ui->_downloadDataToolButton,SIGNAL(clicked(bool)),
         this,SLOT(onDownloadDataToolButtonClicked(bool)));
     connect(_ui->_devInfoToolButton,SIGNAL(clicked(bool)),
