@@ -82,7 +82,10 @@ SOURCES += \
     src/data/bmirange.cpp \
     src/data/bmiparam.cpp \
     src/report/graphic/chart.cpp \
-    src/ui/teststatwidget.cpp
+    src/ui/teststatwidget.cpp \
+    src/task/teststattask.cpp \
+    src/ui/teststatlistmodel.cpp \
+    src/ui/teststatsortfilterproxymodel.cpp
 
 HEADERS += \
     src/ui/maindlg.h \
@@ -137,7 +140,10 @@ HEADERS += \
     src/data/bmirange.h \
     src/data/bmiparam.h \
     src/report/graphic/chart.h \
-    src/ui/teststatwidget.h
+    src/ui/teststatwidget.h \
+    src/task/teststattask.h \
+    src/ui/teststatlistmodel.h \
+    src/ui/teststatsortfilterproxymodel.h
 
 DESTDIR += ../bin
 

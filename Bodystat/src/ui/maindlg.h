@@ -24,10 +24,11 @@ private:
         SUB_WIDGET_ID_REC_SUBJ=5,
         SUB_WIDGET_ID_ASN_DWLD=6,
         SUB_WIDGET_ID_DWL_DATA=7,
-        SUB_WIDGET_ID_DEV_INFO=8,
-        SUB_WIDGET_ID_SEL_REPT=9,
-        SUB_WIDGET_ID_PRI_PREV=10,
-        SUB_WIDGET_ID_SYS_CONF=11,
+        SUB_WIDGET_ID_TST_STAT=8,
+        SUB_WIDGET_ID_DEV_INFO=9,
+        SUB_WIDGET_ID_SEL_REPT=10,
+        SUB_WIDGET_ID_PRI_PREV=11,
+        SUB_WIDGET_ID_SYS_CONF=12,
     }SubWidgetID;
 private slots:
     void onSubWidgetClose();

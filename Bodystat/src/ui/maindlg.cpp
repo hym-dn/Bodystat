@@ -19,6 +19,9 @@
 #include"selreportwidget.h"
 #include"printpreviewwidget.h"
 #include"sysconfigwidget.h"
+#include"waitdialog.h"
+#include"../task/teststattask.h"
+#include"teststatwidget.h"
 #include<QSharedPointer>
 #include<QMessageBox>
 #include<QMenu>
@@ -183,6 +186,19 @@ void MainDlg::onAssignDownloadToolButtonClicked(bool){
 }
 
 void MainDlg::onTestStatToolButtonClicked(bool){
+    WaitDialog::PtrTask task(new TestStatTask);
+    Q_ASSERT(!task.isNull());
+    WaitDialog dlg(task);
+    if(dlg.exec()<0){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("警报"),tr("对不起，测试统计信息生成失败！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
+    creat(SUB_WIDGET_ID_TST_STAT);
 }
 
 void MainDlg::onDownloadDataToolButtonClicked(bool){
@@ -372,6 +388,9 @@ void MainDlg::creat(const SubWidgetID widgetId){
         Q_ASSERT(0!=_subWidget);
         connect(_subWidget,SIGNAL(showAssignDownloadWidget(bool)),
             this,SLOT(onAssignDownloadToolButtonClicked(bool)));
+    }else if(SUB_WIDGET_ID_TST_STAT==widgetId){
+        _subWidget=new TestStatWidget;
+        Q_ASSERT(0!=_subWidget);
     }else if(SUB_WIDGET_ID_DEV_INFO==widgetId){
         _subWidget=new DevInfoWidget;
         Q_ASSERT(0!=_subWidget);

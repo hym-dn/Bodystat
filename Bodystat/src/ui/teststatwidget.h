@@ -13,6 +13,13 @@ class TestStatWidget
 public:
     explicit TestStatWidget(QWidget *parent=0);
     ~TestStatWidget();
+protected:
+    virtual void closeEvent(QCloseEvent *event);
+private slots:
+    void onTestFilterLineEditTextChanged(const QString&);
+    void onExportPushButtonClicked(bool);
+private:
+    void initUi();
 private:
     Ui::TestStatWidget *_ui;
 };
