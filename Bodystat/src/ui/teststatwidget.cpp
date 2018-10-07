@@ -1,8 +1,13 @@
 ﻿#include"teststatwidget.h"
 #include"ui_teststatwidget.h"
+#include"../data/testdata.h"
 #include"../data/testdatapool.h"
 #include"teststatlistmodel.h"
 #include"teststatsortfilterproxymodel.h"
+#include<QMessageBox>
+#include<QFileDialog>
+#include<QFile>
+#include<QTextStream>
 
 TestStatWidget::TestStatWidget(QWidget *parent/*=0*/)
     :MdiSubWidget(parent)
@@ -25,6 +30,56 @@ void TestStatWidget::onTestFilterLineEditTextChanged(const QString &){
 }
 
 void TestStatWidget::onExportPushButtonClicked(bool){
+    QModelIndexList indxList=_ui->_testStatListView->
+        selectionModel()->selectedIndexes();
+    if(indxList.isEmpty()){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("警报"),tr("您尚未选中测试数据！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
+    const QString fileName=QFileDialog::
+        getSaveFileName(this,tr("保存"),"",
+        tr("Export Files (*.csv)"));
+    if(fileName.isEmpty()){
+        return;
+    }else{
+        QFile file(fileName);
+        if(!file.open(QFile::WriteOnly|QIODevice::Text)){
+            QMessageBox msgBox(QMessageBox::Warning,
+                tr("警报"),tr("对不起，文件创建失败，请重试!"));
+            msgBox.setFont(font());
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+            msgBox.exec();
+            return;
+        }
+        QTextStream out(&file);
+        out<<tr("设备")<<","<<tr("设备号")<<","<<tr("测试日期")
+          <<","<<tr("性别")<<","<<tr("年龄")<<","<<tr("身高")
+          <<","<<tr("体重")<<","<<tr("活跃度")<<","<<tr("胸围")
+          <<","<<tr("臀围")<<","<<tr("iz5kHz")<<","<<tr("iz50kHz")
+          <<","<<tr("iz100kHz")<<","<<tr("iz200kHz")<<","<<tr("ir50kHz")
+          <<","<<tr("fx50kHz")<<","<<tr("fpa50kHz")<<"\r\n";
+        for(int i=0;i<indxList.count();++i){
+            QModelIndex indx=indxList.at(i);
+            indx=dynamic_cast<TestStatSortFilterProxyModel*>(
+                _ui->_testStatListView->model())->mapToSource(indx);
+            TestDataPool::PtrToCData test=
+                TestDataPool::instance()->getData(indx.row());
+            out<<test->getBrief()<<"\r\n";
+        }
+        file.close();
+        QMessageBox msgBox(QMessageBox::Information,
+            tr("提示"),tr("文件导出成功！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+    }
 }
 
 void TestStatWidget::initUi(){
