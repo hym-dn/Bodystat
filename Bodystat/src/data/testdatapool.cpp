@@ -55,7 +55,7 @@ int TestDataPool::pull(QSqlDatabase &db){
         "Nutrition,Illness,BMR,BMRKg,EstAvg,BMI,BFMI,FFMI,"
         "WaistHip,Wellness,ECWLegacy,TBWLegacy,OHY,SkMuscle,"
         "Cm,Rext,Rint,FC,Alpha,SubjectID FROM TestData WHERE "
-        "SubjectID IS null ORDER BY DevModel ASC,DevSeriNum ASC,"
+        "SubjectID IS NULL ORDER BY DevModel ASC,DevSeriNum ASC,"
         "TestDateTime DESC;");
     QSqlQuery query(db);
     if(!query.exec(sql)){
@@ -145,7 +145,7 @@ void TestDataPool::clear_t(){
 
 int TestDataPool::count() const{
     QMutexLocker locker(&_lock);
-    return(_dataV_t.count());
+    return(_dataV.count());
 }
 
 int TestDataPool::count_t() const{
