@@ -695,7 +695,19 @@ QString TestData::getBrief() const{
         +","+getActivityText()+","+getWaistText()+","
         +getHipText()+","+getIz5kHzText()+","+getIz50kHzText()+
         ","+getIz100kHzText()+","+getIz200kHzText()+","+
-        getIr50kHzText()+","+getFx50kHzText()+","+getFpa50kHzText());
+        getIr50kHzText()+","+getFx50kHzText()+","+getFpa50kHzText()+
+        ","+getFatPercText()+","+getLeanPercText()+","+getLeanKgText()+
+        ","+getTotalWeightText()+","+getDryLWText()+","+getDryLWPercText()+
+        ","+getTbwPercText()+","+getTbwText()+","+getEcwPercText()+","
+        +getEcwText()+","+getIcwPercText()+","+getIcwText()+","
+        +getBcmText()+","+getThirdSpaceText()+","+getThirdSpacePercText()
+        +","+getNutritionText()+","+getIllnessText()+","+
+        getBmrText()+","+getBmrKgText()+","+getEstAvgText()+","
+        +getBmiText()+","+getBfmiText()+","+getFfmiText()+","+
+        getWaistHipText()+","+getWellnessText()+","+getEcwLegacyText()+
+        ","+getTbwLegacyText()+","+getOhyText()+","+getSkMuscleText()+
+        ","+calSkMuscleText()+","+getCmText()+","+getRextText()+","+
+        getRintText()+","+getFcText()+","+getAlphaText());
 }
 
 void TestData::setFatPerc(const float fatPerc){

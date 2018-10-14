@@ -62,9 +62,19 @@ void TestStatWidget::onExportPushButtonClicked(bool){
         out<<tr("设备")<<","<<tr("设备号")<<","<<tr("测试日期")
           <<","<<tr("性别")<<","<<tr("年龄")<<","<<tr("身高")
           <<","<<tr("体重")<<","<<tr("活跃度")<<","<<tr("胸围")
-          <<","<<tr("臀围")<<","<<tr("iz5kHz")<<","<<tr("iz50kHz")
-          <<","<<tr("iz100kHz")<<","<<tr("iz200kHz")<<","<<tr("ir50kHz")
-          <<","<<tr("fx50kHz")<<","<<tr("fpa50kHz")<<"\n";
+          <<","<<tr("臀围")<<","<<"iz5kHz"<<","<<"iz50kHz"
+          <<","<<"iz100kHz"<<","<<"iz200kHz"<<","<<"ir50kHz"
+          <<","<<"fx50kHz"<<","<<"fpa50kHz"<<","<<"Fat Perc"
+          <<","<<"Lean Perc"<<","<<"Lean Kg"<<","<<"Total Weight"
+          <<","<<"DLW"<<","<<"DLW Perc"<<","<<"TBW Perc"<<","
+          <<"TBW"<<","<<"ECW Perc"<<","<<"Ecw"<<","<<"ICW Perc"
+          ","<<"ICW"<<","<<"BCM"<<","<<"Third Space"<<","<<
+          "Third Space Perc"<<","<<"Nutrition"<<","<<"Illness"
+         <<","<<"BMR"<<","<<"BMR Kg"<<","<<"Est Avg"<<","<<"BMI"
+         <<","<<"BFMI"<<","<<"FFMI"<<","<<"Waist Hip"<<","<<"Wellness"
+         <<","<<"ECW Legacy"<<","<<"TBW Legacy"<<","<<"OHY"<<","
+         <<"Sk Muscle"<<","<<"Cal Sk Muscle"<<","<<"CM"<<","<<"REXT"
+         <<","<<"RINT"<<","<<"FC"<<","<<"Alpha"<<"\n";
         for(int i=0;i<indxList.count();++i){
             QModelIndex indx=indxList.at(i);
             indx=dynamic_cast<TestStatSortFilterProxyModel*>(

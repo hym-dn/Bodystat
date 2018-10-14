@@ -202,6 +202,7 @@ void MainDlg::onTestStatToolButtonClicked(bool){
 }
 
 void MainDlg::onDownloadDataToolButtonClicked(bool){
+    /*
     if(!DevPool::instance()->getBodyStat()->getIsOpen()||
         !DevPool::instance()->getBodyStat()->getIsConnect()){
         QMessageBox msgBox(QMessageBox::Warning,
@@ -212,6 +213,7 @@ void MainDlg::onDownloadDataToolButtonClicked(bool){
         msgBox.exec();
         return;
     }
+    */
     creat(SUB_WIDGET_ID_DWL_DATA);
 }
 

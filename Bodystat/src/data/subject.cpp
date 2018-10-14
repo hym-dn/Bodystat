@@ -114,7 +114,7 @@ int Subject::assign(QSqlQuery &query,const TestDataV &testDataV){
             sql+=" OR";
         }
         sql+=QString(" (DevModel=%1 AND DevSeriNum=%2 "
-            "AND TestDateTime=#%3#)").arg((*itr)->getDevModel())
+            "AND TestDateTime='%3')").arg((*itr)->getDevModel())
             .arg((*itr)->getDevSeriNum()).arg((*itr)->
             getTestDateTimeText());
     }

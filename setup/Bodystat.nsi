@@ -19,6 +19,8 @@ SetCompressor lzma
 
 ; 欢迎页面
 !insertmacro MUI_PAGE_WELCOME
+; 安装目录选择页面
+!insertmacro MUI_PAGE_DIRECTORY
 ; 许可协议页面
 ;!insertmacro MUI_PAGE_LICENSE "..\..\..\path\to\licence\YourSoftwareLicence.txt"
 ; 安装过程页面

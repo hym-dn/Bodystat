@@ -61,6 +61,8 @@ void DownloadDataWidget::onBtTaskDone(
     // 更新测试数据列表
     dynamic_cast<TestDataTableModel*>(_ui->
         _testDataTableView->model())->update();
+    // 显示下载数据完成
+    _ui->_downloadDataLabel->setText(tr("数据下载结束！"));
 }
 
 void DownloadDataWidget::onOpenTestDialogPushButton(bool){

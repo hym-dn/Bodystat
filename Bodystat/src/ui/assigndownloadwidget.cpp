@@ -31,6 +31,9 @@ void AssignDownloadWidget::
 void AssignDownloadWidget::onNewSubjPushButtonClicked(bool){
     NewSubjDlg dlg;
     dlg.exec();
+    dynamic_cast<SubjSortFilterProxyModel*>(
+        _ui->_subjListView->model())->setMatchString(
+        _ui->_filterLineEdit->text());
 }
 
 void AssignDownloadWidget::onAssignTestPushButtonClicked(bool){

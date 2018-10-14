@@ -98,7 +98,8 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
     // 超时时限
     static unsigned short timeout=7;
     // 连接设备或重载设备
-    if(TASK_ID_SCAN_DEV==id||TASK_ID_RELOAD_DEV==id){
+    if(TASK_ID_SCAN_DEV==id||TASK_ID_RELOAD_DEV==id||
+        TASK_ID_DOWNLOAD_TEST_DATA==id){
         // 重置蓝牙、设备
         if(TASK_ID_SCAN_DEV==id){
             reset();
@@ -200,6 +201,43 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
             return;
         }
         bodyStat->setCalibDate(QDateTime::fromTime_t(time).date());
+        // 下载测试数据
+        if(TASK_ID_DOWNLOAD_TEST_DATA==id){
+            // 声明测试数据
+            Bodystat::BSRawData rawData;
+            rawData.iRecordArraySize=
+                Bodystat::BS_RAWDATA_ARRAYSIZE;
+            // 读取测试数据
+            if(Bodystat::NoError!=
+                Bodystat::BSReadStoredTestData(&rawData)){
+                // 发送信号
+                emit taskDone(id,TASK_ERR_GET_TEST_DATE_FAILED);
+                // 返回
+                return;
+            }
+            // 断开连接
+            // 重置蓝牙、设备
+            reset();
+            bodyStat->reset();
+            // 断开连接
+            Bodystat::BSCloseComport();
+            // 清除测试数据
+            // TestDataPool::instance()->clear();
+            // 追加测试数据
+            for(int i=0;i<rawData.iTotalNumRecs;++i){
+                rawData.record[i].iFrequencies=0;
+                rawData.record[i].pMultifreqData=0;
+                TestDataPool::instance()->add(
+                    DBManager::instance()->getDB(),rawData.record[i]);
+            }
+            // 测试数据排序
+            TestDataPool::instance()->sort();
+            // 如果无测试数据
+            if(TestDataPool::instance()->count()<=0){
+                emit taskDone(id,TASK_ERR_NO_NEW_TEST_DATA);
+                return;
+            }
+        }
         // 发送无误信号
         emit taskDone(id,TASK_ERR_NONE);
         // 返回
@@ -222,6 +260,7 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
         // 返回
         return;
     }
+    /*
     // 下载测试数据
     else if(TASK_ID_DOWNLOAD_TEST_DATA==id){
         // 设备尚未连接
@@ -266,6 +305,7 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
         // 返回
         return;
     }
+    */
 }
 
 void Bluetooth::setDrivInfo(const QString &drivInfo){
