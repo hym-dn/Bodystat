@@ -34,7 +34,7 @@ public:
     void clear_t();
     int count() const;
     int count_t() const;
-    int add(QSqlDatabase &db,
+    int add(QSqlDatabase &db,const int testNo,
         const Bodystat::BSMeasurement &mData);
     int add(PtrToData &data);
     PtrToCData getData(const int idx);

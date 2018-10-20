@@ -9,6 +9,7 @@ TestData::TestData()
     :_devModel(0)
     ,_devSeriNum(0)
     ,_testDateTime()
+    ,_testNo(0)
     ,_sex(SEX_UNKNOWN)
     ,_age(0)
     ,_height(0)
@@ -59,12 +60,13 @@ TestData::TestData()
     ,_subjId(){
 }
 
-TestData::TestData(
+TestData::TestData(const int testNo,
     const Bodystat::BSMeasurement &meas,
     const Bodystat::BSResults &ress)
     :_devModel(meas.iDeviceModel)
     ,_devSeriNum(meas.ulDeviceSerialNumber)
     ,_testDateTime(QDateTime::fromTime_t(meas.tTestDate))
+    ,_testNo(testNo)
     ,_sex(Bodystat::BSMale==meas.iGender?SEX_MALE:SEX_FEMALE)
     ,_age(meas.iAge)
     ,_height(meas.iHeight)
@@ -119,6 +121,7 @@ TestData::TestData(const TestData &src)
     :_devModel(src._devModel)
     ,_devSeriNum(src._devSeriNum)
     ,_testDateTime(src._testDateTime)
+    ,_testNo(src._testNo)
     ,_sex(src._sex)
     ,_age(src._age)
     ,_height(src._height)
@@ -186,205 +189,209 @@ int TestData::pull(QSqlQuery &query,const unsigned long sIdx/*=0*/){
         return(-3);
     }
     _testDateTime=query.value(sIdx+2).toDateTime();
-    unsigned int uInt=query.value(sIdx+3).toUInt(&ok);
+    _testNo=query.value(sIdx+3).toInt(&ok);
     if(!ok){
         return(-4);
     }
-    if(uInt>SEX_OTHER){
+    unsigned int uInt=query.value(sIdx+4).toUInt(&ok);
+    if(!ok){
         return(-5);
     }
-    _sex=static_cast<Sex>(uInt);
-    _age=query.value(sIdx+4).toInt(&ok);
-    if(!ok){
+    if(uInt>SEX_OTHER){
         return(-6);
     }
-    _height=query.value(sIdx+5).toInt(&ok);
+    _sex=static_cast<Sex>(uInt);
+    _age=query.value(sIdx+5).toInt(&ok);
     if(!ok){
         return(-7);
     }
-    _weight=query.value(sIdx+6).toFloat(&ok);
+    _height=query.value(sIdx+6).toInt(&ok);
     if(!ok){
         return(-8);
     }
-    _activity=query.value(sIdx+7).toInt(&ok);
+    _weight=query.value(sIdx+7).toFloat(&ok);
     if(!ok){
         return(-9);
     }
-    _waist=query.value(sIdx+8).toInt(&ok);
+    _activity=query.value(sIdx+8).toInt(&ok);
     if(!ok){
         return(-10);
     }
-    _hip=query.value(sIdx+9).toInt(&ok);
+    _waist=query.value(sIdx+9).toInt(&ok);
     if(!ok){
         return(-11);
     }
-    _iz5kHz=query.value(sIdx+10).toInt(&ok);
+    _hip=query.value(sIdx+10).toInt(&ok);
     if(!ok){
         return(-12);
     }
-    _iz50kHz=query.value(sIdx+11).toInt(&ok);
+    _iz5kHz=query.value(sIdx+11).toInt(&ok);
     if(!ok){
         return(-13);
     }
-    _iz100kHz=query.value(sIdx+12).toInt(&ok);
+    _iz50kHz=query.value(sIdx+12).toInt(&ok);
     if(!ok){
         return(-14);
     }
-    _iz200kHz=query.value(sIdx+13).toInt(&ok);
+    _iz100kHz=query.value(sIdx+13).toInt(&ok);
     if(!ok){
         return(-15);
     }
-    _ir50kHz=query.value(sIdx+14).toFloat(&ok);
+    _iz200kHz=query.value(sIdx+14).toInt(&ok);
     if(!ok){
         return(-16);
     }
-    _fx50kHz=query.value(sIdx+15).toFloat(&ok);
+    _ir50kHz=query.value(sIdx+15).toFloat(&ok);
     if(!ok){
         return(-17);
     }
-    _fpa50kHz=query.value(sIdx+16).toFloat(&ok);
+    _fx50kHz=query.value(sIdx+16).toFloat(&ok);
     if(!ok){
         return(-18);
     }
-    _fatPerc=query.value(sIdx+17).toFloat(&ok);
+    _fpa50kHz=query.value(sIdx+17).toFloat(&ok);
     if(!ok){
         return(-19);
     }
-    _fatKg=query.value(sIdx+18).toFloat(&ok);
+    _fatPerc=query.value(sIdx+18).toFloat(&ok);
     if(!ok){
         return(-20);
     }
-    _leanPerc=query.value(sIdx+19).toFloat(&ok);
+    _fatKg=query.value(sIdx+19).toFloat(&ok);
     if(!ok){
         return(-21);
     }
-    _leanKg=query.value(sIdx+20).toFloat(&ok);
+    _leanPerc=query.value(sIdx+20).toFloat(&ok);
     if(!ok){
         return(-22);
     }
-    _totalWeight=query.value(sIdx+21).toFloat(&ok);
+    _leanKg=query.value(sIdx+21).toFloat(&ok);
     if(!ok){
         return(-23);
     }
-    _dryLW=query.value(sIdx+22).toFloat(&ok);
+    _totalWeight=query.value(sIdx+22).toFloat(&ok);
     if(!ok){
         return(-24);
     }
-    _tbwPerc=query.value(sIdx+23).toFloat(&ok);
+    _dryLW=query.value(sIdx+23).toFloat(&ok);
     if(!ok){
         return(-25);
     }
-    _tbw=query.value(sIdx+24).toFloat(&ok);
+    _tbwPerc=query.value(sIdx+24).toFloat(&ok);
     if(!ok){
         return(-26);
     }
-    _ecwPerc=query.value(sIdx+25).toFloat(&ok);
+    _tbw=query.value(sIdx+25).toFloat(&ok);
     if(!ok){
         return(-27);
     }
-    _ecw=query.value(sIdx+26).toFloat(&ok);
+    _ecwPerc=query.value(sIdx+26).toFloat(&ok);
     if(!ok){
         return(-28);
     }
-    _icwPerc=query.value(sIdx+27).toFloat(&ok);
+    _ecw=query.value(sIdx+27).toFloat(&ok);
     if(!ok){
         return(-29);
     }
-    _icw=query.value(sIdx+28).toFloat(&ok);
+    _icwPerc=query.value(sIdx+28).toFloat(&ok);
     if(!ok){
         return(-30);
     }
-    _bcm=query.value(sIdx+29).toFloat(&ok);
+    _icw=query.value(sIdx+29).toFloat(&ok);
     if(!ok){
         return(-31);
     }
-    _thirdSpace=query.value(sIdx+30).toFloat(&ok);
+    _bcm=query.value(sIdx+30).toFloat(&ok);
     if(!ok){
         return(-32);
     }
-    _nutrition=query.value(sIdx+31).toFloat(&ok);
+    _thirdSpace=query.value(sIdx+31).toFloat(&ok);
     if(!ok){
         return(-33);
     }
-    _illness=query.value(sIdx+32).toFloat(&ok);
+    _nutrition=query.value(sIdx+32).toFloat(&ok);
     if(!ok){
         return(-34);
     }
-    _bmr=query.value(sIdx+33).toFloat(&ok);
+    _illness=query.value(sIdx+33).toFloat(&ok);
     if(!ok){
         return(-35);
     }
-    _bmrKg=query.value(sIdx+34).toFloat(&ok);
+    _bmr=query.value(sIdx+34).toFloat(&ok);
     if(!ok){
         return(-36);
     }
-    _estAvg=query.value(sIdx+35).toFloat(&ok);
+    _bmrKg=query.value(sIdx+35).toFloat(&ok);
     if(!ok){
         return(-37);
     }
-    _bmi=query.value(sIdx+36).toFloat(&ok);
+    _estAvg=query.value(sIdx+36).toFloat(&ok);
     if(!ok){
         return(-38);
     }
-    _bfmi=query.value(sIdx+37).toFloat(&ok);
+    _bmi=query.value(sIdx+37).toFloat(&ok);
     if(!ok){
         return(-39);
     }
-    _ffmi=query.value(sIdx+38).toFloat(&ok);
+    _bfmi=query.value(sIdx+38).toFloat(&ok);
     if(!ok){
         return(-40);
     }
-    _waistHip=query.value(sIdx+39).toFloat(&ok);
+    _ffmi=query.value(sIdx+39).toFloat(&ok);
     if(!ok){
         return(-41);
     }
-    _wellness=query.value(sIdx+40).toFloat(&ok);
+    _waistHip=query.value(sIdx+40).toFloat(&ok);
     if(!ok){
         return(-42);
     }
-    _ecwLegacy=query.value(sIdx+41).toFloat(&ok);
+    _wellness=query.value(sIdx+41).toFloat(&ok);
     if(!ok){
         return(-43);
     }
-    _tbwLegacy=query.value(sIdx+42).toFloat(&ok);
+    _ecwLegacy=query.value(sIdx+42).toFloat(&ok);
     if(!ok){
         return(-44);
     }
-    _ohy=query.value(sIdx+43).toFloat(&ok);
+    _tbwLegacy=query.value(sIdx+43).toFloat(&ok);
     if(!ok){
         return(-45);
     }
-    _skMuscle=query.value(sIdx+44).toFloat(&ok);
+    _ohy=query.value(sIdx+44).toFloat(&ok);
     if(!ok){
         return(-46);
     }
-    _cm=query.value(sIdx+45).toFloat(&ok);
+    _skMuscle=query.value(sIdx+45).toFloat(&ok);
     if(!ok){
         return(-47);
     }
-    _rext=query.value(sIdx+46).toFloat(&ok);
+    _cm=query.value(sIdx+46).toFloat(&ok);
     if(!ok){
         return(-48);
     }
-    _rint=query.value(sIdx+47).toFloat(&ok);
+    _rext=query.value(sIdx+47).toFloat(&ok);
     if(!ok){
         return(-49);
     }
-    _fc=query.value(sIdx+48).toFloat(&ok);
+    _rint=query.value(sIdx+48).toFloat(&ok);
     if(!ok){
         return(-50);
     }
-    _alpha=query.value(sIdx+49).toFloat(&ok);
+    _fc=query.value(sIdx+49).toFloat(&ok);
     if(!ok){
         return(-51);
     }
-    if(query.value(sIdx+50).isNull()){
+    _alpha=query.value(sIdx+50).toFloat(&ok);
+    if(!ok){
+        return(-52);
+    }
+    if(query.value(sIdx+51).isNull()){
         _subjId.clear();
     }else{
-        _subjId=query.value(sIdx+50).toString();
+        _subjId=query.value(sIdx+51).toString();
     }
     if(isValid()<0){
-        return(-52);
+        return(-53);
     }
     return(0);
 }
@@ -398,7 +405,7 @@ int TestData::push(QSqlQuery &query){
         subjId=QString("'%1'").arg(getSubjId());
     }
     const QString sql=QString("INSERT INTO TestData ("
-        "DevModel,DevSeriNum,TestDateTime,Sex,Age,"
+        "DevModel,DevSeriNum,TestDateTime,TestNo,Sex,Age,"
         "Height,Weight,Activity,Waist,Hip,Iz5kHz,"
         "IZ50kHz,Iz100kHz,Iz200kHz,Ir50kHz,Fx50kHz,"
         "Fpa50kHz,FatPerc,FatKg,LeanPerc,LeanKg,TotalWeight,"
@@ -406,13 +413,13 @@ int TestData::push(QSqlQuery &query){
         "ThirdSpace,Nutrition,Illness,BMR,BMRKg,EstAvg,BMI,"
         "BFMI,FFMI,WaistHip,Wellness,ECWLegacy,TBWLegacy,"
         "OHY,SkMuscle,Cm,Rext,Rint,FC,Alpha,SubjectID) "
-        "VALUES(%1,%2,'%3',%4,%5,%6,%7,%8,%9,%10,%11,%12,"
-        "%13,%14,%15,%16,%17,%18,%19,%20,%21,%22,%23,%24,"
-        "%25,%26,%27,%28,%29,%30,%31,%32,%33,%34,%35,%36,"
-        "%37,%38,%39,%40,%41,%42,%43,%44,%45,%46,%47,%48,"
-        "%49,%50,%51);").arg(getDevModel()).arg(getDevSeriNum())
-        .arg(getTestDateTimeText()).arg(getSex()).arg(getAge())
-        .arg(getHeight()).arg(getWeight()).arg(getActivity())
+        "VALUES(%1,%2,'%3',%4,%5,%6,%7,%8,%9,%10,%11,%12,%13,"
+        "%14,%15,%16,%17,%18,%19,%20,%21,%22,%23,%24,%25,"
+        "%26,%27,%28,%29,%30,%31,%32,%33,%34,%35,%36,%37,"
+        "%38,%39,%40,%41,%42,%43,%44,%45,%46,%47,%48,%49,"
+        "%50,%51,%52);").arg(getDevModel()).arg(getDevSeriNum())
+        .arg(getTestDateTimeText()).arg(getTestNo()).arg(getSex())
+        .arg(getAge()).arg(getHeight()).arg(getWeight()).arg(getActivity())
         .arg(getWaist()).arg(getHip()).arg(getIz5kHz())
         .arg(getIz50kHz()).arg(getIz100kHz()).arg(getIz200kHz())
         .arg(getIr50kHz()).arg(getFx50kHz()).arg(getFpa50kHz())
@@ -437,7 +444,7 @@ int TestData::unassign(QSqlQuery &query){
         return(-1);
     }
     const QString sql(QString("UPDATE TestData SET SubjectID=%1 "
-        "WHERE DevModel=%2 AND DevSeriNum=%3 AND TestDateTime=#%4#;")
+        "WHERE DevModel=%2 AND DevSeriNum=%3 AND TestDateTime='%4';")
         .arg("null").arg(getDevModel()).arg(getDevSeriNum()).arg(
         getTestDateTimeText()));
     if(!query.exec(sql)){
@@ -506,6 +513,18 @@ QString TestData::getTestDateTimeText() const{
 
 QString TestData::getTestDateText() const{
     return(getTestDateTime().toString("yyyy-MM-dd"));
+}
+
+void TestData::setTestNo(const int testNo){
+    _testNo=testNo;
+}
+
+int TestData::getTestNo() const{
+    return(_testNo);
+}
+
+QString TestData::getTestNoText() const{
+    return(QString("%1").arg(_testNo));
 }
 
 void TestData::setSex(const Sex sex){
@@ -690,7 +709,7 @@ QString TestData::getFpa50kHzText() const{
 
 QString TestData::getBrief() const{
     return(getDevModelText()+","+getDevSeriNumText()+","+
-        getTestDateText()+","+getSexText()+","+
+        getTestDateText()+","+getTestNoText()+","+getSexText()+","+
         getAgeText()+","+getHeightText()+","+getWeightText()
         +","+getActivityText()+","+getWaistText()+","
         +getHipText()+","+getIz5kHzText()+","+getIz50kHzText()+
@@ -1187,6 +1206,7 @@ TestData &TestData::operator=(const TestData &src){
     _devModel=src._devModel;
     _devSeriNum=src._devSeriNum;
     _testDateTime=src._testDateTime;
+    _testNo=src._testNo;
     _sex=src._sex;
     _age=src._age;
     _height=src._height;

@@ -13,7 +13,7 @@ public:
 public:
     void update();
 private:
-    enum{COLUMN_COUNT=13,};
+    enum{COLUMN_COUNT=14,};
 private:
     QVariant headerData(int section,
         Qt::Orientation orientation,

@@ -48,7 +48,7 @@ int TestDataPool::pull(QSqlDatabase &db){
         return(-1);
     }
     QString sql("SELECT DevModel,DevSeriNum,TestDateTime,"
-        "Sex,Age,Height,Weight,Activity,Waist,Hip,Iz5kHz,"
+        "TestNo,Sex,Age,Height,Weight,Activity,Waist,Hip,Iz5kHz,"
         "IZ50kHz,Iz100kHz,Iz200kHz,Ir50kHz,Fx50kHz,Fpa50kHz,"
         "FatPerc,FatKg,LeanPerc,LeanKg,TotalWeight,DryLW,"
         "TBWPerc,TBW,ECWPerc,ECW,ICWPerc,ICW,BCM,ThirdSpace,"
@@ -81,7 +81,7 @@ int TestDataPool::pull_t(QSqlDatabase &db){
         return(-1);
     }
     QString sql("SELECT DevModel,DevSeriNum,TestDateTime,"
-        "Sex,Age,Height,Weight,Activity,Waist,Hip,Iz5kHz,"
+        "TestNo,Sex,Age,Height,Weight,Activity,Waist,Hip,Iz5kHz,"
         "IZ50kHz,Iz100kHz,Iz200kHz,Ir50kHz,Fx50kHz,Fpa50kHz,"
         "FatPerc,FatKg,LeanPerc,LeanKg,TotalWeight,DryLW,"
         "TBWPerc,TBW,ECWPerc,ECW,ICWPerc,ICW,BCM,ThirdSpace,"
@@ -154,7 +154,7 @@ int TestDataPool::count_t() const{
 }
 
 int TestDataPool::add(QSqlDatabase &db,
-    const Bodystat::BSMeasurement &mData){
+    const int testNo,const Bodystat::BSMeasurement &mData){
     // 数据库非法
     if(!db.isValid()||!db.isOpen()){
         return(-1);
@@ -189,7 +189,7 @@ int TestDataPool::add(QSqlDatabase &db,
         return(-3);
     }
     // 创建测试
-    PtrToData data(new TestData(mData,mRes));
+    PtrToData data(new TestData(testNo,mData,mRes));
     if(data.isNull()){
         return(-4);
     }

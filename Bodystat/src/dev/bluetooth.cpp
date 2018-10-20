@@ -228,7 +228,8 @@ void Bluetooth::onTask(const unsigned int id,BodyStat *bodyStat){
                 rawData.record[i].iFrequencies=0;
                 rawData.record[i].pMultifreqData=0;
                 TestDataPool::instance()->add(
-                    DBManager::instance()->getDB(),rawData.record[i]);
+                    DBManager::instance()->getDB(),
+                    rawData.ulFirstTestNum+i,rawData.record[i]);
             }
             // 测试数据排序
             TestDataPool::instance()->sort();

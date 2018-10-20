@@ -250,9 +250,11 @@ void MainDlg::onBtTaskStart(const unsigned int /*id*/){
     _ui->_delUnasToolButton->setDisabled(true);
     _ui->_recSubjToolButton->setDisabled(true);
     _ui->_assignDownloadToolButton->setDisabled(true);
+    _ui->_testStatToolButton->setDisabled(true);
     _ui->_downloadDataToolButton->setDisabled(true);
     _ui->_devInfoToolButton->setDisabled(true);
     _ui->_bodyCompToolButton->setDisabled(true);
+    _ui->_sysConfigToolButton->setDisabled(true);
 }
 
 void MainDlg::onBtTaskDone(
@@ -264,9 +266,11 @@ void MainDlg::onBtTaskDone(
     _ui->_delUnasToolButton->setDisabled(false);
     _ui->_recSubjToolButton->setDisabled(false);
     _ui->_assignDownloadToolButton->setDisabled(false);
+    _ui->_testStatToolButton->setDisabled(false);
     _ui->_downloadDataToolButton->setDisabled(false);
     _ui->_devInfoToolButton->setDisabled(false);
     _ui->_bodyCompToolButton->setDisabled(false);
+    _ui->_sysConfigToolButton->setDisabled(false);
 }
 
 void MainDlg::customUi(){

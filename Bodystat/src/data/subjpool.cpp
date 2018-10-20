@@ -29,7 +29,7 @@ int SubjPool::pull(QSqlDatabase &db){
         "Subject.Sex,Subject.TelNo,Subject.MobNo,Subject.Email,"
         "Subject.Addr,Subject.EntryDateTime,Subject.ModifyDateTime,"
         "Subject.AccessDateTime,TestData.DevModel,TestData.DevSeriNum,"
-        "TestData.TestDateTime,TestData.Sex,TestData.Age,TestData.Height,"
+        "TestData.TestDateTime,TestData.TestNo,TestData.Sex,TestData.Age,TestData.Height,"
         "TestData.Weight,TestData.Activity,TestData.Waist,TestData.Hip,"
         "TestData.Iz5kHz,TestData.IZ50kHz,TestData.Iz100kHz,TestData.Iz200kHz,"
         "TestData.Ir50kHz,TestData.Fx50kHz,TestData.Fpa50kHz,TestData.FatPerc,"

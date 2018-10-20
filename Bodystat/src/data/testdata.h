@@ -21,6 +21,7 @@ public:
 public:
     TestData();
     explicit TestData(
+        const int testNo,
         const Bodystat::BSMeasurement &meas,
         const Bodystat::BSResults &ress);
     explicit TestData(const TestData &src);
@@ -43,6 +44,9 @@ public:
     const QDateTime &getTestDateTime() const;
     QString getTestDateTimeText() const;
     QString getTestDateText() const;
+    void setTestNo(const int testNo);
+    int getTestNo() const;
+    QString getTestNoText() const;
     void setSex(const Sex sex);
     Sex getSex() const;
     QString getSexText() const;
@@ -199,6 +203,7 @@ private:
     unsigned int _devModel;
     unsigned long _devSeriNum;
     QDateTime _testDateTime;
+    int _testNo;
     Sex _sex;
     int _age;
     int _height;
