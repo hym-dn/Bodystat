@@ -960,7 +960,7 @@ float TestData::getIllness() const{
 
 QString TestData::getIllnessText() const{
     return(QString("%1").arg(getIllness(),
-        0,'f',PREC_LIMIT));
+        0,'f',3));
 }
 
 void TestData::setBmr(const float bmr){
@@ -1051,7 +1051,7 @@ float TestData::getWaistHip() const{
 
 QString TestData::getWaistHipText() const{
     return(QString("%1").arg(getWaistHip(),
-        0,'f',PREC_LIMIT));
+        0,'f',3));
 }
 
 void TestData::setWellness(const float wellness){

@@ -28,8 +28,14 @@ public:
     int pull(QSqlDatabase &db);
     int push(PtrHispInfo &hispInfo,QSqlDatabase &db);
     PtrCHispInfo getHispInfo() const;
+    int getTbwRange(const unsigned int age,
+        const unsigned int sex,unsigned int &referLower,
+        unsigned int &referUpper) const;
     QString getTbwRangeText(const unsigned int age,
         const unsigned int sex) const;
+    int getLeanRange(const unsigned int age,
+        const unsigned int sex,unsigned int &referLower,
+        unsigned int &referUpper) const;
     QString getLeanRangeText(const unsigned int age,
         const unsigned int sex) const;
     QString getBmiRangeText(const unsigned int age,
@@ -39,6 +45,7 @@ public:
         float &referUpper) const;
     QString getFatRangeText(const unsigned int age,
         const unsigned int sex) const;
+    QString getCompName() const;
 private:
     friend Singleton<SysInfoPool>;
     typedef QSharedPointer<FatParam> PtrFatParam;

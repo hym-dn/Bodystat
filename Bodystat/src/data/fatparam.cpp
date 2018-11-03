@@ -49,7 +49,7 @@ QString FatParam::getRangeText(const unsigned int age,
     if(getRange(age,sex,referLower,referUpper)<0){
         return(QString());
     }else{
-        return(QString("%1-%2").arg(referLower,0,'f',1)
-            .arg(referUpper,0,'f',1));
+        return(QString("%1-%2").arg(referLower,0,'f',0)
+            .arg(referUpper,0,'f',0));
     }
 }

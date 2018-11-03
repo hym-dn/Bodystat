@@ -11,7 +11,7 @@ namespace Bodystat{
 
 class TestData{
 public:
-    enum{PREC_LIMIT=3,};
+    enum{PREC_LIMIT=1,};
     typedef enum{
         SEX_UNKNOWN=0,
         SEX_MALE=1,

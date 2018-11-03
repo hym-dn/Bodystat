@@ -31,6 +31,8 @@ void SysConfigWidget::onSavePushButtonClicked(bool){
     hispInfo->setHispName(text);
     text=_ui->_sectionNameLineEdit->text();
     hispInfo->setSectName(text);
+    text=_ui->_companyNameLineEdit->text();
+    hispInfo->setCompName(text);
     const int res=hispInfo->isValid(&text);
     if(res<0){
         QMessageBox msgBox(
@@ -69,6 +71,9 @@ void SysConfigWidget::initUi(){
     _ui->_sectionNameLineEdit->setMaxLength(46);
     _ui->_sectionNameLineEdit->setText(SysInfoPool::
         instance()->getHispInfo()->getSectName());
+    _ui->_companyNameLineEdit->setMaxLength(46);
+    _ui->_companyNameLineEdit->setText(SysInfoPool::
+        instance()->getHispInfo()->getCompName());
     connect(_ui->_savePushButton,SIGNAL(clicked(bool)),
         this,SLOT(onSavePushButtonClicked(bool)));
 }

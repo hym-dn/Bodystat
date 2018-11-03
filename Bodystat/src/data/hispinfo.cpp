@@ -5,11 +5,11 @@
 #include<QSqlDatabase>
 
 HispInfo::HispInfo()
-    :HispInfo("",""){
+    :HispInfo("","",""){
 }
 
 HispInfo::HispInfo(const HispInfo &info)
-    :HispInfo(info._hispName,info._sectName){
+    :HispInfo(info._hispName,info._sectName,info._compName){
 }
 
 HispInfo::~HispInfo(){
@@ -21,6 +21,7 @@ int HispInfo::pull(QSqlQuery &query){
     }
     _hispName=query.value(0).toString();
     _sectName=query.value(1).toString();
+    _compName=query.value(2).toString();
     if(isValid()<0){
         return(-2);
     }
@@ -35,8 +36,8 @@ int HispInfo::push(QSqlDatabase &db){
         return(-2);
     }
     QString sql=QString("UPDATE HispInfo SET "
-        "HispName='%1',SectName='%2';").arg(
-        getHispName()).arg(getSectName());
+        "HispName='%1',SectName='%2',CompName='%3';").arg(
+        getHispName()).arg(getSectName()).arg(getCompName());
     QSqlQuery query(db);
     if(!query.exec(sql)){
         return(-3);
@@ -76,14 +77,24 @@ const QString &HispInfo::getSectName() const{
     return(_sectName);
 }
 
+void HispInfo::setCompName(const QString &name){
+    _compName=name;
+}
+
+const QString &HispInfo::getCompName() const{
+    return(_compName);
+}
+
 HispInfo &HispInfo::operator=(const HispInfo &info){
     _hispName=info._hispName;
     _sectName=info._sectName;
+    _compName=info._compName;
     return(*this);
 }
 
-HispInfo::HispInfo(
-    const QString &hispName,const QString &sectName)
+HispInfo::HispInfo(const QString &hispName,
+    const QString &sectName,const QString &compName)
     :_hispName(hispName)
-    ,_sectName(sectName){
+    ,_sectName(sectName)
+    ,_compName(compName){
 }

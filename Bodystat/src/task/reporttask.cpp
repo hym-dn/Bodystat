@@ -64,13 +64,14 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     if(SubjPool::instance()->getCurSubjInfo(subjInfo)<0){
         return(-4);
     }
-    word.bmToTxt("ID",subjInfo.getId());
+    // word.bmToTxt("ID",subjInfo.getId());
     word.bmToTxt("Name",subjInfo.getName());
     SubjPool::PtrCTestData testData;
     testData=SubjPool::instance()->getCurTestData(_tdIdxV.at(0));
     if(testData.isNull()){
         return(-5);
     }
+    word.bmToTxt("ID",testData->getTestNoText());
     word.bmToTxt("Age",testData->getAgeText());
     word.bmToTxt("Sex",testData->getSexText());
     word.bmToTxt("Height",testData->getHeightText());
@@ -79,13 +80,41 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("Icw",testData->getIcwText());
     word.bmToTxt("ThirdSpace",testData->getThirdSpaceText());
     word.bmToTxt("Tbw",testData->getTbwText());
+    unsigned int tbwLower=0;
+    unsigned int tbwUpper=0;
+    SysInfoPool::instance()->getTbwRange(
+        testData->getAge(),testData->getSex(),
+        tbwLower,tbwUpper);
+    double dTbwLower=static_cast<double>(tbwLower)/100.0;
+    double dTbwUpper=static_cast<double>(tbwUpper)/100.0;
+    QString strTbwRange=QString("%1-%2").arg(
+        testData->getTbw()*dTbwLower,0,'f',1).arg(
+        testData->getTbw()*dTbwUpper,0,'f',1);
+    word.bmToTxt("TbwRange",strTbwRange);
     word.bmToTxt("DryLW",testData->getDryLWText());
     word.bmToTxt("LeanKg",testData->getLeanKgText());
+    unsigned int leanLower=0;
+    unsigned int leanUpper=0;
+    SysInfoPool::instance()->getLeanRange(
+        testData->getAge(),testData->getSex(),
+        leanLower,leanUpper);
+    double dLeanLower=static_cast<double>(leanLower)/100.0;
+    double dLeanUpper=static_cast<double>(leanUpper)/100.0;
+    QString strLeanRange=QString("%1-%2").arg(
+        testData->getLeanKg()*dLeanLower,0,'f',1).arg(
+        testData->getLeanKg()*dLeanUpper,0,'f',1);
+    word.bmToTxt("LeanKgRange",strLeanRange);
     word.bmToTxt("FatKg",testData->getFatKgText());
-    word.bmToTxt("WeightKg",testData->getWeightText());
     float lw=0.0,up=0.0;
     SysInfoPool::instance()->getFatRange(
         testData->getAge(),testData->getSex(),lw,up);
+    double dLw=lw/100.0;
+    double dUp=up/100.0;
+    QString strFatKgRange=QString("%1-%2").arg(
+        testData->getFatKg()*dLw,0,'f',1).arg(
+        testData->getFatKg()*dUp,0,'f',1);
+    word.bmToTxt("FatKgRange",strFatKgRange);
+    word.bmToTxt("WeightKg",testData->getWeightText());    
     //float stLw=testData->getLeanKg()/(1-lw/100.0f);
     float ndLw=20.0f*(testData->getHeight()/100.0f)*(testData->getHeight()/100.0f);
     //float stUp=testData->getLeanKg()/(1-up/100.0f);
@@ -93,13 +122,25 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("WeightRange",QString("%1-%2").arg(static_cast<int>(ndLw))
         .arg(static_cast<int>(ndUp)));
     word.bmToTxt("EcwPerc",testData->getEcwPercText());
+    if(TestData::SEX_MALE==testData->getSex()){
+        word.bmToTxt("EcwPercRange","26");
+    }else{
+        word.bmToTxt("EcwPercRange","20");
+    }
     word.bmToTxt("IcwPerc",testData->getIcwPercText());
+    if(TestData::SEX_MALE==testData->getSex()){
+        word.bmToTxt("IcwPercRange","34");
+    }else{
+        word.bmToTxt("IcwPercRange","30");
+    }
     word.bmToTxt("ThirdSpacePerc",testData->getThirdSpacePercText());
     word.bmToTxt("TbwPerc",testData->getTbwPercText());
     word.bmToTxt("TbwPercRange",SysInfoPool::instance()->
         getTbwRangeText(testData->getAge(),testData->getSex()));
     word.bmToTxt("DryLWPerc",testData->getDryLWPercText());
     word.bmToTxt("FatPerc",testData->getFatPercText());
+    word.bmToTxt("FatPercRange",SysInfoPool::instance()->
+        getFatRangeText(testData->getAge(),testData->getSex()));
     word.bmToTxt("LeanPerc",testData->getLeanPercText());
     word.bmToTxt("LeanPercRange",SysInfoPool::instance()->
         getLeanRangeText(testData->getAge(),testData->getSex()));
@@ -124,6 +165,7 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("WeightRight",testData->getWeightText());
     word.bmToTxt("TargetWeight",QString("%1~%2").arg(
         static_cast<int>(ndLw)).arg(static_cast<int>(ndUp)));
+    word.bmToTxt("CompanyName",SysInfoPool::instance()->getCompName());
     Chart::Points heightPoints;
     Chart::Points weightPoints;
     Chart::Points fatPercPoints;

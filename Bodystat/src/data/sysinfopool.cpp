@@ -20,7 +20,7 @@ int SysInfoPool::pull(QSqlDatabase &db){
     if(!db.isValid()||!db.isOpen()){
         return(-1);
     }
-    QString sql("SELECT HispName,SectName FROM HispInfo;");
+    QString sql("SELECT HispName,SectName,CompName FROM HispInfo;");
     QSqlQuery query(db);
     if(!query.exec(sql)){
         return(-2);
@@ -113,10 +113,24 @@ SysInfoPool::PtrCHispInfo SysInfoPool::getHispInfo() const{
     return(_hispInfo);
 }
 
+int SysInfoPool::getTbwRange(const unsigned int age,
+    const unsigned int sex,unsigned int &referLower,
+    unsigned int &referUpper) const{
+    QMutexLocker locker(&_lock);
+    return(_tbwParam->getRange(age,sex,referLower,referUpper));
+}
+
 QString SysInfoPool::getTbwRangeText(
     const unsigned int age,const unsigned int sex) const{
     QMutexLocker locker(&_lock);
     return(_tbwParam->getRangeText(age,sex));
+}
+
+int SysInfoPool::getLeanRange(const unsigned int age,
+    const unsigned int sex,unsigned int &referLower,
+    unsigned int &referUpper) const{
+    QMutexLocker locker(&_lock);
+    return(_leanParam->getRange(age,sex,referLower,referUpper));
 }
 
 QString SysInfoPool::getLeanRangeText(
@@ -142,6 +156,11 @@ QString SysInfoPool::getFatRangeText(
     const unsigned int age,const unsigned int sex) const{
     QMutexLocker locker(&_lock);
     return(_fatParam->getRangeText(age,sex));
+}
+
+QString SysInfoPool::getCompName() const{
+    QMutexLocker locker(&_lock);
+    return(_hispInfo->getCompName());
 }
 
 SysInfoPool::SysInfoPool(QObject *parent)

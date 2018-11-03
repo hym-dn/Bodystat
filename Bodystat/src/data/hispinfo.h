@@ -19,14 +19,17 @@ public:
     const QString &getHispName() const;
     void setSectName(const QString &name);
     const QString &getSectName() const;
+    void setCompName(const QString &name);
+    const QString &getCompName() const;
 public:
     HispInfo &operator=(const HispInfo &info);
 private:
     explicit HispInfo(const QString &hispName,
-        const QString &sectName);
+        const QString &sectName,const QString &compName);
 private:
     QString _hispName;
     QString _sectName;
+    QString _compName;
 };
 
 #endif // HISP_INFO_H

@@ -142,6 +142,7 @@ void SubjWidget::initUi(){
     _ui->_idLineEdit->setValidator(
         new QRegExpValidator(QRegExp("[a-zA-Z0-9]+$"),this));
     _ui->_idLineEdit->setDisabled(MODE_EDIT==_mode||MODE_DELETE==_mode);
+    _ui->_idLineEdit->setDisabled(true);
     _ui->_nameLineEdit->setMaxLength(46);
     _ui->_nameLineEdit->setDisabled(MODE_DELETE==_mode);
     _ui->_birthdayDateEdit->setDisabled(MODE_DELETE==_mode);
@@ -178,7 +179,13 @@ void SubjWidget::initUi(){
 }
 
 void SubjWidget::toUi(){
-    _ui->_idLineEdit->setText(_subjInfo->getId());
+    if(_mode==MODE_NEW){
+        const QString id=QDateTime::currentDateTime()
+            .toString("yyyyMMddhhmmss");
+        _ui->_idLineEdit->setText(id);
+    }else{
+        _ui->_idLineEdit->setText(_subjInfo->getId());
+    }
     _ui->_nameLineEdit->setText(_subjInfo->getName());
     _ui->_birthdayDateEdit->setDate(_subjInfo->getBirthday());
     if(SubjInfo::SEX_MALE==_subjInfo->getSex()){
