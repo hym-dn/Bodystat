@@ -3,6 +3,7 @@
 #include"../dev/devpool.h"
 #include"../dev/bluetooth.h"
 #include"../dev/bodystat.h"
+#include"../../../include/BodystatSDK.h"
 #include<QMovie>
 #include<QMessageBox>
 #include<QCloseEvent>
@@ -44,6 +45,7 @@ void DevInfoWidget::onScanDevPushButtonClicked(bool){
     _ui->_unpairPushButton->setDisabled(true);
     _ui->_scanDevPushButton->setDisabled(true);
     _ui->_reloadDevPushButton->setDisabled(true);
+    _ui->_resetTimePushButton->setDisabled(true);
     // 显示进度条
     _ui->_progressLabel->show();
 }
@@ -58,8 +60,37 @@ void DevInfoWidget::onReloadDevPushButtonClicked(bool){
     _ui->_unpairPushButton->setDisabled(true);
     _ui->_scanDevPushButton->setDisabled(true);
     _ui->_reloadDevPushButton->setDisabled(true);
+    _ui->_resetTimePushButton->setDisabled(true);
     // 显示进度条
     _ui->_progressLabel->show();
+}
+
+void DevInfoWidget::onResetTimePushButtonClicked(bool){
+    if(!DevPool::instance()->getBodyStat()->getIsOpen()||
+        !DevPool::instance()->getBodyStat()->getIsConnect()){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("报警"),tr("设备尚未就绪！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+        return;
+    }
+    if(Bodystat::NoError!=Bodystat::BSWriteCurrentTime()){
+        QMessageBox msgBox(QMessageBox::Warning,
+            tr("报警"),tr("重置设备时间失败！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+    }else{
+        QMessageBox msgBox(QMessageBox::Information,
+            tr("提示"),tr("重置设备时间完成！"));
+        msgBox.setFont(font());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setButtonText(QMessageBox::Ok,tr("确定"));
+        msgBox.exec();
+    }
 }
 
 void DevInfoWidget::onUnauthDevPushButtonClicked(bool){
@@ -72,6 +103,7 @@ void DevInfoWidget::onUnauthDevPushButtonClicked(bool){
     _ui->_unpairPushButton->setDisabled(true);
     _ui->_scanDevPushButton->setDisabled(true);
     _ui->_reloadDevPushButton->setDisabled(true);
+    _ui->_resetTimePushButton->setDisabled(true);
     // 显示进度条
     _ui->_progressLabel->show();
 }
@@ -131,6 +163,7 @@ void DevInfoWidget::onBtTaskDone(
     _ui->_unpairPushButton->setDisabled(false);
     _ui->_scanDevPushButton->setDisabled(false);
     _ui->_reloadDevPushButton->setDisabled(false);
+    _ui->_resetTimePushButton->setDisabled(false);
     // 隐藏进度条
     _ui->_progressLabel->hide();
 }
@@ -152,6 +185,9 @@ void DevInfoWidget::initUi(){
     connect(_ui->_reloadDevPushButton,
         SIGNAL(clicked(bool)),this,SLOT(
         onReloadDevPushButtonClicked(bool)));
+    connect(_ui->_resetTimePushButton,
+        SIGNAL(clicked(bool)),this,SLOT(
+        onResetTimePushButtonClicked(bool)));
     connect(_ui->_unpairPushButton,
         SIGNAL(clicked(bool)),this,SLOT(
         onUnauthDevPushButtonClicked(bool)));

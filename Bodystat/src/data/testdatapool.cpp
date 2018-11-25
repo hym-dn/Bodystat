@@ -80,15 +80,22 @@ int TestDataPool::pull_t(QSqlDatabase &db){
     if(!db.isValid()||!db.isOpen()){
         return(-1);
     }
-    QString sql("SELECT DevModel,DevSeriNum,TestDateTime,"
-        "TestNo,Sex,Age,Height,Weight,Activity,Waist,Hip,Iz5kHz,"
-        "IZ50kHz,Iz100kHz,Iz200kHz,Ir50kHz,Fx50kHz,Fpa50kHz,"
-        "FatPerc,FatKg,LeanPerc,LeanKg,TotalWeight,DryLW,"
-        "TBWPerc,TBW,ECWPerc,ECW,ICWPerc,ICW,BCM,ThirdSpace,"
-        "Nutrition,Illness,BMR,BMRKg,EstAvg,BMI,BFMI,FFMI,"
-        "WaistHip,Wellness,ECWLegacy,TBWLegacy,OHY,SkMuscle,"
-        "Cm,Rext,Rint,FC,Alpha,SubjectID FROM TestData ORDER "
-        "BY DevModel ASC,DevSeriNum ASC,TestDateTime DESC;");
+    QString sql("SELECT TestData.DevModel,TestData.DevSeriNum,"
+        "TestData.TestDateTime,TestData.TestNo,TestData.Sex,"
+        "TestData.Age,TestData.Height,TestData.Weight,TestData.Activity,"
+        "TestData.Waist,TestData.Hip,TestData.Iz5kHz,TestData.IZ50kHz,"
+        "TestData.Iz100kHz,TestData.Iz200kHz,TestData.Ir50kHz,"
+        "TestData.Fx50kHz,TestData.Fpa50kHz,TestData.FatPerc,"
+        "TestData.FatKg,TestData.LeanPerc,TestData.LeanKg,"
+        "TestData.TotalWeight,TestData.DryLW,TestData.TBWPerc,TestData.TBW,"
+        "TestData.ECWPerc,TestData.ECW,TestData.ICWPerc,TestData.ICW,TestData.BCM,"
+        "TestData.ThirdSpace,TestData.Nutrition,TestData.Illness,TestData.BMR,"
+        "TestData.BMRKg,TestData.EstAvg,TestData.BMI,TestData.BFMI,TestData.FFMI,"
+        "TestData.WaistHip,TestData.Wellness,TestData.ECWLegacy,TestData.TBWLegacy,"
+        "TestData.OHY,TestData.SkMuscle,TestData.Cm,TestData.Rext,TestData.Rint,"
+        "TestData.FC,TestData.Alpha,TestData.SubjectID,Subject.Name FROM TestData "
+        "LEFT JOIN Subject ON TestData.SubjectID=Subject.ID ORDER BY "
+        "TestData.DevModel ASC,TestData.DevSeriNum ASC,TestData.TestDateTime DESC;");
     QSqlQuery query(db);
     if(!query.exec(sql)){
         return(-2);
@@ -99,7 +106,7 @@ int TestDataPool::pull_t(QSqlDatabase &db){
         if(data.isNull()){
             continue;
         }
-        if(data->pull(query)<0){
+        if(data->pull_t(query)<0){
             continue;
         }
         dataV.push_back(data);

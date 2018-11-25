@@ -88,39 +88,42 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     double dTbwLower=static_cast<double>(tbwLower)/100.0;
     double dTbwUpper=static_cast<double>(tbwUpper)/100.0;
     QString strTbwRange=QString("%1-%2").arg(
-        testData->getTbw()*dTbwLower,0,'f',1).arg(
-        testData->getTbw()*dTbwUpper,0,'f',1);
+        testData->getWeight()*dTbwLower,0,'f',1).arg(
+        testData->getWeight()*dTbwUpper,0,'f',1);
     word.bmToTxt("TbwRange",strTbwRange);
     word.bmToTxt("DryLW",testData->getDryLWText());
     word.bmToTxt("LeanKg",testData->getLeanKgText());
-    unsigned int leanLower=0;
-    unsigned int leanUpper=0;
-    SysInfoPool::instance()->getLeanRange(
-        testData->getAge(),testData->getSex(),
-        leanLower,leanUpper);
-    double dLeanLower=static_cast<double>(leanLower)/100.0;
-    double dLeanUpper=static_cast<double>(leanUpper)/100.0;
-    QString strLeanRange=QString("%1-%2").arg(
-        testData->getLeanKg()*dLeanLower,0,'f',1).arg(
-        testData->getLeanKg()*dLeanUpper,0,'f',1);
-    word.bmToTxt("LeanKgRange",strLeanRange);
-    word.bmToTxt("FatKg",testData->getFatKgText());
     float lw=0.0,up=0.0;
     SysInfoPool::instance()->getFatRange(
         testData->getAge(),testData->getSex(),lw,up);
+    unsigned int leanLower=100-static_cast<unsigned int>(up);
+    unsigned int leanUpper=100-static_cast<unsigned int>(lw);
+    /*
+    SysInfoPool::instance()->getLeanRange(
+        testData->getAge(),testData->getSex(),
+        leanLower,leanUpper);
+        */
+    double dLeanLower=static_cast<double>(leanLower)/100.0;
+    double dLeanUpper=static_cast<double>(leanUpper)/100.0;
+    QString strLeanRange=QString("%1-%2").arg(
+        testData->getWeight()*dLeanLower,0,'f',1).arg(
+        testData->getWeight()*dLeanUpper,0,'f',1);
+    word.bmToTxt("LeanKgRange",strLeanRange);
+    word.bmToTxt("FatKg",testData->getFatKgText());
     double dLw=lw/100.0;
     double dUp=up/100.0;
     QString strFatKgRange=QString("%1-%2").arg(
-        testData->getFatKg()*dLw,0,'f',1).arg(
-        testData->getFatKg()*dUp,0,'f',1);
+        testData->getWeight()*dLw,0,'f',1).arg(
+        testData->getWeight()*dUp,0,'f',1);
     word.bmToTxt("FatKgRange",strFatKgRange);
     word.bmToTxt("WeightKg",testData->getWeightText());    
     //float stLw=testData->getLeanKg()/(1-lw/100.0f);
-    float ndLw=20.0f*(testData->getHeight()/100.0f)*(testData->getHeight()/100.0f);
+    //float ndLw=20.0f*(testData->getHeight()/100.0f)*(testData->getHeight()/100.0f);
     //float stUp=testData->getLeanKg()/(1-up/100.0f);
-    float ndUp=22.0f*(testData->getHeight()/100.0f)*(testData->getHeight()/100.0f);
-    word.bmToTxt("WeightRange",QString("%1-%2").arg(static_cast<int>(ndLw))
-        .arg(static_cast<int>(ndUp)));
+    //float ndUp=22.0f*(testData->getHeight()/100.0f)*(testData->getHeight()/100.0f);
+    word.bmToTxt("WeightRange",QString("%1-%2").arg(
+        testData->getLeanKg()/dLeanUpper,0,'f',1).arg(
+        testData->getLeanKg()/dLeanLower,0,'f',1));
     word.bmToTxt("EcwPerc",testData->getEcwPercText());
     if(TestData::SEX_MALE==testData->getSex()){
         word.bmToTxt("EcwPercRange","26");
@@ -142,13 +145,18 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("FatPercRange",SysInfoPool::instance()->
         getFatRangeText(testData->getAge(),testData->getSex()));
     word.bmToTxt("LeanPerc",testData->getLeanPercText());
-    word.bmToTxt("LeanPercRange",SysInfoPool::instance()->
-        getLeanRangeText(testData->getAge(),testData->getSex()));
+    word.bmToTxt("LeanPercRange",QString("%1-%2").arg(
+        leanLower).arg(leanUpper));
     word.bmToTxt("Iz5kHz",testData->getIz5kHzText());
     word.bmToTxt("Iz50kHz",testData->getIz50kHzText());
     word.bmToTxt("Iz100kHz",testData->getIz100kHzText());
     word.bmToTxt("Iz200kHz",testData->getIz200kHzText());
     word.bmToTxt("Illness",testData->getIllnessText());
+    if(testData->getAge()>=6){
+        word.bmToTxt("IllnessRange","(0.620-0.820)");
+    }else{
+        word.bmToTxt("IllnessRange","");
+    }
     word.bmToTxt("Bmr",testData->getBmrText());
     word.bmToTxt("BmrKg",testData->getBmrKgText());
     word.bmToTxt("EstAvg",testData->getEstAvgText());
@@ -162,9 +170,17 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     word.bmToTxt("Nutrition",testData->getNutritionText());
     word.bmToTxt("SkMuscle",testData->calSkMuscleText());
     word.bmToTxt("Fpa50kHz",testData->getFpa50kHzText());
+    if(testData->getAge()>=6){
+        word.bmToTxt("Fpa50kHzRange","(>4.3)");
+    }else{
+        word.bmToTxt("Fpa50kHzRange","");
+    }
     word.bmToTxt("WeightRight",testData->getWeightText());
-    word.bmToTxt("TargetWeight",QString("%1~%2").arg(
-        static_cast<int>(ndLw)).arg(static_cast<int>(ndUp)));
+    //word.bmToTxt("TargetWeight",QString("%1~%2").arg(
+        //static_cast<int>(ndLw)).arg(static_cast<int>(ndUp)));
+    word.bmToTxt("TargetWeight",QString("%1-%2").arg(
+        testData->getLeanKg()/dLeanUpper,0,'f',1).arg(
+        testData->getLeanKg()/dLeanLower,0,'f',1));
     word.bmToTxt("CompanyName",SysInfoPool::instance()->getCompName());
     Chart::Points heightPoints;
     Chart::Points weightPoints;
@@ -236,6 +252,7 @@ int ReportTask::exec(QSqlDatabase & /*db*/){
     fatPercChart.save(QCoreApplication::applicationDirPath()+"/temp/fatperc.png");
     word.bmToImg("FatPercCurve",QCoreApplication::applicationDirPath()+"/temp/fatperc.png");
     Chart illnessChart(illnessPoints);
+    illnessChart.setPrec(3);
     illnessChart.save(QCoreApplication::applicationDirPath()+"/temp/illness.png");
     word.bmToImg("IllnessCurve",QCoreApplication::applicationDirPath()+"/temp/illness.png");
     Chart tclChart(tclPoints);

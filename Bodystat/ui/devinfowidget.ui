@@ -79,6 +79,19 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="_resetTimePushButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>重置设备时间</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>

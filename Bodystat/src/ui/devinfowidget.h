@@ -25,6 +25,7 @@ protected:
 private slots:
     void onScanDevPushButtonClicked(bool);
     void onReloadDevPushButtonClicked(bool);
+    void onResetTimePushButtonClicked(bool);
     void onUnauthDevPushButtonClicked(bool);
     void onBtDrivInfoChanged();
     void onDevNameChanged();

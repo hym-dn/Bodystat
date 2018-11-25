@@ -59,7 +59,7 @@ void TestStatWidget::onExportPushButtonClicked(bool){
             return;
         }
         QTextStream out(&file);
-        out<<tr("设备")<<","<<tr("设备号")<<","<<tr("测试日期")
+        out<<tr("主题名称")<<","<<tr("设备")<<","<<tr("设备号")<<","<<tr("测试日期")
           <<","<<tr("测试号")<<","<<tr("性别")<<","<<tr("年龄")<<","<<tr("身高")
           <<","<<tr("体重")<<","<<tr("活跃度")<<","<<tr("胸围")
           <<","<<tr("臀围")<<","<<"iz5kHz"<<","<<"iz50kHz"

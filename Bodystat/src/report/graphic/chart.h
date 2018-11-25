@@ -13,6 +13,7 @@ public:
     Chart(const Chart &chart);
     ~Chart();
 public:
+    inline void setPrec(const unsigned int prec){_prec=prec;}
     int save(const QString &path);
 public:
     Chart &operator=(const Chart &chart);
@@ -25,6 +26,7 @@ protected:
     Points _points;
     double _min;
     double _max;
+    unsigned int _prec;
 };
 
 #endif // CHART_H

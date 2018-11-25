@@ -8,7 +8,8 @@ Chart::Chart(Points points,const int width/*=260*/,
     :_pixmap(width,height)
     ,_points(points)
     ,_min(0.0)
-    ,_max(0.0){
+    ,_max(0.0)
+    ,_prec(1){
     if(!points.isEmpty()){
         qSort(points);
         _min=points[0];
@@ -20,7 +21,8 @@ Chart::Chart(const Chart &chart)
     :_pixmap(chart._pixmap)
     ,_points(chart._points)
     ,_min(chart._min)
-    ,_max(chart._max){
+    ,_max(chart._max)
+    ,_prec(chart._prec){
 }
 
 Chart::~Chart(){
@@ -48,6 +50,7 @@ Chart &Chart::operator=(const Chart &chart){
     _points=chart._points;
     _min=chart._min;
     _max=chart._max;
+    _prec=chart._prec;
     return(*this);
 }
 
@@ -106,7 +109,7 @@ void Chart::drawText(){
         painter.drawText(i*textWidth,0,
             textWidth,_pixmap.height(),
             Qt::AlignCenter,QString("%1").
-            arg(_points[i],0,'f',3));
+            arg(_points[i],0,'f',_prec));
     }
     painter.restore();
 }

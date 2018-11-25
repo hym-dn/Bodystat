@@ -28,6 +28,7 @@ public:
     ~TestData();
 public:
     int pull(QSqlQuery &query,const unsigned long sIdx=0);
+    int pull_t(QSqlQuery &query,const unsigned long sIdx=0);
     int push(QSqlQuery &query);
     int unassign(QSqlQuery &query);
     int isValid() const;
@@ -197,6 +198,8 @@ public:
     QString getAlphaText() const;
     void setSubjId(const QString &subjId);
     const QString &getSubjId() const;
+    void setSubjName(const QString &name);
+    const QString &getSubjName() const;
 public:
     TestData &operator=(const TestData &src);
 private:
@@ -252,6 +255,7 @@ private:
     float _fc; // Characteristic frequency
     float _alpha;
     QString _subjId;
+    QString _subjName;
 };
 
 #endif // TEST_DATA_H
